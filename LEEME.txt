@@ -1,0 +1,13 @@
+-- Per compilar, al directori QSSI
+mvn clean install -Dmaven.test.skip=true -Djavax.net.ssl.trustStore=c:\Desenvolupament\trust.jks
+
+-- Per afegir certificats al repository de claus
+-- 1. El cream
+C:\Program Files (x86)\Java\jre1.8.0_101\bin>
+    keytool -v -alias mavensrv -import -file c:\Desenvolupament\repo.maven.apache.org.crt -keystore c:\Desenvolupament\trust.jks
+
+-- 2. Afegim un de nou
+C:\Program Files (x86)\Java\jre1.8.0_101\bin>keytool -import -file c:\Desenvolupament\repo.maven.apache.org.crt -keystore c:\Desenvolupament\trust.jks
+
+
+

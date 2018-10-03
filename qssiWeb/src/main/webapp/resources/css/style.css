@@ -1,0 +1,72 @@
+.header {
+	background-color: #ff9523;
+	height:105px;
+	margin: 0px 0px 0px 0px;
+}
+.header .logos {
+	float: left;
+	position: relative;
+	width: 400px;
+}
+.header .info-usuari {
+	float: right;
+	position: relative;
+	width: 300px;
+	font-size: 15px;
+	color: white;
+	font-family: Arial;
+	top: 15px;
+}
+.header .pull-left {
+	float: left;
+	position: relative;
+	left: 30px;
+	top: 10px;
+}
+.header .pull-right {
+	float: right;
+	position: relative;
+	right: 30px;
+	top: 10px;
+}
+
+body {
+	background-image: url('../resources/images/background-pattern.png');
+	color: #666660;
+	margin-top: 0px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+}
+
+.row-form:after {
+	content: "";
+	display: table;
+	clear: both;
+	width: 30%;
+}
+
+.col-form-etiqueta {
+	float: left;
+	width: 12%;
+	margin-top: 5px;
+	text-align: right;
+}
+
+.col-form {
+	float: left;
+	width: auto;
+	margin-top: 5px;
+	margin-left: 15px;
+}
+.col-form-rowspan
+{
+	float: left;
+	width: 50%;
+	margin-top: 5px;
+	margin-left: 15px;
+}
+.boto-formulari
+{
+	margin-top: 5px;
+	margin-left: 25%;
+}
