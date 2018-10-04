@@ -222,7 +222,7 @@ insert into "qsi_identificacio" ("id_identificacio","nom","data_creacio","usuari
 
 insert into qsi_persona(id_persona,num_identificacio,nom,llinatge1,llinatge2,telefon,email,direccio,numero,pis,codi_postal,id_identificacio,data_creacio)
 values
-(nextval('qsi_persona_seq'),'11111111H','Toni','Juanico','Soler','647769901','tjuanico@gmail.com',null,null,null,null,1,'18/09/2018 10:36:00')
+(nextval('qsi_persona_seq'),'11111111H','Toni','Juanico','Soler','647761234','thebosss_32@gmail.com',null,null,null,null,1,'18/09/2018 10:36:00')
 
 insert into qsi_expedient (id_expedient, 
 						   assumpte, 
