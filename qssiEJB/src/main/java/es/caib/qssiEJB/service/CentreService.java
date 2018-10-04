@@ -138,4 +138,22 @@ public class CentreService implements CentreServiceInterface{
 		}
 	}
 
+	@Override
+	public Centre getCentre(Integer id_centre) {
+		try
+		{
+			LOGGER.info("in getCentre, estat entity manager: " + em.toString());
+			Centre c = em.find(Centre.class, id_centre);
+			return c;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+		
+	}
+
 }

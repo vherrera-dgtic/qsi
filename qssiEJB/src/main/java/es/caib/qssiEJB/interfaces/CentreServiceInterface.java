@@ -13,6 +13,7 @@ import es.caib.qssiEJB.entity.Centre;
 public interface CentreServiceInterface {
 	public void addCentre(Centre e);
 	public void removeCentre(Integer id_centre);
+	public Centre getCentre(Integer id_centre);
 	public ArrayList<Centre> getLlista_CentresActiusWeb();
 	public ArrayList<Centre> getLlista_Centres();
 	public boolean getResultat();

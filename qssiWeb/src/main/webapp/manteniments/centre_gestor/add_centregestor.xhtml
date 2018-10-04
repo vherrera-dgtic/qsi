@@ -52,7 +52,8 @@
 				<div style="height:25px"></div>
     			<p:outputPanel deferred="true">
 	    			<div class='boto-formulari'>
-    					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.saveCentreGestor}" update="growl"  validateClient="true"/>
+    					<p:commandButton id="btn_add" rendered="#{add_CentreGestorController.btnAdd}" value="Desa" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.addCentreGestor}" update="growl"  validateClient="true"/>
+    					<p:commandButton id="bnt_update" rendered="#{add_CentreGestorController.btnUpdate}"  value="Actualitza" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.updateCentreGestor}" update="growl"  validateClient="true"/>
     				</div>
     			</p:outputPanel>
 			</p:panel>
