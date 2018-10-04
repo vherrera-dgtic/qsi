@@ -5,7 +5,7 @@ insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") 
 insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (4,'Consum','27/08/2018','u97091',true);
 insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (5,'Cooperació','27/08/2018','u97091',true);
 insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (6,'Cultura','27/08/2018','u97091',true);
-insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (8,'Discapacitat','27/08/2018','u97091',true);
+insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (8,'Discapacitat','27/08/2018','u97091',true);  
 insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (9,'Educació','27/08/2018','u97091',true);
 insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (10,'Emergències i seguretat','27/08/2018','u97091',true);
 insert into "qsi_materia" ("id_materia","nom","data_creacio","usuari","activa") values (11,'Empreses i entitats','27/08/2018','u97091',true);
@@ -205,7 +205,7 @@ insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu",
 insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (57,'Santa Eulària des Riu','11/09/2018','u97091',true,3);
 insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (58,'Santa Margalida','11/09/2018','u97091',true,1);
 insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (59,'Santa Maria del Camí','11/09/2018','u97091',true,1);
-insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (60,'Santanyí','11/09/2018','u97091',true,1);
+insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (60,'Santanyí','11/09/2018','u97091',true,1); 
 insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (61,'Selva','11/09/2018','u97091',true,1);
 insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (62,'Sineu','11/09/2018','u97091',true,1);
 insert into "qsi_municipi" ("id_municipi","nom","data_creacio","usuari","actiu","id_illa") values (63,'Sóller','11/09/2018','u97091',true,1);
