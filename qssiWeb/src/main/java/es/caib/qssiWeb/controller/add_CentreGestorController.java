@@ -1,6 +1,5 @@
 package es.caib.qssiWeb.controller;
 
-import java.io.IOException;
 import java.security.acl.Group;
 import java.util.Date;
 import java.util.Enumeration;
@@ -34,6 +33,7 @@ public class add_CentreGestorController {
 	private InitialContext ic;
 	
 	// Propietats privades
+	private String centreId;
 	private String nom;
 	private String dir3;
 	private boolean actiu;
@@ -41,6 +41,7 @@ public class add_CentreGestorController {
 		
 	private String btnUpdate;
 	private String btnAdd;
+	private String strTitol;
 	
 	@PostConstruct
 	private void init() {
@@ -48,20 +49,50 @@ public class add_CentreGestorController {
 		LOGGER.info("Proxy a add_CentreGestorController ");
 		
 		String centreId_param = new String("");
-		centreId_param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("centreId");
+		String centreId_param_update = new String("");
 		
-		if (centreId_param!=null && !centreId_param.isEmpty()) {
-			LOGGER.info("add_CentreGestorController amb centreId= "+centreId_param);
-			this.btnUpdate="true";
-			this.btnAdd="false";
-			getCentreGestorInfo(Integer.parseInt(centreId_param));
-		}
-		else
+		this.btnUpdate = new String("");
+		this.btnAdd = new String("");
+		this.strTitol = new String("");
+		
+		try
 		{
-			this.btnUpdate="false";
-			this.btnAdd="true";
-			LOGGER.info("add_CentreGestorController sense paramètre");
+			centreId_param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("centreId_param");
+			centreId_param_update = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("centreId_param_update");
+			
+			if (centreId_param!=null && !centreId_param.isEmpty()) {
+				LOGGER.info("add_CentreGestorController amb centreId= "+centreId_param);
+				this.btnUpdate="true";
+				this.btnAdd="false";
+				this.strTitol = "Modificació centre gestor";
+				this.centreId = centreId_param;
+				getCentreGestorInfo(Integer.parseInt(centreId_param));
+			}
+			else
+			{
+				if (centreId_param_update != null)
+				{
+					this.btnUpdate="true";
+					this.btnAdd="false";
+					this.strTitol = "Modificació centre gestor";
+					this.centreId = centreId_param_update;
+					LOGGER.info("update callback " + centreId_param_update);
+				}
+				else
+				{
+					this.btnUpdate="false";
+					this.btnAdd="true";
+					this.strTitol = "Nou centre gestor";
+					LOGGER.info("add_CentreGestorController sense paramètre");	
+				}
+			}	
 		}
+		catch (Exception ex)
+		{
+			LOGGER.info("error obtingut: "+ ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error obtenint el centre",  ex.toString()));
+		}
+		
 		
 	}
 	
@@ -69,6 +100,9 @@ public class add_CentreGestorController {
 	public add_CentreGestorController() { }
 	
 	// Get - Set
+	public String getCentreId() { return this.centreId; }
+	public void setCentreId(String cId) { this.centreId = cId;}
+	
 	public String getNom() { return this.nom; }
 	public void setNom(String n) { this.nom = n;}
 	
@@ -86,6 +120,9 @@ public class add_CentreGestorController {
 	
 	public String getBtnAdd() { return this.btnAdd;}
 	public void setBtnAdd(String s) { this.btnAdd = s; }
+	
+	public String getStrTitol() { return this.strTitol;}
+	public void setStrTitol(String s) { this.strTitol = s; }
 	
 	// Accions
 	public void getCentreGestorInfo(Integer centreId) {
@@ -125,13 +162,34 @@ public class add_CentreGestorController {
 	
 	public void updateCentreGestor()
 	{
-		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		CentreServiceInterface CentreServ;
 		
-	    try {
+		LOGGER.info("updateCentreGestor");
+		
+	    try 
+	    {
+	    	HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+	    	
+	    	ic = new InitialContext();
+	    	CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");
+	    	LOGGER.info("EJB lookup" + CentreServ);
+	    	
+	    	// Construim el centre
+	    	Centre c = new Centre();
+	    	c.setId(Integer.parseInt(this.centreId));
+			c.setNom(this.nom);
+			c.setDir3(this.dir3);
+			c.setDatacreacio(new Date());
+			c.setUsuari(origRequest.getRemoteUser()); 
+			c.setActiu(this.actiu);
+			c.setVisible_web(this.visible_web);
+			
+	    	CentreServ.updateCentre(c);
+	    	
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Centre actualitzat correctament", "Centre actualitzat correctament"));				
 			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_centregestor.xhtml");
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			LOGGER.info("Error: " + ex.toString());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant el centre", ex.toString()));
 		}
@@ -141,7 +199,7 @@ public class add_CentreGestorController {
 	{
 		CentreServiceInterface CentreServ;
 		
-		LOGGER.info("add_CentreGestorController -> saveCentreGestor ");
+		LOGGER.info("addCentreGestor ");
 		
 		try
 		{
@@ -149,12 +207,43 @@ public class add_CentreGestorController {
 			CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");	
 			LOGGER.info("EJB lookup "+ CentreServ);	
 			
-			// Contruim el centre
-			Centre e = new Centre();
-			e.setNom(this.nom);
-			e.setDir3(this.dir3);
-			e.setDatacreacio(new Date());
+			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			
+			// Contruim el centre
+			Centre c = new Centre();
+			c.setNom(this.nom);
+			c.setDir3(this.dir3);
+			c.setDatacreacio(new Date());
+			c.setUsuari(origRequest.getRemoteUser()); 
+			c.setActiu(this.actiu);
+			c.setVisible_web(this.visible_web);
+			
+			CentreServ.addCentre(c); // Cridem l'EJB
+				 
+			if (CentreServ.getResultat()==true)
+			{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Centre afegit correctament", "Centre afegit correctament"));				
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
+			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_centregestor.xhtml");
+			}
+			else
+			{
+				
+				LOGGER.info("error obtingut: "+ CentreServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error afegint centre",  CentreServ.getError()));
+			}
+		} catch (Exception ex) {
+			
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant el centre", ex.toString()));
+		}
+	}
+	
+	public void getUserRoles()
+	{
+		try
+		{
+			ic = new InitialContext();
 			/* Http Session */
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
@@ -178,30 +267,10 @@ public class add_CentreGestorController {
 			
 			/* Http Session end section */
 			
-			e.setUsuari(origRequest.getRemoteUser()); 
-			e.setActiu(this.actiu);
-			e.setVisible_web(this.visible_web);
-				
-			
-			CentreServ.addCentre(e); // Cridem l'EJB
-			
-			 
-			if (CentreServ.getResultat()==true)
-			{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Centre afegit correctament", "Centre afegit correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
-			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_centregestor.xhtml");
-			}
-			else
-			{
-				
-				LOGGER.info("error obtingut: "+ CentreServ.getError());
-				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error afegint centre",  CentreServ.getError()));
-			}
-		} catch (Exception ex) {
-			
-			LOGGER.info("Error: " + ex.toString());
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant el centre", ex.toString()));
+		}
+		catch (Exception ex)
+		{
+			LOGGER.info("getUserRoles exception: " + ex.toString());
 		}
 	}
 	

@@ -12,11 +12,19 @@
 	   <ui:define name="content">
 	     <h:form accept-charset="UTF-8">
 			<!-- Contigut-->
-			<p:panel id="principal" header="Nou centre gestor" footer="" style="margin-bottom:20px">
+			<p:panel id="principal" header="#{add_CentreGestorController.strTitol}" footer="" style="margin-bottom:20px">
 				<p:messages id="messages" severity="error" showDetail="true" globalOnly="false"/>
 				<p:outputPanel deferred="false" deferredMode="visible">
 			    	<div class='row-form'>
 			    		<h3>Dades centre gestor</h3>
+			    		<h:panelGroup layout="block" rendered="#{add_CentreGestorController.btnUpdate}">
+			    			<div class='row-form'>
+			    				<div class='col-form-etiqueta'>Id</div> 
+			    				<div class='col-form'>
+			    					<p:inputText id="centreId" value="#{add_CentreGestorController.centreId}" disabled="true"></p:inputText>
+			    				</div>
+				    		</div>
+						</h:panelGroup>
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Nom *</div> 
 			    			<div class='col-form'>
@@ -50,12 +58,12 @@
 			    	</div>
 				</p:outputPanel>
 				<div style="height:25px"></div>
-    			<p:outputPanel deferred="true">
-	    			<div class='boto-formulari'>
-    					<p:commandButton id="btn_add" rendered="#{add_CentreGestorController.btnAdd}" value="Desa" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.addCentreGestor}" update="growl"  validateClient="true"/>
-    					<p:commandButton id="bnt_update" rendered="#{add_CentreGestorController.btnUpdate}"  value="Actualitza" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.updateCentreGestor}" update="growl"  validateClient="true"/>
-    				</div>
-    			</p:outputPanel>
+    			<div class='boto-formulari'>
+   					<p:commandButton rendered="#{add_CentreGestorController.btnAdd}" value="Desa" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.addCentreGestor}" update="growl"  validateClient="true"/>
+   					<p:commandButton rendered="#{add_CentreGestorController.btnUpdate}"  value="Actualitza" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.updateCentreGestor}" update="growl" validateClient="true">
+   						<f:param name="centreId_param_update" value="#{add_CentreGestorController.centreId}" />
+   					</p:commandButton>
+   				</div>
 			</p:panel>
 		</h:form>
 		</ui:define>

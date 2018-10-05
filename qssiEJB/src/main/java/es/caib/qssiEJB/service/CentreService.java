@@ -43,21 +43,28 @@ public class CentreService implements CentreServiceInterface{
 	public void addCentre(Centre e) {
 		LOGGER.info("in addCentre, estat entity manager: " + em.toString());
 		
-		//em.getTransaction().begin();
-		em.persist(e);
-		//em.getTransaction().commit();
-		//em.close();
+		try
+		{
+			em.persist(e);
+			LOGGER.info("Insert centre");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.strError = ex.toString();
+			this.resultat = false;
+		}
 		
-		LOGGER.info("Insert centre");
-		this.resultat = true;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Centre> getLlista_CentresActiusWeb() {
-		ArrayList<Centre> l = new ArrayList<Centre>();
 		
+		ArrayList<Centre> l = new ArrayList<Centre>();
 		String queryString = new String("select e from Centre e where e.visible_web=true");
+		
 		try
 		{
 						
@@ -85,8 +92,8 @@ public class CentreService implements CentreServiceInterface{
 	public ArrayList<Centre> getLlista_Centres() {
 
 		ArrayList<Centre> l = new ArrayList<Centre>();
-		
 		String queryString = new String("select e from Centre e order by e.nom");
+		
 		try
 		{
 						
@@ -119,6 +126,7 @@ public class CentreService implements CentreServiceInterface{
 	public void removeCentre(Integer id_centre) {
 		
 		String queryString = new String("delete from Centre where id_centre = :id_centre");
+		
 		try
 		{
 			LOGGER.info("in removeCentre, estat entity manager: " + em.toString());
@@ -152,6 +160,38 @@ public class CentreService implements CentreServiceInterface{
 			this.resultat = false;
 			this.strError = ex.toString();
 			return null;
+		}
+		
+	}
+
+	@Override
+	public void updateCentre(Centre c_update) {
+		
+		try 
+		{
+			LOGGER.info("in updateCentre, estat entity manager: " + em.toString());
+			
+			Centre c = em.find(Centre.class, c_update.getId() );
+
+			//em.getTransaction().begin();
+			  
+			c.setNom(c_update.getNom());
+			c.setDir3(c_update.getDir3());
+			c.setActiu(c_update.getActiu());
+			c.setVisible_web(c_update.getVisible_web());
+			c.setUsuari(c_update.getUsuari());
+			c.setDatacreacio(c_update.getDatacreacio());
+			  
+			//em.getTransaction().commit();
+			
+			LOGGER.info("in updateCentre, commit; ");
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			
 		}
 		
 	}
