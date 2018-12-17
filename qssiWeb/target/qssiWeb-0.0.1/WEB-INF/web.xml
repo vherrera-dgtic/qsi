@@ -53,9 +53,9 @@
 		<auth-constraint>
 			<role-name>tothom</role-name>
 		</auth-constraint>
-	</security-constraint>
+   </security-constraint>
 	<login-config>
-		<auth-method>BASIC</auth-method>
+		<auth-method>BASIC</auth-method> 
 		<realm-name>Govern de les Illes Balears</realm-name>
 	</login-config>
 	<security-role>

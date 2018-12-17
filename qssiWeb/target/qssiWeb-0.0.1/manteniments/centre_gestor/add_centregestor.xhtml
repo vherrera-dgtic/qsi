@@ -7,7 +7,7 @@
 	  xmlns:p="http://primefaces.org/ui">
 	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
 	   <ui:define name="title">
-	      Queixes i suggeriments - CAIB - Manteniments - Agefir nou centres Gestor
+	      Queixes i suggeriments - CAIB - Manteniments - Agefir nou centre gestor
 	   </ui:define>
 	   <ui:define name="content">
 	     <h:form accept-charset="UTF-8">
@@ -28,7 +28,7 @@
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Nom *</div> 
 			    			<div class='col-form'>
-			    				<p:inputText id="nom" value="#{add_CentreGestorController.nom}" required="true" requiredMessage="S'ha d'indicar el nom del centre gestor" maxlength="255"></p:inputText>
+			    				<p:inputText id="nom" value="#{add_CentreGestorController.nom}" required="true" requiredMessage="S'ha d'indicar el nom del centre gestor" maxlength="255" style="width:450px"></p:inputText>
 			    			</div>
 			    			<div class='col-form'>
 				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>

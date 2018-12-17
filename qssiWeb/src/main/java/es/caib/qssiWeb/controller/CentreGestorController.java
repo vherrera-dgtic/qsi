@@ -33,7 +33,6 @@ public class CentreGestorController {
 	private boolean ambErrors = false;
 	
 	private DataTable taula_centres;
-	//private Growl gmessage;
 	
 	@PostConstruct
 	public void init() {
@@ -41,9 +40,6 @@ public class CentreGestorController {
 		LOGGER.info("Proxy a CentreGestorController ");
 		
 	}
-	
-	/*public void setGmessage(Growl g) { this.gmessage = g; }
-	public Growl getGmessage() { return this.gmessage; }*/
 	
 	public void setMessage(String m) { this.message = m; }
 	public String getMessage() { return this.message; }

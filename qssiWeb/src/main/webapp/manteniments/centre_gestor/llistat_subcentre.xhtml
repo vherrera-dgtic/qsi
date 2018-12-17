@@ -10,21 +10,29 @@
 	   <ui:define name="title">
 	      Queixes i suggeriments - CAIB - Manteniments - Centres gestors - Subcentres
 	   </ui:define>
+	   <ui:define name="opcions">
+	   	<p:button type="button" value="Nou Subcentre" icon="ui-icon-extlink" href="/manteniments/centre_gestor/add_subcentregestor.xhtml" />   
+	   </ui:define>
 	   <ui:define name="content">
+	     <p:growl id="growl" showDetail="true" />
+	     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+         </p:confirmDialog>	
 	     <h:form>
-			<!-- Contigut-->
+			<!-- Contigut -->
 			<p:panel id="principal" header="Llista de Subcentres" footer="" style="margin-bottom:20px">
 			    <div style='margin-top:10px; margin-left:10px;'>
 					<div>
 						<p:selectOneMenu id="centre" value="#{SubcentreController.centre}">
-							<p:ajax listener="#{SubcentreController.onCentre_change}" update="subcentre"/>
+							<p:ajax listener="#{SubcentreController.onCentre_change}" event="change" update="growl,subcentre"/>
 							<f:selectItem itemLabel="Selecciona Centre Gestor" itemValue="" noSelectionOption="true" />
             				<f:selectItems value="#{SubcentreController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
         				</p:selectOneMenu>
 				    </div>
 				</div>
 				<div style='margin-top: 15px;'>
-					<p:dataTable id="subcentre" var="element" value="#{SubcentreController.llista_Subcentres}" emptyMessage="No s'han trobat registres.">
+					<p:dataTable id="subcentre" binding="#{SubcentreController.taula_subcentres}" var="element" value="#{SubcentreController.llista_Subcentres}" emptyMessage="No s'han trobat registres.">
     					<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     					<p:column headerText="Nom" width="35%"><h:outputText value="#{element.nom}" /></p:column>
     					<p:column headerText="Dir3" width="15%"><h:outputText value="#{element.dir3}" /></p:column>
@@ -37,7 +45,21 @@
 			    		<p:column headerText="Actiu" width="10%">
 			    			<h:outputText value="#{element.actiu=='true' ? 'Sí' : 'No'}" />
 			    		</p:column>
-			    		<p:column headerText="Accions" width="5%"></p:column>
+			    		<p:column headerText="Visible Web" width="5%"><h:outputText value="#{element.visible_web=='true' ? 'Sí' : 'No'}" /></p:column>
+			    		<p:column headerText="Accions" width="7%">
+			    			<div>
+			    			    <div style="float:left">
+				    				<p:button title="Editar" outcome="add_subcentregestor.xhtml" icon="ui-icon-pencil">
+    									<f:param name="subcentreId_param" value="#{element.id}" />
+									</p:button>
+			    				</div>
+			    				<div style="float:right">
+			    					<p:commandButton icon="ui-icon-trash" title="Eliminar subcentre" action="#{SubcentreController.remove}" update="growl,subcentre" >
+										<p:confirm header="Eliminar subcentre" message="Estau segur que voleu eliminar el subcentre #{element.nom}?" icon="ui-icon-alert" />
+			    					</p:commandButton>
+				    			</div> 
+			    			</div>
+			    		</p:column>
 					</p:dataTable>
 				</div>
     		</p:panel>

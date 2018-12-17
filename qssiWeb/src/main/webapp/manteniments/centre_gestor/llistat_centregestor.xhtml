@@ -36,16 +36,16 @@
 			    	<p:column headerText="Visible Web" width="5%"><h:outputText value="#{element.visible_web=='true' ? 'Sí' : 'No'}" /></p:column>
 			    	<p:column headerText="Accions" width="7%">
 			    		<div>
-			    			<div style="float:left">
-			    				<p:commandButton icon="ui-icon-trash" title="Eliminar centre" actionListener="#{CentreGestorController.remove}" ajax="true" update="growl,taula" >
-			    					<p:confirm header="Eliminar centre" message="Estau segur que voleu eliminar el centre #{element.nom}?" icon="ui-icon-alert" />
-			    				</p:commandButton>
-				    		</div> 
-				    		<div style="float:right">
+			    		    <div style="float:left">
 				    			<p:button outcome="add_centregestor.xhtml" icon="ui-icon-pencil">
     								<f:param name="centreId_param" value="#{element.id}" />
 								</p:button>
 			    			</div>
+			    			<div style="float:right">
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar centre" actionListener="#{CentreGestorController.remove}" ajax="true" update="growl,taula" >
+			    					<p:confirm header="Eliminar centre" message="Estau segur que voleu eliminar el centre #{element.nom}?" icon="ui-icon-alert" />
+			    				</p:commandButton>
+				    		</div> 
 			    		</div>
 			    	</p:column>			    	
 				</p:dataTable>

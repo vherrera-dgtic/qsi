@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.jboss.ejb3.annotation.LocalBinding;
 
+import es.caib.qssiEJB.entity.Centre;
 import es.caib.qssiEJB.entity.Subcentre;
 import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
 
@@ -44,13 +45,18 @@ public class SubcentreService implements SubcentreServiceInterface {
 		
 		LOGGER.info("in addSubcentre, estat entity manager: " + em.toString());
 		
-		em.getTransaction().begin();
-		em.persist(sc);
-		em.getTransaction().commit();
-		em.close();
-		
-		LOGGER.info("Inserit subcentre");
-		this.resultat = true;
+		try
+		{
+			em.persist(sc);
+			LOGGER.info("Insert subcentre");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.strError = ex.toString();
+			this.resultat = false;
+		}
 		
 	}
 
@@ -120,5 +126,76 @@ public class SubcentreService implements SubcentreServiceInterface {
 
 	@Override
 	public String getError() { return this.strError; }
+
+	@Override
+	public void updateSubcentre(Subcentre sc_update) {
+		try 
+		{
+			LOGGER.info("in updateSubcentre, estat entity manager: " + em.toString());
+			
+			Subcentre sc = em.find(Subcentre.class, sc_update.getId() );
+						  
+			sc.setNom(sc_update.getNom());
+			sc.setDir3(sc_update.getDir3());
+			sc.setActiu(sc_update.getActiu());
+			sc.setVisible_web(sc_update.getVisible_web());
+			sc.setUsuari(sc_update.getUsuari());
+			sc.setDatacreacio(sc_update.getDatacreacio());
+			
+			Centre c = new Centre();
+			c.setId(sc_update.getCentre().getId());
+			sc.setCentre(c);
+			  
+			LOGGER.info("in updateSubcentre, commit; ");
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			
+		}
+	}
+
+	@Override
+	public Subcentre getSubcentre(Integer id_subcentre) {
+		try
+		{
+			LOGGER.info("in getSubcentre, estat entity manager: " + em.toString());
+			Subcentre sc = em.find(Subcentre.class, id_subcentre);
+			return sc;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+	}
+
+	@Override
+	public void removeSubcentre(Integer id_subcentre) {
+		String queryString = new String("delete from Subcentre where id_subcentre = :id_subcentre");
+		
+		try
+		{
+			LOGGER.info("in removeSubcentre, estat entity manager: " + em.toString());
+			
+		    Query query = em.createQuery(queryString);
+		    query.setParameter("id_subcentre", id_subcentre);
+			query.executeUpdate();
+			
+			LOGGER.info("Delete subcentre");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+		}
+		
+	}
 	
 }
