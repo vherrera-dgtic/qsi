@@ -138,6 +138,8 @@ public class add_SubcentreGestorController {
 	public void setCentre(Integer centre) { this.centre = centre;  }
 	public Integer getCentre() { return this.centre; }
 	
+	public void setLlista_centres(ArrayList <Centre> lc) { this.llista_centres = lc; }
+	public ArrayList<Centre> getLlista_centres() { return this.llista_centres; }
 
 	// Accions
 	public void getSubcentreGestorInfo(Integer subcentreId) {
@@ -209,7 +211,7 @@ public class add_SubcentreGestorController {
 	    	
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Subcentre actualitzat correctament", "Subcentre actualitzat correctament"));				
 			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
-			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_subcentre.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_subcentre.xhtml?centreId_param=" + this.centre);
 		} catch (Exception ex) {
 			LOGGER.info("Error: " + ex.toString());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant el subcentre", ex.toString()));
@@ -250,7 +252,7 @@ public class add_SubcentreGestorController {
 			{
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Subcentre afegit correctament", "Subcentre afegit correctament"));				
 				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
-			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_subcentre.xhtml");
+			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_subcentre.xhtml?centreId_param=" + this.centre);
 			}
 			else
 			{

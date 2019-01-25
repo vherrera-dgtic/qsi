@@ -74,6 +74,14 @@ public class SubcentreController {
 			LOGGER.info("EJB lookup" + CentreServ);
 				
 			this.llista_centres = CentreServ.getLlista_CentresActiusWeb();
+			
+			/* si tenim paràmetre, posem l'índex */
+			String centreId_param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("centreId_param");
+						
+			if (centreId_param!=null && !centreId_param.isEmpty()) {
+				this.centre = Integer.parseInt(centreId_param);
+				this.refrescaLlista_Subcentres(this.centre);
+			}
 							
 			if (!CentreServ.getResultat())
 			{

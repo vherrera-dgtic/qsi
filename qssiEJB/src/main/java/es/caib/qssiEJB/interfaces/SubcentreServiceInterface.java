@@ -17,6 +17,7 @@ public interface SubcentreServiceInterface {
 	public void removeSubcentre(Integer id_subcentre);
 	public Subcentre getSubcentre(Integer id_subcentre);
 	public ArrayList<Subcentre> getLlista_SubcentresActiusWeb(Integer id_centre);
+	public ArrayList<Subcentre> getLlista_SubcentresActiusWebperDir3(String dir3);
 	public ArrayList<Subcentre> getLlista_Subcentres(Integer id_centre);
 	public boolean getResultat();
 	public String getError();

@@ -13,7 +13,7 @@
 	     <h:form accept-charset="UTF-8">
 			<!-- Contigut-->
 			<p:panel id="principal" header="#{add_SubcentreGestorController.strTitol}" footer="" style="margin-bottom:20px">
-				<p:messages id="messages" severity="error" showDetail="true" globalOnly="false"/>
+				<p:messages id="messages" severity="error" showDetail="false" globalOnly="false"/>
 				<p:outputPanel deferred="false" deferredMode="visible">
 			    	<div class='row-form'>
 			    		<h3>Dades subcentre gestor</h3>
@@ -28,10 +28,13 @@
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Centre gestor *</div>
 							<div class='col-form'>
-								<p:selectOneMenu id="centre" value="#{add_SubcentreGestorController.centre}">
+								<p:selectOneMenu id="centre" value="#{add_SubcentreGestorController.centre}" required="true" requiredMessage="S'ha d'indicar un centre gestor">
 									<f:selectItem itemLabel="Selecciona Centre Gestor" itemValue="" noSelectionOption="true" />
             						<f:selectItems value="#{add_SubcentreGestorController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
         						</p:selectOneMenu>
+				    		</div>
+				    		<div class='col-form'>
+				    			<p:message id="m_centre" for="centre" showDetail="true"></p:message>
 				    		</div>
 						</div>
 			    		<div class='row-form'>

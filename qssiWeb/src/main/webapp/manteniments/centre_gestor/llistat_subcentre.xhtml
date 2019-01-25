@@ -25,14 +25,14 @@
 			    <div style='margin-top:10px; margin-left:10px;'>
 					<div>
 						<p:selectOneMenu id="centre" value="#{SubcentreController.centre}">
-							<p:ajax listener="#{SubcentreController.onCentre_change}" event="change" update="growl,subcentre"/>
+							<p:ajax listener="#{SubcentreController.onCentre_change}" event="change" update="growl,taula"/>
 							<f:selectItem itemLabel="Selecciona Centre Gestor" itemValue="" noSelectionOption="true" />
             				<f:selectItems value="#{SubcentreController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
         				</p:selectOneMenu>
 				    </div>
 				</div>
 				<div style='margin-top: 15px;'>
-					<p:dataTable id="subcentre" binding="#{SubcentreController.taula_subcentres}" var="element" value="#{SubcentreController.llista_Subcentres}" emptyMessage="No s'han trobat registres.">
+					<p:dataTable id="taula" binding="#{SubcentreController.taula_subcentres}" var="element" value="#{SubcentreController.llista_Subcentres}" emptyMessage="No s'han trobat registres.">
     					<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     					<p:column headerText="Nom" width="35%"><h:outputText value="#{element.nom}" /></p:column>
     					<p:column headerText="Dir3" width="15%"><h:outputText value="#{element.dir3}" /></p:column>
@@ -54,7 +54,7 @@
 									</p:button>
 			    				</div>
 			    				<div style="float:right">
-			    					<p:commandButton icon="ui-icon-trash" title="Eliminar subcentre" action="#{SubcentreController.remove}" update="growl,subcentre" >
+			    					<p:commandButton icon="ui-icon-trash" title="Eliminar subcentre" action="#{SubcentreController.remove}" update="growl,taula" >
 										<p:confirm header="Eliminar subcentre" message="Estau segur que voleu eliminar el subcentre #{element.nom}?" icon="ui-icon-alert" />
 			    					</p:commandButton>
 				    			</div> 

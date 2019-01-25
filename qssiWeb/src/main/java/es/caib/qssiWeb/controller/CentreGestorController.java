@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,6 +23,7 @@ import es.caib.qssiEJB.interfaces.CentreServiceInterface;
  */
 
 @ManagedBean(name="CentreGestorController")
+@ViewScoped
 public class CentreGestorController {
 	
 	private final static Logger LOGGER = Logger.getLogger(CentreGestorController.class);

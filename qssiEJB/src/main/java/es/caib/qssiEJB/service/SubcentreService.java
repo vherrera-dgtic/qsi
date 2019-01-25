@@ -3,7 +3,7 @@ package es.caib.qssiEJB.service;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
+//import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,7 +24,8 @@ import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
 
 @Stateless
 @LocalBinding(jndiBinding="es.caib.qssiEJB.service.SubcentreService")
-@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN"}) // Si tothom -> sobren els altres rols
+//@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN"}) // Si tothom -> sobren els altres rols
+//Toni Juanico, 25/01/2019. Llevam els RolesAllowed per permetre accedir des del WebService (Helium)
 public class SubcentreService implements SubcentreServiceInterface {
 	
 	private final static Logger LOGGER = Logger.getLogger(SubcentreService.class);
@@ -91,6 +92,37 @@ public class SubcentreService implements SubcentreServiceInterface {
 		return lsc;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<Subcentre> getLlista_SubcentresActiusWebperDir3(String dir3) {
+		ArrayList<Subcentre> lsc = new ArrayList<Subcentre>();
+		
+		String queryString = new String("select sc from Subcentre sc where sc.visible_web=true and sc.centre.dir3 = :dir3");
+		try
+		{
+						
+			LOGGER.info("in getLlista_SubcentresActiusWebperDi3, amb paràmetre dir3: " + dir3 + " estat entity manager: " + em.toString());
+			
+		    Query query = em.createQuery(queryString);
+		    query.setParameter("dir3", dir3);
+		    lsc = (ArrayList<Subcentre>) query.getResultList();
+		    
+			
+			LOGGER.info("em operation done ");
+			this.resultat = true;
+			
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+			
+		}
+		
+		return lsc;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Subcentre> getLlista_Subcentres(Integer id_centre) {
