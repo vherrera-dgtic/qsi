@@ -8,6 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
+import org.primefaces.component.datatable.DataTable;
 
 import es.caib.qssiEJB.entity.Materia;
 import es.caib.qssiEJB.interfaces.MateriaServiceInterface;
@@ -29,11 +30,20 @@ public class MateriaController {
 	private String message = new String("");
 	private boolean ambErrors = false;
 	
+	private DataTable taula_materies;
+	
 	@PostConstruct
 	public void init() {
 				
 		LOGGER.info("Proxy a MateriaController ");
-		
+	}
+	
+	public DataTable getTaula_materies() {
+	    return taula_materies;
+	}
+
+	public void setTaula_materies(DataTable dataTable) {
+	    this.taula_materies = dataTable;
 	}
 	
 	public void setMessage(String m) { this.message = m; }
@@ -44,7 +54,7 @@ public class MateriaController {
 	{ 
 		MateriaServiceInterface MateriaServ;
 		
-		LOGGER.info("Obtenim llista de tipus de queixes ");
+		LOGGER.info("Obtenim llista de matèries ");
 		
 		try
 		{

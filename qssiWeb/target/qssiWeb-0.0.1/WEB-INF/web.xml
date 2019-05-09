@@ -32,6 +32,14 @@
     <servlet-name>wsDominiHeliumImpl</servlet-name>
     <url-pattern>/ws/DominiHeliumImpl</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>getNota</servlet-name>
+  	<servlet-class>es.caib.qssiWeb.util.GetNota</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>getNota</servlet-name>
+  	<url-pattern>/getNota</url-pattern>
+  </servlet-mapping>
   <context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>

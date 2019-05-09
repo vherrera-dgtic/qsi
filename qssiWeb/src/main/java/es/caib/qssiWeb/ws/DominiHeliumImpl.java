@@ -13,11 +13,11 @@ import javax.xml.ws.ResponseWrapper;
 import org.apache.log4j.Logger;
 
 import es.caib.qssiEJB.entity.Centre;
+import es.caib.qssiEJB.entity.Provincia;
 import es.caib.qssiEJB.entity.Subcentre;
 import es.caib.qssiEJB.interfaces.CentreServiceInterface;
+import es.caib.qssiEJB.interfaces.ProvinciaServiceInterface;
 import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
-import es.caib.qssiEJB.service.SubcentreService;
-import es.caib.qssiWeb.controller.CentreGestorController;
 
 
 @WebService(targetNamespace="http://domini.integracio.helium.conselldemallorca.net/",name="DominiService")
@@ -70,6 +70,11 @@ public class DominiHeliumImpl implements DominiHelium {
 					}
 					break;
 				}
+				case "obtenirProvincies" :
+				{
+					resultat = getProvincies();
+					break;
+				}
 				default:
 				{
 					throw new DominiHeliumException("El paràmetre id només pot tenir un dels següents valors posibles: obtenirConselleries (sense paràmetres)| obtenirUnitatsOrganiques amb paràmetres. Exemple: [<codi>,<valor>]=[<dir3,A04013523>]");		
@@ -79,10 +84,56 @@ public class DominiHeliumImpl implements DominiHelium {
 		}
 		else
 		{
-			throw new DominiHeliumException("El paràmetre id no pot ser null. Valors posibles: obtenirConselleries | obtenirDireccionsGenerals");
+			throw new DominiHeliumException("El paràmetre id no pot ser null. Valors posibles: obtenirConselleries | obtenirDireccionsGenerals | obtenirProvincies | obtenirMunicipis");
 		}
 	}
 	
+	private List<FilaResultat> getProvincies() throws DominiHeliumException
+	{
+		List<FilaResultat> resultat = new ArrayList<FilaResultat>();
+		
+		ArrayList<Provincia> llista_provincies;
+		ProvinciaServiceInterface ProvinciaServ;
+		
+		LOGGER.info("Obtenir provincies ");
+		
+		try
+		{
+			ic = new InitialContext();
+			ProvinciaServ = (ProvinciaServiceInterface) ic.lookup("es.caib.qssiEJB.service.ProvinciaService");
+			LOGGER.info("EJB lookup " + ProvinciaServ);
+			
+			llista_provincies = ProvinciaServ.getLlista_Provincies(); // Cridem l'EJB
+			if (!ProvinciaServ.getResultat() )
+			{
+				LOGGER.info("error: obtingut: " + ProvinciaServ.getError());
+			}
+			else
+			{
+				for (Provincia p: llista_provincies) {
+					FilaResultat f1 = new FilaResultat();
+					
+					ParellaCodiValor c1 = new ParellaCodiValor("codi",p.getId());
+					ParellaCodiValor c2 = new ParellaCodiValor("valor",p.getNom());
+					
+					f1.columnes.add(c1);
+					f1.columnes.add(c2);
+					
+					resultat.add(f1);	
+				}
+			}
+		}
+		catch (NamingException e) {
+			LOGGER.info("Error___ "+e.toString());
+			throw new DominiHeliumException(e.toString());
+		} catch (Exception e) {
+			LOGGER.info("Error_+ " + e.toString());
+			throw new DominiHeliumException(e.toString());
+		}
+		LOGGER.info("Resultat ofert getProvincies: " + resultat.size());
+		return resultat;
+		
+	}
 	private List<FilaResultat> getConselleries() throws DominiHeliumException
 	{
 		List<FilaResultat> resultat = new ArrayList<FilaResultat>();

@@ -2,6 +2,7 @@ package es.caib.qssiEJB.service;
 
 import java.util.ArrayList;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,32 +26,35 @@ public class QueixaService implements QueixaServiceInterface{
 
 	private final static Logger LOGGER = Logger.getLogger(QueixaService.class);
 	
-	private String strError = new String("");
-	private boolean resultat;
-	
 	@PersistenceContext(unitName="qssiDB_PU")
 	EntityManager em;
 	
+	private String strError = new String("");
+	private boolean resultat;
+	
+	
+	@PostConstruct
+	public void init() {
+		LOGGER.info("Proxy a init: "+this.em);
+	}
+	
 	@Override
 	public void addQueixa(Queixa q) {
+		
+		LOGGER.info("in addQueixa, estat entity manager: " + em.toString());
+			
 		try
 		{
-			LOGGER.info("in addQueixa, estat entity manager: " + em.toString());
-			
-			em.getTransaction().begin();
 			em.persist(q);
-			em.getTransaction().commit();
-			em.close();
-			
-			LOGGER.info("Inserida queixa");
-			this.resultat = true;
+			LOGGER.info("Insert queixa");
+			this.resultat = true;	
 		}
-		catch(Exception ex) {
+		catch (Exception ex)
+		{
 			LOGGER.error(ex);
-			this.resultat = false;
 			this.strError = ex.toString();
-		}	
-		
+			this.resultat = false;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -88,5 +92,47 @@ public class QueixaService implements QueixaServiceInterface{
 	
 	@Override
 	public String getError() { return this.strError; }
+
+	@Override
+	public Queixa getQueixa(Integer id_queixa) {
+		try
+		{
+			LOGGER.info("in getQueixa, estat entity manager: " + em.toString());
+			Queixa c = em.find(Queixa.class, id_queixa);
+			return c;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+	}
+
+	@Override
+	public void updateQueixa(Queixa q_update) {
+		try 
+		{
+			LOGGER.info("in updateQueixa, estat entity manager: " + em.toString());
+			
+			Queixa q = em.find(Queixa.class, q_update.getId() );
+			  
+			q.setNom(q_update.getNom());
+			q.setActiva(q_update.getActiva());
+			q.setUsuari(q_update.getUsuari());
+			q.setDatacreacio(q_update.getDatacreacio());
+			  
+			LOGGER.info("in updateQueixa, commit; ");
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			
+		}
+		
+	}
 
 }

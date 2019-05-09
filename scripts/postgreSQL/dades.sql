@@ -220,6 +220,61 @@ insert into "qsi_identificacio" ("id_identificacio","nom","data_creacio","usuari
 insert into "qsi_identificacio" ("id_identificacio","nom","data_creacio","usuari","activa") values (4,'CIF','11/09/2018','u97091',true);
 insert into "qsi_identificacio" ("id_identificacio","nom","data_creacio","usuari","activa") values (5,'Targeta de resident','11/09/2018','u97091',true);
 
+/* Provínvices */
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(2,'Albacete','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(3,'Alicante/Alacant','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(4,'Almería','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(1,'Araba/Álava','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(33,'Asturias','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(5,'Ávila','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(6,'Badajoz','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(7,'Balears, Illes','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(8,'Barcelona','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(48,'Bizkaia','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(9,'Burgos','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(10,'Cáceres','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(11,'Cádiz','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(39,'Cantabria','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(12,'Castellón/Castelló','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(13,'Ciudad Real','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(14,'Córdoba','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(15,'Coruña, A','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(16,'Cuenca','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(20,'Gipuzkoa','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(17,'Girona','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(18,'Granada','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(19,'Guadalajara','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(21,'Huelva','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(22,'Huesca','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(23,'Jaén','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(24,'León','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(25,'Lleida','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(27,'Lugo','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(28,'Madrid','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(29,'Málaga','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(30,'Murcia','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(31,'Navarra','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(32,'Ourense','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(34,'Palencia','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(35,'Palmas, Las','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(36,'Pontevedra','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(26,'Rioja, La','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(37,'Salamanca','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(38,'Santa Cruz de Tenerife','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(40,'Segovia','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(41,'Sevilla','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(42,'Soria','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(43,'Tarragona','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(44,'Teruel','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(45,'Toledo','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(46,'Valencia/València','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(47,'Valladolid','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(49,'Zamora','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(50,'Zaragoza','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(51,'Ceuta','28/01/2019 10:56','u97091', true);
+insert into qsi_provincia (id_municipi, nom, data_creacio, usuari,actiu) values(52,'Melilla','28/01/2019 10:56','u97091', true);
+
+
 insert into qsi_persona(id_persona,num_identificacio,nom,llinatge1,llinatge2,telefon,email,direccio,numero,pis,codi_postal,id_identificacio,data_creacio)
 values
 (nextval('qsi_persona_seq'),'11111111H','Toni','Juanico','Soler','647761234','thebosss_32@gmail.com',null,null,null,null,1,'18/09/2018 10:36:00')

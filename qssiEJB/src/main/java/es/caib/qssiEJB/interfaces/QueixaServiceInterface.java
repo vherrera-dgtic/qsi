@@ -14,7 +14,10 @@ import es.caib.qssiEJB.entity.Queixa;
 
 @Local
 public interface QueixaServiceInterface {
+	
 	public void addQueixa(Queixa q);
+	public void updateQueixa(Queixa q);
+	public Queixa getQueixa(Integer id_queixa);
 	public ArrayList<Queixa> getLLista_queixes();
 	public boolean getResultat();
 	public String getError();

@@ -13,6 +13,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_MOTIU TO www_qssi;
 GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_QUEIXA TO www_qssi;
 GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_SUBCENTRE TO www_qssi;
 GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_IDIOMA TO www_qssi;
+GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_PROVINCIA TO www_qssi;
 GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_ILLA TO www_qssi;
 GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_MUNICIPI TO www_qssi;
 GRANT SELECT, INSERT, UPDATE, DELETE ON QSI_EXPEDIENT TO www_qssi;
@@ -37,3 +38,22 @@ ALTER TABLE "QSSI"."QSI_MATERIA"
     OWNER to qssi;
 COMMENT ON TABLE "QSSI"."QSI_MATERIA"
     IS 'Taula per emmagatzemar matèries';
+    
+CREATE TABLE "public"."QSI_PROVINCIA"
+(
+    "id_municipi" integer NOT NULL,
+    "nom" character(256) COLLATE pg_catalog."default" NOT NULL,
+    "data_creacio" date NOT NULL,
+    "usuari" character(255) COLLATE pg_catalog."default" NOT NULL,
+    "actiu" boolean NOT NULL,
+    CONSTRAINT "QSI_PROVINCIA_pkey" PRIMARY KEY ("id_municipi")
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE "public"."QSI_PROVINCIA"
+    OWNER to qssi;
+COMMENT ON TABLE "public"."QSI_PROVINCIA"
+    IS 'Taula per emmagatzemar provincies';
