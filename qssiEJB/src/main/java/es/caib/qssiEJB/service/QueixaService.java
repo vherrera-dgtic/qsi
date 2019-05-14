@@ -7,6 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.jboss.ejb3.annotation.LocalBinding;
@@ -134,5 +135,30 @@ public class QueixaService implements QueixaServiceInterface{
 		}
 		
 	}
+	
+	@Override
+	public void removeQueixa(Integer id_queixa) {
+		
+		String queryString = new String("delete from Queixa where id_queixa = :id_queixa");
+		
+		try
+		{
+			LOGGER.info("in removeQueixa, estat entity manager: " + em.toString());
+			
+		    Query query = em.createQuery(queryString);
+		    query.setParameter("id_queixa", id_queixa);
+			query.executeUpdate();
+			
+			LOGGER.info("Removed queixa");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+		}
+	}
+
 
 }

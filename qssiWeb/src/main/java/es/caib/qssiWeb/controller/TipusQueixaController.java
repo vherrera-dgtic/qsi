@@ -26,6 +26,7 @@ import es.caib.qssiEJB.interfaces.QueixaServiceInterface;
 @ManagedBean(name="TipusQueixaController")
 public class TipusQueixaController {
 
+	// Private properties
 	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(TipusQueixaController.class);
 	
@@ -39,17 +40,12 @@ public class TipusQueixaController {
 	private String message = new String("");
 	
 		
-	// Get & Set
+	// Getters & Setters
 	public void setMessage(String m) { this.message = m; }
 	public String getMessage() { return this.message; }
 		
-	public DataTable getTaula_queixes() {
-	    return taula_queixes;
-	}
-
-	public void setTaula_queixes(DataTable dataTable) {
-	    this.taula_queixes = dataTable;
-	}
+	public DataTable getTaula_queixes() { return taula_queixes;	}
+	public void setTaula_queixes(DataTable dataTable) { this.taula_queixes = dataTable;	}
 
 	public String getQueixaId() { return this.queixaId; }
 	public void setQueixaId(String cId) { this.queixaId = cId;}
@@ -216,4 +212,44 @@ public class TipusQueixaController {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant el tipus queixa", ex.toString()));
 		}
 	}
+	
+	public void remove()
+	{
+		Queixa q = (Queixa) this.taula_queixes.getRowData();
+		QueixaServiceInterface QueixaServ;
+				
+		LOGGER.info("Entram a remove amb paràmetre: " + q.getId());
+		
+		try
+		{
+			ic = new InitialContext();
+			QueixaServ = (QueixaServiceInterface) ic.lookup("es.caib.qssiEJB.service.QueixaService");
+			LOGGER.info("EJB lookup " + QueixaServ);
+			
+			QueixaServ.removeQueixa(q.getId());
+		    			
+			if (!QueixaServ.getResultat())
+			{
+				LOGGER.info("Error a remove: " + QueixaServ.getError());
+				this.message = this.message + " -- " + QueixaServ.getError();
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant la queixa", this.message));
+			}
+			else
+			{
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Queixa eliminada correctament", "Queixa eliminada correctament"));
+			}
+		}
+		catch (NamingException e) {
+			LOGGER.info("Error___ "+e.toString());
+			this.message = this.message + " -- " + e.toString();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el centre", this.message));
+		}
+		catch (Exception e) {
+			LOGGER.info("Error_+ " + e.toString());
+			this.message = this.message + " -- " + e.toString();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el centre", this.message));
+		}
+		
+	}
+	
 }

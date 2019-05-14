@@ -136,7 +136,7 @@ public class CentreService implements CentreServiceInterface{
 		    query.setParameter("id_centre", id_centre);
 			query.executeUpdate();
 			
-			LOGGER.info("Delete centre");
+			LOGGER.info("Removed centre");
 			this.resultat = true;	
 		}
 		catch (Exception ex)
@@ -153,6 +153,7 @@ public class CentreService implements CentreServiceInterface{
 		{
 			LOGGER.info("in getCentre, estat entity manager: " + em.toString());
 			Centre c = em.find(Centre.class, id_centre);
+			this.resultat = true;
 			return c;
 		}
 		catch (Exception ex)

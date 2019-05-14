@@ -19,6 +19,7 @@ public interface QueixaServiceInterface {
 	public void updateQueixa(Queixa q);
 	public Queixa getQueixa(Integer id_queixa);
 	public ArrayList<Queixa> getLLista_queixes();
+	public void removeQueixa(Integer id_queixa);
 	public boolean getResultat();
 	public String getError();
 }

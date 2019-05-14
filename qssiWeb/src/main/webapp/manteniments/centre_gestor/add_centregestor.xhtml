@@ -12,23 +12,15 @@
 	   <ui:define name="content">
 	     <h:form accept-charset="UTF-8">
 			<!-- Contigut-->
-			<p:panel id="principal" header="#{add_CentreGestorController.strTitol}" footer="" style="margin-bottom:20px">
+			<p:panel id="principal" header="Afegir nou centre gestor" footer="" style="margin-bottom:20px">
 				<p:messages id="messages" severity="error" showDetail="true" globalOnly="false"/>
 				<p:outputPanel deferred="false" deferredMode="visible">
 			    	<div class='row-form'>
 			    		<h3>Dades centre gestor</h3>
-			    		<h:panelGroup layout="block" rendered="#{add_CentreGestorController.btnUpdate}">
-			    			<div class='row-form'>
-			    				<div class='col-form-etiqueta'>Id</div> 
-			    				<div class='col-form'>
-			    					<p:inputText id="centreId" value="#{add_CentreGestorController.centreId}" disabled="true"></p:inputText>
-			    				</div>
-				    		</div>
-						</h:panelGroup>
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Nom *</div> 
 			    			<div class='col-form'>
-			    				<p:inputText id="nom" value="#{add_CentreGestorController.nom}" required="true" requiredMessage="S'ha d'indicar el nom del centre gestor" maxlength="255" style="width:450px"></p:inputText>
+			    				<p:inputText id="nom" value="#{CentreGestorController.nom}" required="true" requiredMessage="S'ha d'indicar el nom del centre gestor" maxlength="255" style="width:450px"></p:inputText>
 			    			</div>
 			    			<div class='col-form'>
 				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -37,7 +29,7 @@
 				    	<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Dir3 *</div> 
 			    			<div class='col-form'>
-				    			<p:inputText id="dir3" value="#{add_CentreGestorController.dir3}" required="true" requiredMessage="S'ha d'indicar el dir3" maxlength="20" ></p:inputText>
+				    			<p:inputText id="dir3" value="#{CentreGestorController.dir3}" required="true" requiredMessage="S'ha d'indicar el dir3" maxlength="20" ></p:inputText>
 				    		</div>
 				    		<div class='col-form'>
 				    			<p:message id="m_dir3" for="dir3" showDetail="true"></p:message>
@@ -46,23 +38,20 @@
 			    		<div class='row-form'>
 							<div class='col-form-etiqueta'>Actiu</div>
 			    			<div class='col-form'>
-			    				<p:inputSwitch id="actiu" onLabel="Sí" offLabel="No" value="#{add_CentreGestorController.actiu}" />
+			    				<p:inputSwitch id="actiu" onLabel="Sí" offLabel="No" value="#{CentreGestorController.actiu}" />
 			    			</div>			    		
 			    		</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Visible web</div>
 			    			<div class='col-form'>
-			    				<p:inputSwitch id="visible_web" onLabel="Sí" offLabel="No" value="#{add_CentreGestorController.visibleweb}" />
+			    				<p:inputSwitch id="visible_web" onLabel="Sí" offLabel="No" value="#{CentreGestorController.visibleweb}" />
 			    			</div>
 						</div>
 			    	</div>
 				</p:outputPanel>
 				<div style="height:25px"></div>
     			<div class='boto-formulari'>
-   					<p:commandButton rendered="#{add_CentreGestorController.btnAdd}" value="Desa" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.addCentreGestor}" update="growl"  validateClient="true"/>
-   					<p:commandButton rendered="#{add_CentreGestorController.btnUpdate}"  value="Actualitza" icon="ui-icon-check" ajax="false" action="#{add_CentreGestorController.updateCentreGestor}" update="growl" validateClient="true">
-   						<f:param name="centreId_param_update" value="#{add_CentreGestorController.centreId}" />
-   					</p:commandButton>
+   					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" action="#{CentreGestorController.addCentreGestor}" update="growl"  validateClient="true"/>
    				</div>
 			</p:panel>
 		</h:form>
