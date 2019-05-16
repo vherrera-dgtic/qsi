@@ -195,6 +195,7 @@ public class SubcentreService implements SubcentreServiceInterface {
 		{
 			LOGGER.info("in getSubcentre, estat entity manager: " + em.toString());
 			Subcentre sc = em.find(Subcentre.class, id_subcentre);
+			this.resultat = true;
 			return sc;
 		}
 		catch (Exception ex)

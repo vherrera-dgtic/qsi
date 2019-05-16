@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:f="http://java.sun.com/jsf/core" 
@@ -7,17 +7,24 @@
 	  xmlns:p="http://primefaces.org/ui">
 	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
 	   <ui:define name="title">
-	      Queixes i suggeriments - CAIB - Manteniments - Agefir nou subcentre gestor
+	      Queixes i suggeriments - CAIB - Manteniments - Modificar subcentre
 	   </ui:define>
 	   <ui:define name="content">
 	     <h:form accept-charset="UTF-8">
 			<!-- Contigut-->
-			<p:panel id="principal" header="Afegir nou subcentre" footer="" style="margin-bottom:20px">
-				<p:messages id="messages" severity="error" showDetail="false" globalOnly="false"/>
+			<p:panel id="principal" header="Modificar subcentre gestor" footer="" style="margin-bottom:20px">
+				<p:messages id="messages" severity="error" showDetail="true" globalOnly="false"/>
 				<p:outputPanel deferred="false" deferredMode="visible">
 			    	<div class='row-form'>
-			    		<h3>Dades subcentre gestor</h3>
-						<div class='row-form'>
+			    		<h3>Dades subcentre</h3>
+			    		<div class='row-form'>
+			    		    <div class='col-form-etiqueta'>Id</div> 
+			    			<div class='col-form'>
+			    				<span>#{SubcentreController.subcentreId}</span>
+			    				<p:inputText id="subcentreId" value="#{SubcentreController.subcentreId}" type="hidden" />
+			    			</div>
+			    		</div>
+			    		<div class='row-form'>
 							<div class='col-form-etiqueta'>Centre gestor *</div>
 							<div class='col-form'>
 								<p:selectOneMenu id="centre" value="#{SubcentreController.centre}" required="true" requiredMessage="S'ha d'indicar un centre gestor">
@@ -32,7 +39,7 @@
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Nom *</div> 
 			    			<div class='col-form'>
-			    				<p:inputText id="nom" value="#{SubcentreController.nom}" required="true" requiredMessage="S'ha d'indicar el nom del subcentre gestor" maxlength="255" style="width:450px"></p:inputText>
+			    				<p:inputText id="nom" value="#{SubcentreController.nom}" required="true" requiredMessage="S'ha d'indicar el nom del subcentre" maxlength="255" style="width:450px"></p:inputText>
 			    			</div>
 			    			<div class='col-form'>
 				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -63,7 +70,7 @@
 				</p:outputPanel>
 				<div style="height:25px"></div>
     			<div class='boto-formulari'>
-   					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" action="#{SubcentreController.addSubcentreGestor}" update="growl"  validateClient="true"/>
+   					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" action="#{SubcentreController.updateSubcentreGestor}" update="growl"  validateClient="true"/>
    				</div>
 			</p:panel>
 		</h:form>

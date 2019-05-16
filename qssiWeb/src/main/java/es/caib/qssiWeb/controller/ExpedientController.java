@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -46,6 +47,7 @@ import org.apache.log4j.Logger;
  */
 
 @ManagedBean(name="ExpedientController")
+@ViewScoped
 public class ExpedientController {
 	
 	// @EJB(name="es.caib.qssiEJB.service.MateriaService"), Toni Juanico, no sabem perquè el servidor JBoss 5.2 no injecta

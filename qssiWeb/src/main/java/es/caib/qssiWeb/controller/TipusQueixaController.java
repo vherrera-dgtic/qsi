@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -24,6 +25,7 @@ import es.caib.qssiEJB.interfaces.QueixaServiceInterface;
  */
 
 @ManagedBean(name="TipusQueixaController")
+@ViewScoped
 public class TipusQueixaController {
 
 	// Private properties
@@ -60,12 +62,13 @@ public class TipusQueixaController {
 	@PostConstruct
 	public void init() {
 				
-		LOGGER.info("Proxy a TipusQueixaController ");
+		LOGGER.info("Proxy a TipusQueixaController");
 		
-		this.queixaId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("queixaId_param");
+		String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("queixaId_param");
 		
-		if (this.queixaId!=null) {
-			LOGGER.info("TipusQueixaController amb queixaId= "+this.queixaId);
+		if (param!=null) {
+			LOGGER.info("TipusQueixaController amb queixaId_param= "+param);
+			this.queixaId = param;
 			this.getTipusQueixaInfo(this.queixaId);
 		}
 		
@@ -213,7 +216,7 @@ public class TipusQueixaController {
 		}
 	}
 	
-	public void remove()
+	public void removeTipusQueixa()
 	{
 		Queixa q = (Queixa) this.taula_queixes.getRowData();
 		QueixaServiceInterface QueixaServ;

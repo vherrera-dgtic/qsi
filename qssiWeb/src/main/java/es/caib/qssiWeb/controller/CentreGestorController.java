@@ -70,12 +70,13 @@ public class CentreGestorController {
 	@PostConstruct
 	public void init() {
 				
-		LOGGER.info("Proxy a CentreGestorController ");
+		LOGGER.info("Proxy a CentreGestorController");
 		
-		this.centreId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("centreId_param");
+		String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("centreId_param");
 		
-		if (this.centreId!=null) {
-			LOGGER.info("CentreGestorController amb centreId= "+this.centreId);
+		if (param!=null) {
+			LOGGER.info("CentreGestorController amb centreId= "+param);
+			this.centreId = param;
 			this.getCentreGestorInfo(this.centreId);
 		}
 		
@@ -226,7 +227,7 @@ public class CentreGestorController {
 		}
 	}
 	
-	public void remove()
+	public void removeCentreGestor()
 	{
 		Centre c = (Centre) this.taula_centres.getRowData();
 		CentreServiceInterface CentreServ;

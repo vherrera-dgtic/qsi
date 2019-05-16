@@ -35,26 +35,26 @@
 					<p:dataTable id="taula" binding="#{SubcentreController.taula_subcentres}" var="element" value="#{SubcentreController.llista_Subcentres}" emptyMessage="No s'han trobat registres.">
     					<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     					<p:column headerText="Nom" width="35%"><h:outputText value="#{element.nom}" /></p:column>
-    					<p:column headerText="Dir3" width="15%"><h:outputText value="#{element.dir3}" /></p:column>
+    					<p:column headerText="Dir3" width="10%"><h:outputText value="#{element.dir3}" /></p:column>
 			    		<p:column headerText="Data creació" width="10%">
 			    		<h:outputText value="#{element.datacreacio}" >
 			    			<f:convertDateTime pattern="dd/MM/yyyy" />
 			    		</h:outputText>
 			    		</p:column>
 			    		<p:column headerText="Usuari" width="10%"><h:outputText value="#{element.usuari}" /></p:column>
-			    		<p:column headerText="Actiu" width="10%">
+			    		<p:column headerText="Actiu" width="5%">
 			    			<h:outputText value="#{element.actiu=='true' ? 'Sí' : 'No'}" />
 			    		</p:column>
 			    		<p:column headerText="Visible Web" width="5%"><h:outputText value="#{element.visible_web=='true' ? 'Sí' : 'No'}" /></p:column>
 			    		<p:column headerText="Accions" width="7%">
 			    			<div>
 			    			    <div style="float:left">
-				    				<p:button title="Editar" outcome="add_subcentregestor.xhtml" icon="ui-icon-pencil">
+				    				<p:button title="Editar" outcome="update_subcentregestor.xhtml" icon="ui-icon-pencil">
     									<f:param name="subcentreId_param" value="#{element.id}" />
 									</p:button>
 			    				</div>
 			    				<div style="float:right">
-			    					<p:commandButton icon="ui-icon-trash" title="Eliminar subcentre" action="#{SubcentreController.remove}" update="growl,taula" >
+			    					<p:commandButton icon="ui-icon-trash" title="Eliminar subcentre" action="#{SubcentreController.removeSubcentreGestor}" update="growl,taula" >
 										<p:confirm header="Eliminar subcentre" message="Estau segur que voleu eliminar el subcentre #{element.nom}?" icon="ui-icon-alert" />
 			    					</p:commandButton>
 				    			</div> 

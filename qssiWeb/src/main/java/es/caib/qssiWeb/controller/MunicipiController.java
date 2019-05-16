@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -22,6 +23,7 @@ import es.caib.qssiEJB.interfaces.MunicipiServiceInterface;
  */
 
 @ManagedBean(name="MunicipiController")
+@ViewScoped
 public class MunicipiController {
 
 	private final static Logger LOGGER = Logger.getLogger(MunicipiController.class);

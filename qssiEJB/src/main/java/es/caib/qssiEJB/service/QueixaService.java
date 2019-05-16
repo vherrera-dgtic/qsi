@@ -100,6 +100,7 @@ public class QueixaService implements QueixaServiceInterface{
 		{
 			LOGGER.info("in getQueixa, estat entity manager: " + em.toString());
 			Queixa c = em.find(Queixa.class, id_queixa);
+			this.resultat = true;
 			return c;
 		}
 		catch (Exception ex)

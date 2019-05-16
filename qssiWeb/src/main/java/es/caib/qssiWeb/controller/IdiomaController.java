@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -19,6 +20,7 @@ import es.caib.qssiEJB.interfaces.IdiomaServiceInterface;
  */
 
 @ManagedBean(name="IdiomaController")
+@ViewScoped
 public class IdiomaController {
 	
 	private final static Logger LOGGER = Logger.getLogger(IdiomaController.class);

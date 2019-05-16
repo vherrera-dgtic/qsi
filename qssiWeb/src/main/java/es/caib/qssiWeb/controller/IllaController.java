@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -20,6 +21,7 @@ import es.caib.qssiEJB.interfaces.IllaServiceInterface;
  */
 
 @ManagedBean(name="IllaController")
+@ViewScoped
 public class IllaController {
 
 	private final static Logger LOGGER = Logger.getLogger(IllaController.class);
