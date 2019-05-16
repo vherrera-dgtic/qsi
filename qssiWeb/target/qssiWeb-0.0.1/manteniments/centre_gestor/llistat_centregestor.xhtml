@@ -40,9 +40,10 @@
 				    			<p:button outcome="update_centregestor.xhtml" icon="ui-icon-pencil">
     								<f:param name="centreId_param" value="#{element.id}" />
 								</p:button>
+								
 			    			</div>
 			    			<div style="float:right">
-			    				<p:commandButton icon="ui-icon-trash" title="Eliminar centre" action="#{CentreGestorController.remove}" update="growl,taula" >
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar centre" action="#{CentreGestorController.removeCentreGestor}" update="growl,taula" >
 			    					<p:confirm header="Eliminar centre" message="Estau segur que voleu eliminar el centre #{element.nom}?" icon="ui-icon-alert" />
 			    				</p:commandButton>
 				    		</div> 

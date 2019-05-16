@@ -190,7 +190,7 @@
 			    			<p:selectOneMenu id="tipus-identificacio" value="" style="width:125px">
             					<f:selectItems value="#{ExpedientController.llista_Identificacions}" var="identificacio" itemLabel="#{identificacio.nom}" itemValue="#{identificacio.id}"/>
         					</p:selectOneMenu>
-        					&nbsp;&nbsp;<p:inputText id="num_identificacio" required="true" requiredMessage="S'ha d'indicar l'identificació, si la qssi no és anònima"></p:inputText>
+        					<p:inputText id="num_identificacio" required="true" requiredMessage="S'ha d'indicar l'identificació, si la qssi no és anònima"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_identificacio" for="num_identificacio" showDetail="true"></p:message>
