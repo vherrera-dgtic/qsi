@@ -7,6 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.jboss.ejb3.annotation.LocalBinding;
@@ -40,24 +41,21 @@ public class MateriaService implements MateriaServiceInterface {
 	public boolean getResultat() { return this.resultat; }
 	public String getError() { return this.strError; }
 	
+	@Override
 	public void addMateria(Materia m) {
 		
+		LOGGER.info("in addMateria, estat entity manager: " + em.toString());
 		try
 		{
-			LOGGER.info("in addMateria, estat entity manager: " + em.toString());
-			
-			em.getTransaction().begin();
 			em.persist(m);
-			em.getTransaction().commit();
-			em.close();
-			
-			LOGGER.info("Inserida matèria");
-			this.resultat = true;
+			LOGGER.info("Insert materia");
+			this.resultat = true;	
 		}
-		catch(Exception ex) {
+		catch (Exception ex)
+		{
 			LOGGER.error(ex);
-			this.resultat = false;
 			this.strError = ex.toString();
+			this.resultat = false;
 		}
 		
 	}
@@ -89,7 +87,73 @@ public class MateriaService implements MateriaServiceInterface {
 		
 		return l;
 	}
-	
-	
 
+	@Override
+	public void updateMateria(Materia m_update) {
+		
+		try 
+		{
+			LOGGER.info("in updateMateria, estat entity manager: " + em.toString());
+			
+			Materia m = em.find(Materia.class, m_update.getId() );
+			  
+			m.setNom(m_update.getNom());
+			m.setActiva(m_update.getActiva());
+			m.setUsuari(m_update.getUsuari());
+			m.setDatacreacio(m_update.getDatacreacio());
+			  
+			LOGGER.info("in updateMateria, commit; ");
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			
+		}
+		
+	}
+
+	@Override
+	public Materia getMateria(Integer id_materia) {
+		try
+		{
+			LOGGER.info("in getMateria, estat entity manager: " + em.toString());
+			Materia m = em.find(Materia.class, id_materia);
+			this.resultat = true;
+			return m;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+	}
+
+	@Override
+	public void removeMateria(Integer id_materia) {
+		
+		String queryString = new String("delete from Materia where id_materia = :id_materia");
+		
+		try
+		{
+			LOGGER.info("in removeMateria, estat entity manager: " + em.toString());
+			
+		    Query query = em.createQuery(queryString);
+		    query.setParameter("id_materia", id_materia);
+			query.executeUpdate();
+			
+			LOGGER.info("Removed materia");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+		}
+		
+	}
 }

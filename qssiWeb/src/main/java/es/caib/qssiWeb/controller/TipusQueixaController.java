@@ -58,7 +58,7 @@ public class TipusQueixaController {
 	public boolean getActiu() { return this.actiu;}
 	public void setActiu(boolean a) { this.actiu = a; }
 	
-	// Mètodes
+	// Methods
 	@PostConstruct
 	public void init() {
 				
@@ -245,12 +245,12 @@ public class TipusQueixaController {
 		catch (NamingException e) {
 			LOGGER.info("Error___ "+e.toString());
 			this.message = this.message + " -- " + e.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el centre", this.message));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant la queixa", this.message));
 		}
 		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el centre", this.message));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant la queixa", this.message));
 		}
 		
 	}

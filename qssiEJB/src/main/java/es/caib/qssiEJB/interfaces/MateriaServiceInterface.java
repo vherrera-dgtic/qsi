@@ -14,7 +14,10 @@ import es.caib.qssiEJB.entity.Materia;
 public interface MateriaServiceInterface {
 	
 	public void addMateria(Materia m);
+	public void updateMateria(Materia m);
+	public Materia getMateria(Integer id_materia); 
 	public ArrayList<Materia> getLlista_Materies();
+	public void removeMateria(Integer id_materia);
 	public boolean getResultat();
 	public String getError();
 	
