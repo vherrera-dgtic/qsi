@@ -48,7 +48,7 @@ public class MateriaController {
 	public void setTaula_materies(DataTable dataTable) { this.taula_materies = dataTable;	}
 
 	public String getMateriaId() { return this.materiaId; }
-	public void setMateriaId(String cId) { this.materiaId = cId;}
+	public void setMateriaId(String mId) { this.materiaId = mId;}
 		
 	public String getMateriaNom() { return this.materiaNom; }
 	public void setMateriaNom(String n) { this.materiaNom = n; }
@@ -57,7 +57,6 @@ public class MateriaController {
 	public void setActiva(boolean a) { this.activa = a; }
 	
 	// Methods
-	
 	@PostConstruct
 	public void init() {
 		
@@ -151,7 +150,7 @@ public class MateriaController {
 		    MateriaServ = (MateriaServiceInterface) ic.lookup("es.caib.qssiEJB.service.MateriaService");
 		    LOGGER.info("EJB lookup" + MateriaServ + "--> materiaId: " + this.materiaId);
 		    	
-		    // Construim el centre
+		    // Construim la matèria
 		    Materia m = new Materia();
 		    m.setId(Integer.parseInt(this.materiaId));
 			m.setNom(this.materiaNom);
@@ -196,7 +195,7 @@ public class MateriaController {
 					 
 			if (MateriaServ.getResultat()==true)
 			{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Matèria afegida correctament", "Matèria correctament"));				
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Matèria afegida correctament", "Matèria afegida correctament"));				
 				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/materies/llistat_materia.xhtml");
 			}

@@ -1,14 +1,19 @@
 package es.caib.qssiWeb.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.primefaces.component.datatable.DataTable;
 
 import es.caib.qssiEJB.entity.Motiu;
 import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
@@ -23,24 +28,49 @@ import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
 @ViewScoped
 public class MotiuController {
 	
+	// Private properties
+	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(MotiuController.class);
 	
+	private DataTable taula_motius;
 	private ArrayList<Motiu> llista_motius;
-	private InitialContext ic;
 	
+	private String motiuId;
+	private String motiuNom;
+	private boolean actiu;
 	private String message = new String("");
-	private boolean ambErrors = false;
 	
+	// Getters & Setters
+	public void setMessage(String m) { this.message = m; }
+	public String getMessage() { return this.message; }
+	
+	public DataTable getTaula_motius() { return taula_motius;	}
+	public void setTaula_motius(DataTable dataTable) { this.taula_motius = dataTable;	}
+
+	public String getMotiuId() { return this.motiuId; }
+	public void setMotiuId(String mId) { this.motiuId = mId;}
+		
+	public String getMotiuNom() { return this.motiuNom; }
+	public void setMotiuNom(String n) { this.motiuNom = n; }
+		
+	public boolean getActiu() { return this.actiu;}
+	public void setActiu(boolean a) { this.actiu = a; }
+	
+	// Methods
 	@PostConstruct
 	public void init() {
 				
 		LOGGER.info("Proxy a MotiuController ");
 		
+		String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("motiuId_param");
+		
+		if (param!=null) {
+			LOGGER.info("MotiuController amb motiuId_param= "+param);
+			this.motiuId = param;
+			this.getMotiuInfo(this.motiuId);
+		}
+		
 	}
-	
-	public void setMessage(String m) { this.message = m; }
-	public String getMessage() { return this.message; }
-	public boolean getAmbErrors() { return this.ambErrors; }
 	
 	public ArrayList<Motiu> getLlista_motius() 
 	{ 
@@ -59,20 +89,168 @@ public class MotiuController {
 			if (!MotiuServ.getResultat())
 			{
 				LOGGER.info("error obtingut: "+ MotiuServ.getError());
-				this.ambErrors = true;
 				this.message = MotiuServ.getError();
 			}
 		}
 		catch (NamingException e) {
 			LOGGER.info("Error___ "+e.toString());
-			this.ambErrors = true;
 			this.message = this.message + " -- " + e.toString();
 		} catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
-			this.ambErrors = true;
 			this.message = this.message + " -- " + e.toString();
 		}
 		
 		return this.llista_motius; 
+	}
+	
+	public void getMotiuInfo(String motiuId) {
+		
+		MotiuServiceInterface MotiuServ;
+		LOGGER.info("getMotiuInfo: " + motiuId);
+			
+		try
+		{
+			ic = new InitialContext();
+			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");
+			LOGGER.info("EJB lookup " + MotiuServ);
+				
+			Motiu m = new Motiu();
+			m = MotiuServ.getMotiu(Integer.parseInt(motiuId));
+				
+			if (MotiuServ.getResultat())
+			{
+				this.motiuId = motiuId;
+				this.motiuNom = m.getNom();
+				this.actiu = m.getActiu(); 
+			}
+			else
+			{
+				LOGGER.info("error obtingut: "+ MotiuServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error obtenint el motiu",  MotiuServ.getError()));
+			}
+				
+		}
+		catch(Exception ex)
+		{
+			LOGGER.info("error obtingut: "+ ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error obtenint el motiu",  ex.toString()));
+		}
+	}
+	
+
+	public void updateMotiu() {
+		
+		MotiuServiceInterface MotiuServ;
+			
+		LOGGER.info("updateMotiu");
+			
+		try 
+		{
+			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		    ic = new InitialContext();
+		    MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");
+		    LOGGER.info("EJB lookup" + MotiuServ + "--> motiuId: " + this.motiuId);
+		    	
+		    // Construim el motiu
+		    Motiu m = new Motiu();
+		    m.setId(Integer.parseInt(this.motiuId));
+			m.setNom(this.motiuNom);
+			m.setDatacreacio(new Date());
+			m.setUsuari(origRequest.getRemoteUser()); 
+			m.setActiu(this.actiu);
+							
+		    MotiuServ.updateMotiu(m);
+		    	
+		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Motiu actualitzat correctament", "Motiu actualitzat correctament"));				
+			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
+			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/motius/llistat_motiu.xhtml");
+		} 
+		catch (Exception ex) {
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant el motiu", ex.toString()));
+		}
+	}
+
+	public void addMotiu()
+	{
+		MotiuServiceInterface MotiuServ;
+			
+		LOGGER.info("addMotiu ");
+			
+		try
+		{
+			ic = new InitialContext();
+			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");	
+			LOGGER.info("EJB lookup "+ MotiuServ);	
+				
+			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+				
+			// Contruim el centre
+			Motiu m = new Motiu();
+			m.setNom(this.motiuNom);
+			m.setDatacreacio(new Date());
+			m.setUsuari(origRequest.getRemoteUser()); 
+			m.setActiu(this.actiu);
+				
+			MotiuServ.addMotiu(m); // Cridem l'EJB
+					 
+			if (MotiuServ.getResultat()==true)
+			{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Motiu afegit correctament", "Motiu afegit correctament"));				
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
+			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/motius/llistat_motiu.xhtml");
+			}
+			
+			else
+			{
+				
+				LOGGER.info("error obtingut: "+ MotiuServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error afegint el motiu",  MotiuServ.getError()));
+			}
+		} 
+		catch (Exception ex) {
+				
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant el motiu", ex.toString()));
+		}
+	}
+	
+	public void removeMotiu()
+	{
+		Motiu m = (Motiu) this.taula_motius.getRowData();
+		MotiuServiceInterface MotiuServ;
+				
+		LOGGER.info("Entram a remove amb paràmetre: " + m.getId());
+		
+		try
+		{
+			ic = new InitialContext();
+			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");
+			LOGGER.info("EJB lookup " + MotiuServ);
+			
+			MotiuServ.removeMotiu(m.getId());
+		    			
+			if (!MotiuServ.getResultat())
+			{
+				LOGGER.info("Error a remove: " + MotiuServ.getError());
+				this.message = this.message + " -- " + MotiuServ.getError();
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el motiu", this.message));
+			}
+			else
+			{
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Motiu eliminat correctament", "Motiu eliminat correctament"));
+			}
+		}
+		catch (NamingException e) {
+			LOGGER.info("Error___ "+e.toString());
+			this.message = this.message + " -- " + e.toString();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el motiu", this.message));
+		}
+		catch (Exception e) {
+			LOGGER.info("Error_+ " + e.toString());
+			this.message = this.message + " -- " + e.toString();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el motiu", this.message));
+		}
+		
 	}
 }

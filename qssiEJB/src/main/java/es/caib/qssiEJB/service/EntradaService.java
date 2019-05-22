@@ -7,6 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.jboss.ejb3.annotation.LocalBinding;
@@ -44,13 +45,10 @@ public class EntradaService implements EntradaServiceInterface{
 		{
 			LOGGER.info("in addEntrada, estat entity manager: " + em.toString());
 			
-			em.getTransaction().begin();
 			em.persist(e);
-			em.getTransaction().commit();
-			em.close();
-			
-			LOGGER.info("Inserida entrada");
+			LOGGER.info("Insert entrada");
 			this.resultat = true;
+			
 		}
 		catch(Exception ex) {
 			LOGGER.error(ex);
@@ -88,10 +86,79 @@ public class EntradaService implements EntradaServiceInterface{
 		return l;
 	}
 
+	
 	@Override
 	public boolean getResultat() { return this.resultat; }
 
 	@Override
 	public String getError() { return this.strError; }
+	
+	@Override
+	public Entrada getEntrada(Integer id_entrada) {
+		try
+		{
+			LOGGER.info("in getEntrada, estat entity manager: " + em.toString());
+			Entrada e = em.find(Entrada.class, id_entrada);
+			this.resultat = true;
+			return e;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+	}
+
+	@Override
+	public void updateEntrada(Entrada e_update) {
+		try 
+		{
+			LOGGER.info("in updateEntrada, estat entity manager: " + em.toString());
+			
+			Entrada e = em.find(Entrada.class, e_update.getId() );
+			  
+			e.setNom(e_update.getNom());
+			e.setActiva(e_update.getActiva());
+			e.setUsuari(e_update.getUsuari());
+			e.setDatacreacio(e_update.getDatacreacio());
+			  
+			LOGGER.info("in updateEntrada, commit; ");
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			
+		}
+		
+	}
+	
+	@Override
+	public void removeEntrada(Integer id_entrada) {
+		
+		String queryString = new String("delete from Entrada where id_entrada = :id_entrada");
+		
+		try
+		{
+			LOGGER.info("in removeEntrada, estat entity manager: " + em.toString());
+			
+		    Query query = em.createQuery(queryString);
+		    query.setParameter("id_entrada", id_entrada);
+			query.executeUpdate();
+			
+			LOGGER.info("Removed entrada");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+		}
+	}
+
 	
 }

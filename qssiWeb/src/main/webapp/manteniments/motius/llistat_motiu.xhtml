@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+	
+	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+	   <ui:define name="title">
+	      Queixes i suggeriments - CAIB - Manteniments - Motius
+	   </ui:define>
+	   <ui:define name="opcions">
+			<p:button type="button" value="Nou motiu" icon="ui-icon-extlink" href="/manteniments/motius/add_motiu.xhtml" />   
+		</ui:define>
+	   <ui:define name="content">
+	   		<p:growl id="growl" showDetail="true" />
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="top: 120px; left: 250px;">
+        		<p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        		<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>	
+			<h:form>
+			<!-- Contigut-->
+				<p:panel id="principal" header="Llista de Motius" footer="" style="margin-bottom:20px">
+	            	<p:dataTable id="taula" binding="#{MotiuController.taula_motius}" value="#{MotiuController.llista_motius}" var="element"  emptyMessage="No s'han trobat registres.">
+	    				<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
+	    				<p:column headerText="Nom" width="35%"><h:outputText value="#{element.nom}" /></p:column>
+				    	<p:column headerText="Data creació" width="10%">
+				    		<h:outputText value="#{element.datacreacio}" >
+				    			<f:convertDateTime pattern="dd/MM/yyyy" />
+				    		</h:outputText>
+				    	</p:column>
+				    	<p:column headerText="Usuari" width="10%"><h:outputText value="#{element.usuari}" /></p:column>
+				    	<p:column headerText="Actiu" width="10%"><h:outputText value="#{element.actiu=='true' ? 'Sí' : 'No'}" /></p:column>
+				    	<p:column headerText="Accions" width="7%">
+			    		<div>
+			    		    <div style="float:left">
+				    			<p:button outcome="update_motiu.xhtml" icon="ui-icon-pencil">
+    								<f:param name="motiuId_param" value="#{element.id}" />
+								</p:button>
+			    			</div>
+			    			<div style="float:right">
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar motiu" action="#{MotiuController.removeMotiu}" update="growl,taula" >
+			    					<p:confirm header="Eliminar motiu" message="Estau segur que voleu eliminar el motiu #{element.nom}?" icon="ui-icon-alert" />
+			    				</p:commandButton>
+				    		</div> 
+			    		</div>
+			    	</p:column>	
+					</p:dataTable>
+	    		</p:panel>
+			</h:form>
+		</ui:define>
+    </ui:composition>
+</html>

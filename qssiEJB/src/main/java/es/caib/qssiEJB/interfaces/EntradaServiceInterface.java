@@ -16,7 +16,10 @@ import es.caib.qssiEJB.entity.Entrada;
 public interface EntradaServiceInterface {
 	
 	public void addEntrada(Entrada e);
+	public void updateEntrada(Entrada e);
+	public Entrada getEntrada(Integer id_entrada);
 	public ArrayList<Entrada> getLlista_Entrades();
+	public void removeEntrada(Integer id_entrada);
 	public boolean getResultat();
 	public String getError();
 	
