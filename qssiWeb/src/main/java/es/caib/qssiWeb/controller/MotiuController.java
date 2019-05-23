@@ -185,7 +185,7 @@ public class MotiuController {
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 				
-			// Contruim el centre
+			// Contruim el motiu
 			Motiu m = new Motiu();
 			m.setNom(this.motiuNom);
 			m.setDatacreacio(new Date());

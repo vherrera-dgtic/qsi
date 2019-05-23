@@ -17,8 +17,11 @@ import es.caib.qssiEJB.entity.Idioma;
 @Local
 public interface IdiomaServiceInterface {
 	
-	public void addIdioma(Idioma e);
+	public void addIdioma(Idioma i);
+	public void updateIdioma(Idioma i_update);
+	public Idioma getIdioma(Integer id_idioma);
 	public ArrayList<Idioma> getLlista_Idiomes();
+	public void removeIdioma(Integer id_idioma);
 	public boolean getResultat();
 	public String getError();
 	

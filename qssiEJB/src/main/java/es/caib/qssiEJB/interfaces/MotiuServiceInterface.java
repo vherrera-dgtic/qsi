@@ -16,7 +16,7 @@ import es.caib.qssiEJB.entity.Motiu;
 public interface MotiuServiceInterface {
 	
 	public void addMotiu(Motiu m);
-	public void updateMotiu(Motiu m);
+	public void updateMotiu(Motiu m_update);
 	public Motiu getMotiu(Integer id_motiu);
 	public ArrayList<Motiu> getLlista_Motius();
 	public void removeMotiu(Integer id_motiu);

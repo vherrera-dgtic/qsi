@@ -7,6 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.jboss.ejb3.annotation.LocalBinding;
@@ -38,20 +39,19 @@ public class IdiomaService implements IdiomaServiceInterface{
 		LOGGER.info("Proxy a init: "+this.em);
 	}
 	
+	public boolean getResultat() { return this.resultat;	}
+	public String getError() { return this.strError; }
 	
 	
 	@Override
 	public void addIdioma(Idioma i) {
+		
+		LOGGER.info("in addIdioma, estat entity manager: " + em.toString());
+		
 		try
 		{
-			LOGGER.info("in addIdioma, estat entity manager: " + em.toString());
-			
-			em.getTransaction().begin();
 			em.persist(i);
-			em.getTransaction().commit();
-			em.close();
-			
-			LOGGER.info("Inserit idioma");
+			LOGGER.info("Insert Idioma");
 			this.resultat = true;
 		}
 		catch(Exception ex) {
@@ -89,11 +89,75 @@ public class IdiomaService implements IdiomaServiceInterface{
 		
 		return l;
 	}
+	
+	@Override
+	public void updateIdioma(Idioma i_update) {
+		
+		try 
+		{
+			LOGGER.info("in updateIdioma, estat entity manager: " + em.toString());
+			
+			Idioma i = em.find(Idioma.class, i_update.getId() );
+			  
+			i.setNom(i_update.getNom());
+			i.setActiu(i_update.getActiu());
+			i.setUsuari(i_update.getUsuari());
+			i.setDatacreacio(i_update.getDatacreacio());
+			  
+			LOGGER.info("in updateIdioma, commit; ");
+			
+			this.resultat = true;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			
+		}
+		
+	}
 
 	@Override
-	public boolean getResultat() { return this.resultat;	}
+	public Idioma getIdioma(Integer id_idioma) {
+		try
+		{
+			LOGGER.info("in getIdioma, estat entity manager: " + em.toString());
+			Idioma i = em.find(Idioma.class, id_idioma);
+			this.resultat = true;
+			return i;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+	}
 
 	@Override
-	public String getError() { return this.strError; }
+	public void removeIdioma(Integer id_idioma) {
+		
+		String queryString = new String("delete from Idioma where id_idioma = :id_idioma");
+		
+		try
+		{
+			LOGGER.info("in removeIdioma, estat entity manager: " + em.toString());
+			
+		    Query query = em.createQuery(queryString);
+		    query.setParameter("id_idioma", id_idioma);
+			query.executeUpdate();
+			
+			LOGGER.info("Removed idioma");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+		}	
+	}
 	
 }

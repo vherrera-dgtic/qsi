@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+	   <ui:define name="title">
+	      Queixes i suggeriments - CAIB - Manteniments - Afegir nou idioma
+	   </ui:define>
+	   <ui:define name="content">
+	     <h:form accept-charset="UTF-8">
+			<!-- Contigut-->
+			<p:panel id="principal" header="Afegir nou idioma" footer="" style="margin-bottom:20px">
+				<p:messages id="messages" severity="error" showDetail="true" globalOnly="false"/>
+				<p:outputPanel deferred="false" deferredMode="visible">
+			    	<div class='row-form'>
+			    		<h3>Dades idioma</h3>
+			    		<div class='row-form'>
+			    			<div class='col-form-etiqueta'>Idioma *</div> 
+			    			<div class='col-form'>
+			    				<p:inputText id="nom" value="#{IdiomaController.idiomaNom}" required="true" requiredMessage="S'ha d'indicar el nom de l'idioma" maxlength="255" style="width:450px"></p:inputText>
+			    			</div>
+			    			<div class='col-form'>
+				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
+				    		</div>
+				    	</div>
+			    		<div class='row-form'>
+							<div class='col-form-etiqueta'>Actiu</div>
+			    			<div class='col-form'>
+			    				<p:inputSwitch id="actiu" onLabel="Sí" offLabel="No" value="#{IdiomaController.actiu}" />
+			    			</div>			    		
+			    		</div>
+			    	</div>
+				</p:outputPanel>
+				<div style="height:25px"></div>
+    			<div class='boto-formulari'>
+   					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" action="#{IdiomaController.addIdioma}" update="growl"  validateClient="true"/>
+   				</div>
+			</p:panel>
+		</h:form>
+		</ui:define>
+    </ui:composition>
+</html>
