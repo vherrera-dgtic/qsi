@@ -41,15 +41,12 @@ public class MunicipiService implements MunicipiServiceInterface {
 	
 	@Override
 	public void addMunicipi(Municipi m) {
+		
+		LOGGER.info("in addMunicipi, estat entity manager: " + em.toString());
+		
 		try
 		{
-			LOGGER.info("in addMunicipi, estat entity manager: " + em.toString());
-			
-			em.getTransaction().begin();
 			em.persist(m);
-			em.getTransaction().commit();
-			em.close();
-			
 			LOGGER.info("Inserit municipi");
 			this.resultat = true;
 		}
@@ -63,18 +60,18 @@ public class MunicipiService implements MunicipiServiceInterface {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<Municipi> getLlista_MunicipisActius(Integer id_illa) {
+	public ArrayList<Municipi> getLlista_MunicipisActius(Integer id_provincia) {
 		
 		ArrayList<Municipi> lm = new ArrayList<Municipi>();
 		
-		String queryString = new String("select m from Municipi m where m.actiu=true and m.id_illa = :id_illa order by m.nom ");
+		String queryString = new String("select m from Municipi m where m.actiu=true and m.id_provincia = :id_provincia order by m.nom ");
 		try
 		{
 						
-			LOGGER.info("in getLlista_MunicipisActius, paràmetre: " + id_illa + " estat entity manager: " + em.toString());
+			LOGGER.info("in getLlista_MunicipisActius, paràmetre id_provincia: " + id_provincia + " estat entity manager: " + em.toString());
 			
 		    Query query = em.createQuery(queryString);
-		    query.setParameter("id_illa", id_illa);
+		    query.setParameter("id_provincia", id_provincia);
 		    lm = (ArrayList<Municipi>) query.getResultList();
 		    			
 			LOGGER.info("em operation done ");
@@ -100,17 +97,17 @@ public class MunicipiService implements MunicipiServiceInterface {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<Municipi> getLlista_Municipis(Integer id_illa) {
+	public ArrayList<Municipi> getLlista_Municipis(Integer id_provincia) {
 		
 		ArrayList<Municipi> lm = new ArrayList<Municipi>();
-		String queryString = new String("select m from Municipi m where m.illa.id_illa = :id_illa order by m.nom ");
+		String queryString = new String("select m from Municipi m where m.id_provincia = :id_provincia order by m.nom ");
 		try
 		{
 						
-			LOGGER.info("in getLlista_Municipis, paràmetre: " + id_illa + " estat entity manager: " + em.toString());
+			LOGGER.info("in getLlista_Municipis, paràmetre id_provincia: " + id_provincia + " estat entity manager: " + em.toString());
 			
 		    Query query = em.createQuery(queryString);
-		    query.setParameter("id_illa", id_illa);
+		    query.setParameter("id_provincia", id_provincia);
 		    lm = (ArrayList<Municipi>) query.getResultList();
 		    			
 			LOGGER.info("em operation done ");

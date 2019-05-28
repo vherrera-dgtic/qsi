@@ -37,6 +37,9 @@ public class Expedient {
 	
 	@Column
 	private String via_contestacio;
+		
+	@Column
+	private String id_gestor;
 	
 	@Column
 	private String usuari_assignat;
@@ -60,6 +63,31 @@ public class Expedient {
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_subcentre")
     private Subcentre subcentre;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_materia")
+	private Materia materia;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_motiu")
+	private Motiu motiu;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_queixa")
+	private Queixa queixa;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_entrada")
+	private Entrada entrada;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_idioma")
+	private Idioma idioma;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_municipi")
+	private Municipi municipi;
+	
 	
 	// Constructor
 	public Expedient() { }
@@ -101,14 +129,31 @@ public class Expedient {
 	public Subcentre getSubcentre() { return this.subcentre; }
 	public void setSubcentre(Subcentre s) { this.subcentre = s; }
 	
+	public Materia getMateria() { return this.materia; }
+	public void setMateria(Materia m) { this.materia = m; }
+	
+	public Motiu getMotiu() { return this.motiu; }
+	public void setMotiu(Motiu m) { this.motiu = m; }
+	
+	public Queixa getQueixa() { return this.queixa; }
+	public void setQueixa(Queixa q) { this.queixa = q; }
+	
+	public Entrada getEntrada() { return this.entrada; }
+	public void setEntrada(Entrada e) { this.entrada = e; }
+	
+	public Idioma getIdioma() { return this.idioma; }
+	public void setIdioma(Idioma i) { this.idioma = i; }
+	
+	public Municipi getMunicipi() { return this.municipi; }
+	public void setMunicipi(Municipi m) { this.municipi = m; }
+	
 	public Date getDatavenciment()
 	{
 		// convert date to calendar
 	    Calendar c = Calendar.getInstance();
 	    c.setTime(this.data_entrada);
-	    c.add(Calendar.DATE, 20); // TODO: La norma dia 15 dies hàbils. S'ha de crear una taula amb els festius i afinar l'algorisme, Toni Juaico
+	    c.add(Calendar.DATE, 20); // TODO: La norma dia 15 dies hàbils. S'ha de crear una taula amb els festius i afinar l'algorisme, Toni Juanico
 	    return c.getTime();
-
 	}
 	
 }

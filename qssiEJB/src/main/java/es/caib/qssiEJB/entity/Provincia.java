@@ -40,21 +40,21 @@ public class Provincia {
 			this.data_creacio = data_creacio;
 			this.usuari = usuari;
 			this.activa = activa;
-		}
+	}
 		
-		// Mètodes get - set
-		public Integer getId() { return this.id_provincia;	}
-		public void setId(Integer id) {	this.id_provincia = id;	}
-		
-		public String getNom() { return this.nom; }
-		public void setNom(String value) { this.nom = value; }
-		
-		public Date getDatacreacio() { return this.data_creacio; }
-		public void setDatacreacio(Date data) { this.data_creacio = data; } 
-		
-		public String getUsuari() { return this.usuari; }
-		public void setUsuari(String value) { this.usuari = value; }
-		
-		public Boolean getActiva() { return this.activa; }
-		public void setActiva(Boolean value) { this.activa = value; }
+	// Mètodes get - set
+	public Integer getId() { return this.id_provincia;	}
+	public void setId(Integer id) {	this.id_provincia = id;	}
+	
+	public String getNom() { return this.nom; }
+	public void setNom(String value) { this.nom = value; }
+	
+	public Date getDatacreacio() { return this.data_creacio; }
+	public void setDatacreacio(Date data) { this.data_creacio = data; } 
+	
+	public String getUsuari() { return this.usuari; }
+	public void setUsuari(String value) { this.usuari = value; }
+	
+	public Boolean getActiva() { return this.activa; }
+	public void setActiva(Boolean value) { this.activa = value; }
 }

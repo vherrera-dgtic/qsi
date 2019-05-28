@@ -78,39 +78,39 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Assumpte *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText id="assumpte" value="#{ExpedientController.assumpte}" required="true" requiredMessage="S'ha d'indicar l'assumpte" ></p:inputText>
+			    			<p:inputText id="assumpte" value="#{ExpedientController.assumpte}" required="true" requiredMessage="S'ha d'indicar l'assumpte" maxlength="255" size="60"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_assumpte" for="assumpte" showDetail="true"></p:message>
 			    		</div>
 			    	</div>
 					<div class='row-form'>
-						<div class='col-form-etiqueta'>Centre gestor</div>
+						<div class='col-form-etiqueta'>Centre gestor *</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="centre" value="#{ExpedientController.centre}" size='600px'>
+							<p:selectOneMenu id="centre" value="#{ExpedientController.centre}" required="true" requiredMessage="S'ha d'indicar un centre gestor" size="60">
 								<p:ajax listener="#{ExpedientController.onCentre_change}" update="subcentre"/>
-								<f:selectItem itemLabel="Selecciona Centre Gestor" itemValue="" noSelectionOption="true" />
+								<f:selectItem itemLabel="Selecciona Centre Gestor" itemValue="#{null}"  />
             					<f:selectItems value="#{ExpedientController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
         					</p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
-						<div class='col-form-etiqueta'>Servei específic</div>
+						<div class='col-form-etiqueta'>Servei específic *</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="subcentre" value="#{ExpedientController.subcentre}">
-								 <f:selectItem itemLabel="Selecciona servei" itemValue="" noSelectionOption="true" />
+							<p:selectOneMenu id="subcentre" value="#{ExpedientController.subcentre}" required="true" requiredMessage="S'ha d'indicar un servei" size="60">
+								 <f:selectItem itemLabel="Selecciona servei" itemValue="#{null}"  />
                                  <f:selectItems value="#{ExpedientController.llista_Subcentres}" var="subcentre" itemLabel="#{subcentre.nom}" itemValue="#{subcentre.id}" />
 							</p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Unitat orgànica</div>
-						<div class='col-form'><p:inputText></p:inputText></div>
+						<div class='col-form'><p:inputText id="unitatorganica" value="#{ExpedientController.unitatorganica}"></p:inputText></div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Tipus d'escrit</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="tipus-escrit">
+							<p:selectOneMenu id="escrit" value="#{ExpedientController.escrit}">
             					<f:selectItems value="#{ExpedientController.llista_Escrits}" var="escrit" itemLabel="#{escrit.nom}" itemValue="#{escrit.id}"/>
         					</p:selectOneMenu>
 						</div>
@@ -118,7 +118,7 @@
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Matèria</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="materies">
+							<p:selectOneMenu id="materia" value="#{ExpedientController.materia}">
 								<f:selectItems value="#{ExpedientController.llista_Materies}" var="materia" itemLabel="#{materia.nom}" itemValue="#{materia.id}"/>
         					</p:selectOneMenu>
 						</div>
@@ -165,7 +165,7 @@
         			<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Nom *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' maxlength='50' id="nom" required="true" requiredMessage="S'ha d'indicar el nom, si la qssi no és anònima"></p:inputText>
+			    			<p:inputText size='30' maxlength='50' id="nom" required="true" requiredMessage="S'ha d'indicar el nom"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -174,7 +174,7 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Llinatge *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' maxlength='50' id='llinatge' required="true" requiredMessage="S'ha d'indicar el llinatge, si la qssi no és anònima"></p:inputText>
+			    			<p:inputText size='30' maxlength='50' id='llinatge' required="true" requiredMessage="S'ha d'indicar el llinatge"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_llinatge" for="llinatge" showDetail="true"></p:message>
@@ -187,10 +187,10 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Tipus d'identificació *</div> 
 			    		<div class='col-form'>
-			    			<p:selectOneMenu id="tipus-identificacio" value="" style="width:125px">
+			    			<p:selectOneMenu id="identificacio" value="#{ExpedientController.identificacio}" style="width:125px">
             					<f:selectItems value="#{ExpedientController.llista_Identificacions}" var="identificacio" itemLabel="#{identificacio.nom}" itemValue="#{identificacio.id}"/>
         					</p:selectOneMenu>
-        					<p:inputText id="num_identificacio" required="true" requiredMessage="S'ha d'indicar l'identificació, si la qssi no és anònima"></p:inputText>
+        					<p:inputText id="num_identificacio" required="true" requiredMessage="S'ha d'indicar la identificació"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_identificacio" for="num_identificacio" showDetail="true"></p:message>
@@ -201,7 +201,7 @@
 			    		<div class='col-form'><p:inputText size='15' maxlength='9'></p:inputText></div>
 			    		<div class='col-form-etiqueta'>Llengua</div> 
 			    		<div class='col-form'>
-			    			<p:selectOneMenu id="llengua-usada" value="" style="width:125px">
+			    			<p:selectOneMenu id="idioma" value="#{ExpedientController.idioma}" style="width:125px">
             					<f:selectItems value="#{ExpedientController.llista_Idiomes}" var="idioma" itemLabel="#{idioma.nom}" itemValue="#{idioma.id}"/>
         					</p:selectOneMenu>
 			    		</div>
@@ -236,28 +236,28 @@
 	        					<div class='col-form'><p:inputText size='4' maxlength='3'></p:inputText></div>
 	        					<div class='col-form-etiqueta'>Pis</div>
 	        					<div class='col-form'><p:inputText size='4' maxlength='3'></p:inputText></div>
-	        				</div>
-	        				<div class='row-form'>
 	        					<div class='col-form-etiqueta'>CP</div>
 	        					<div class='col-form'><p:inputText size='4' maxlength='3'></p:inputText></div>
-	        					<div class='col-form-etiqueta'>Illa</div>
-	        					<div class='col-form'>
-  	        					        <p:selectOneMenu id="illa" value="#{ExpedientController.illa}">
-  	        					            <p:ajax listener="#{ExpedientController.onIlla_change}" update="municipi"/>
-  	        					            <f:selectItem itemLabel="Selecciona una illa" itemValue="0" noSelectionOption="true" />
-		            						<f:selectItems value="#{ExpedientController.llista_Illes}" var="illa" itemLabel="#{illa.nom}" itemValue="#{illa.id}"/>
-		        						</p:selectOneMenu>
-	        					</div>
 	        				</div>
 	        				<div class='row-form'>
-		        				<div class='col-form-etiqueta'>Municipi</div>
+	        					<div class='col-form-etiqueta'>Provincia / Regió</div>
 		        					<div class='col-form'>
-  		        						<p:selectOneMenu id="municipi" value="#{ExpedientController.municipi}">
-  		        							<f:selectItem itemLabel="Selecciona un municipi" itemValue="0" noSelectionOption="true"/>
-  		        							<f:selectItems value="#{ExpedientController.llista_Municipis}" var="municipi" itemLabel="#{municipi.nom}" itemValue="#{municipi.id}"/>
-  		        						</p:selectOneMenu>
+  		        						<p:selectOneMenu id="provincia" value="#{ExpedientController.provincia}">
+  	        					            <p:ajax listener="#{ExpedientController.onProvincia_change}" update="municipi"/>
+  	        					            <f:selectItem itemLabel="Selecciona una provincia o regió" itemValue="0" noSelectionOption="true" />
+		            						<f:selectItems value="#{ExpedientController.llista_Provincies}" var="provincia" itemLabel="#{provincia.nom}" itemValue="#{provincia.id}"/>
+		        						</p:selectOneMenu>
 		        					</div>
+		        			</div>
+		        			<div class='row-form'>
+		        				<div class='col-form-etiqueta'>Municipi</div>
+		        				<div class='col-form'>
+	        						<p:selectOneMenu id="municipi" value="#{ExpedientController.municipi}">
+	        							<f:selectItem itemLabel="Selecciona un municipi" itemValue="0" noSelectionOption="true"/>
+	        							<f:selectItems value="#{ExpedientController.llista_Municipis}" var="municipi" itemLabel="#{municipi.nom}" itemValue="#{municipi.id}"/>
+	        						</p:selectOneMenu>
 		        				</div>
+       						</div>
        					</div>
        				</div>
     			</p:outputPanel>
@@ -269,7 +269,7 @@
     			<div style="height:25px"></div>
     			<p:outputPanel deferred="true">
 	    			<div class='boto-formulari'>
-    					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" actionListener="#{ExpedientController.saveExpedient}" update="growl"  validateClient="true"/>
+    					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" actionListener="#{ExpedientController.addExpedient}" update="growl"  validateClient="true"/>
     				</div>
     			</p:outputPanel>
     		</p:panel>

@@ -40,16 +40,12 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 	
 	@Override
 	public void addExpedient(Expedient e) {
-		// TODO Auto-generated method stub
+		
+		LOGGER.info("in addExpedient, estat entity manager: " + em.toString());
+		
 		try
 		{
-			LOGGER.info("in addExpedient, estat entity manager: " + em.toString());
-			
-			em.getTransaction().begin();
 			em.persist(e);
-			em.getTransaction().commit();
-			em.close();
-			
 			LOGGER.info("Inserit expedient");
 			this.resultat = true;
 		}

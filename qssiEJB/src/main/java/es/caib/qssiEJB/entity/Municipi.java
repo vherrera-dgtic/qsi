@@ -34,6 +34,9 @@ public class Municipi {
 	@Column
 	private Boolean actiu;
 	
+	@Column
+	private Integer id_provincia;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_illa")
     private Illa illa;
@@ -69,4 +72,8 @@ public class Municipi {
 	
 	public Illa getIlla() { return this.illa; }
 	public void setIlla(Illa i) { this.illa = i; }
+	
+	public Integer getProvincia() { return this.id_provincia; }
+	public void setProvincia(Integer id_provincia) { this.id_provincia = id_provincia; }
+	
 }

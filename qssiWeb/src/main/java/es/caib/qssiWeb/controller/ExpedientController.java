@@ -11,32 +11,32 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 import es.caib.qssiEJB.entity.Materia;
 import es.caib.qssiEJB.entity.Motiu;
 import es.caib.qssiEJB.entity.Municipi;
+import es.caib.qssiEJB.entity.Provincia;
 import es.caib.qssiEJB.entity.Queixa;
 import es.caib.qssiEJB.entity.Subcentre;
 import es.caib.qssiEJB.entity.Centre;
 import es.caib.qssiEJB.entity.Entrada;
 import es.caib.qssiEJB.entity.Escrit;
+import es.caib.qssiEJB.entity.Expedient;
 import es.caib.qssiEJB.entity.Idioma;
-import es.caib.qssiEJB.entity.Illa;
 import es.caib.qssiEJB.entity.Identificacio;
 import es.caib.qssiEJB.interfaces.CentreServiceInterface;
 import es.caib.qssiEJB.interfaces.EntradaServiceInterface;
 import es.caib.qssiEJB.interfaces.EscritServiceInterface;
+import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
 import es.caib.qssiEJB.interfaces.IdentificacioServiceInterface;
 import es.caib.qssiEJB.interfaces.IdiomaServiceInterface;
-import es.caib.qssiEJB.interfaces.IllaServiceInterface;
 import es.caib.qssiEJB.interfaces.MateriaServiceInterface;
 import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
 import es.caib.qssiEJB.interfaces.MunicipiServiceInterface;
+import es.caib.qssiEJB.interfaces.ProvinciaServiceInterface;
 import es.caib.qssiEJB.interfaces.QueixaServiceInterface;
 import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
-
-
-//import javax.ejb.EJB;
 
 import org.apache.log4j.Logger;
 
@@ -51,14 +51,15 @@ import org.apache.log4j.Logger;
 public class ExpedientController {
 	
 	// @EJB(name="es.caib.qssiEJB.service.MateriaService"), Toni Juanico, no sabem perquè el servidor JBoss 5.2 no injecta
-		// obtenim l'error:
-		//    SEVERE [application] JSF1029: The specified InjectionProvider implementation 'org.jboss.web.jsf.integration.injection.JBossInjectionProvider' does not implement the InjectionProvider interface.
-		// que creiem que és el que fa que no funciona l'anotació @EJB.
-		
-		//FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!",  this.message));
+	// obtenim l'error:
+	//    SEVERE [application] JSF1029: The specified InjectionProvider implementation 'org.jboss.web.jsf.integration.injection.JBossInjectionProvider' does not implement the InjectionProvider interface.
+	// que creiem que és el que fa que no funciona l'anotació @EJB.
 	
+	//FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!",  this.message));
+	
+	// Private properties
 	private final static Logger LOGGER = Logger.getLogger(ExpedientController.class);
-	private  static Integer CRIDADES = 0;
+	private static Integer CRIDADES = 0;
 	
 	private String message = new String("");
 	private boolean ambErrors = false;
@@ -67,16 +68,66 @@ public class ExpedientController {
 	
 	private ArrayList<Subcentre> llista_subcentres;
 	private ArrayList<Municipi> llista_municipis;
+	
+	private String assumpte;
+	private String unitatorganica;
 	private Integer centre = 0;
 	private Integer subcentre = 0;
-	private Integer illa = 0;
+	private Integer escrit = 0;
+	private Integer materia = 0;
+	private Integer provincia = 0;
 	private Integer municipi = 0;
+	private Integer identificacio = 0;
+	private Integer idioma = 0;
 	private String correu = new String("");
 	private String data = new String("01/01/2018");
 	
 	private String messages = new String("");
-	private String assumpte;
-		
+	
+	// Getters & Setters
+	public void setAssumpte(String a) { this.assumpte = a; }
+    public String getAssumpte() { return this.assumpte; }
+    
+	public ArrayList<Subcentre> getLlista_Subcentres() { return this.llista_subcentres; }
+    public ArrayList<Municipi> getLlista_Municipis() { return this.llista_municipis; }
+    
+    public void setCentre(Integer centre) { this.centre = centre;  }
+    public Integer getCentre() { return this.centre; }
+    
+    public void setSubcentre(Integer subcentre) { this.subcentre = subcentre; }
+    public Integer getSubcentre() { return this.subcentre; }
+    
+    public void setUnitatorganica(String uo) { this.unitatorganica = uo; }
+    public String getUnitatorganica() { return this.unitatorganica; }
+    
+    public void setEscrit(Integer escrit) { this.escrit = escrit;  }
+    public Integer getEscrit() { return this.escrit; }
+    
+    public void setMateria(Integer materia) { this.materia = materia;  }
+    public Integer getMateria() { return this.materia; }
+    
+    public void setProvincia(Integer provincia) { this.provincia = provincia; }
+    public Integer getProvincia() { return this.provincia; }
+    
+    public void setMunicipi(Integer municipi) { this.municipi = municipi; }
+    public Integer getMunicipi() { return this.municipi; }
+    
+    public void setIdentificacio(Integer identificacio) { this.identificacio = identificacio; }
+    public Integer getIdentificacio() { return this.identificacio; }
+    
+    public void setIdioma(Integer idioma) { this.idioma = idioma; }
+    public Integer getIdioma() { return this.idioma; }
+    
+    public void setCorreu(String correu) { this.correu = correu; }
+    public String getCorreu() { return this.correu; }
+    
+    public void setData(String data) { this.data = data; }
+    public String getData() { return this.data; }
+    
+    public void setMessages(String m) { this.messages = m; }
+    public String getMessages() { return this.messages; }
+        	
+	// Methods
 	@PostConstruct
 	public void init() {
 		CRIDADES = CRIDADES + 1;
@@ -89,7 +140,7 @@ public class ExpedientController {
 	}
 	
 	public boolean getAmbErrors() { return this.ambErrors; }
-	// Mètodes get - set
+	
 	public ArrayList<Materia> getLlista_Materies() { 
 
 		MateriaServiceInterface MateriaServ;
@@ -301,25 +352,25 @@ public class ExpedientController {
 		
 		return llista_Idiomes; 
     }
-    public ArrayList<Illa> getLlista_Illes() {
-    	IllaServiceInterface IllaServ;
-		ArrayList<Illa> llista_Illes = null;
+    
+    public ArrayList<Provincia> getLlista_Provincies() {
+    	ProvinciaServiceInterface ProvinciaServ;
+		ArrayList<Provincia> llista_Provincies = null;
 		
-		// Obtenim la llista d'escrits
-		LOGGER.info("Obtenim llista d'illes");
+		LOGGER.info("Obtenim llista de provincies");
 		try {
 			ic = new InitialContext();
-			IllaServ = (IllaServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.IllaService");
+			ProvinciaServ = (ProvinciaServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.ProvinciaService");
 			
-			LOGGER.info("EJB lookup" + IllaServ);
+			LOGGER.info("EJB lookup" + ProvinciaServ);
 			
-			llista_Illes = IllaServ.getLlista_Illes();
+			llista_Provincies = ProvinciaServ.getLlista_Provincies();
 						
-			if (!IllaServ.getResultat())
+			if (!ProvinciaServ.getResultat())
 			{
-				LOGGER.info("error obtingut: " + IllaServ.getError());
+				LOGGER.info("error obtingut: " + ProvinciaServ.getError());
 				this.ambErrors = true;
-				this.message = IllaServ.getError();
+				this.message = ProvinciaServ.getError();
 			}
 			
 			
@@ -333,14 +384,14 @@ public class ExpedientController {
 			this.message = this.message + " -- " + e.toString();
 		}
 		
-		return llista_Illes; 
+		return llista_Provincies; 
     }
+    
     public ArrayList<Centre> getLlista_Centres() { 
 		
 		CentreServiceInterface CentreServ;
 		ArrayList<Centre> llista_Centres = null;
 		
-		// Obtenim la llista d'escrits
 		LOGGER.info("Obtenim llista de centres");
 		try {
 			ic = new InitialContext();
@@ -375,7 +426,6 @@ public class ExpedientController {
     	IdentificacioServiceInterface IdentificacioServ;
 		ArrayList<Identificacio> llista_Identificacions = null;
 		
-		// Obtenim la llista d'identificacions
 		LOGGER.info("Obtenim llista d'identificacions");
 		try {
 			ic = new InitialContext();
@@ -406,25 +456,6 @@ public class ExpedientController {
 		return llista_Identificacions; 
 			
     }
-    public ArrayList<Subcentre> getLlista_Subcentres() { return this.llista_subcentres; }
-    public ArrayList<Municipi> getLlista_Municipis() { return this.llista_municipis; }
-    
-    public void setCentre(Integer centre) { this.centre = centre;  }
-    public Integer getCentre() { return this.centre; }
-    public void setSubcentre(Integer subcentre) { this.subcentre = subcentre; }
-    public Integer getSubcentre() { return this.subcentre; }
-    public void setIlla(Integer illa) { this.illa = illa; }
-    public Integer getIlla() { return this.illa; }
-    public void setMunicipi(Integer municipi) { this.municipi = municipi; }
-    public Integer getMunicipi() { return this.municipi; }
-    public void setCorreu(String correu) { this.correu = correu; }
-    public String getCorreu() { return this.correu; }
-    public void setData(String data) { this.data = data; }
-    public String getData() { return this.data; }
-    public void setMessages(String m) { this.messages = m; }
-    public String getMessages() { return this.messages; }
-    public void setAssumpte(String a) { this.assumpte = a; }
-    public String getAssumpte() { return this.assumpte; }
     
     // Crida AJAX per actualitzar els subcentres
     public void onCentre_change() {
@@ -433,7 +464,6 @@ public class ExpedientController {
      	this.llista_subcentres = new ArrayList<Subcentre>();  
      	SubcentreServiceInterface SubcentreServ;
  		  	
-     	// Obtenim llista de matèries
  		LOGGER.info("Obtenim llista de subcentres a partir del canvi de centre ");
  		
  		try
@@ -466,13 +496,13 @@ public class ExpedientController {
     }
     
     // Crida AJAX per actualitzar els municipis
-    public void onIlla_change() {
-    	LOGGER.info("Proxy a ExpedientController --> onIlla_change");
+    public void onProvincia_change() {
+    	LOGGER.info("Proxy a ExpedientController --> onProvincia_change");
      	this.llista_municipis = new ArrayList<Municipi>();  
      	MunicipiServiceInterface MunicipiServ;
  		  	
      	// Obtenim llista de matèries
- 		LOGGER.info("Obtenim llista de municipis a partir de l'illa ");
+ 		LOGGER.info("Obtenim llista de municipis a partir de la provincia ");
  		
  		try
  		{
@@ -480,7 +510,7 @@ public class ExpedientController {
  			MunicipiServ = (MunicipiServiceInterface) ic.lookup("es.caib.qssiEJB.service.MunicipiService");	
  			LOGGER.info("EJB lookup "+ MunicipiServ);	
  			
- 			this.llista_municipis = MunicipiServ.getLlista_MunicipisActius(this.illa); // Cridem l'EJB
+ 			this.llista_municipis = MunicipiServ.getLlista_MunicipisActius(this.provincia); // Cridem l'EJB
  			
  			LOGGER.info("Obtinguda llista de municipis "+ MunicipiServ);	
  			
@@ -502,10 +532,66 @@ public class ExpedientController {
  		}
     }
     
-    public void saveExpedient() {
-        FacesContext context = FacesContext.getCurrentInstance();
-         
-        context.addMessage(null, new FacesMessage("Successful",  "Your message: " + message) );
-        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
+    public void addExpedient() {
+    	
+        ExpedientServiceInterface ExpedientServ;
+		
+		LOGGER.info("addExpedient ");
+		
+		try
+		{
+			ic = new InitialContext();
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("es.caib.qssiEJB.service.ExpedientService");	
+			LOGGER.info("EJB lookup "+ ExpedientServ);	
+			
+			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			
+			// Contruim l'expedient a donar d'alta
+			Expedient exp = new Expedient();
+			Long id_static_created =20190001L; // TODO: obtenir el número seqüencialment
+			
+			exp.setId(id_static_created);
+			exp.setAssumpte(this.assumpte);
+			exp.setUnitatOrganica(this.unitatorganica);
+			
+			/*sc.setNom(this.nom);
+			sc.setDir3(this.dir3);
+			sc.setDatacreacio(new Date());
+			sc.setUsuari(origRequest.getRemoteUser()); 
+			sc.setActiu(this.actiu);
+			sc.setVisible_web(this.visible_web);*/
+			
+			
+			Subcentre sc = new Subcentre();
+			sc.setId(this.subcentre);
+			exp.setSubcentre(sc);
+			
+			Escrit e = new Escrit();
+			e.setId(this.escrit);
+			exp.setEscrit(e);
+			
+			Materia m = new Materia();
+			m.setId(this.materia); 
+			exp.setMateria(m);
+		
+			ExpedientServ.addExpedient(exp); // Cridem l'EJB
+				 
+			if (ExpedientServ.getResultat()==true)
+			{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Expedient afegit correctament", "Expedient afegit correctament"));				
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
+			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/index.xhtml");
+			}
+			else
+			{
+				
+				LOGGER.info("Error obtingut: "+ ExpedientServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error afegint expedient",  ExpedientServ.getError()));
+			}
+		} catch (Exception ex) {
+			
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant l'expedient", ex.toString()));
+		}
     }
 }
