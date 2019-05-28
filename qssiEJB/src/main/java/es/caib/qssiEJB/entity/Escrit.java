@@ -4,7 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -16,7 +19,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name="QSI_ESCRIT")
 public class Escrit {
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="qsi_sequencia")
+	@SequenceGenerator(name="qsi_sequencia", sequenceName = "qsi_sequencia", allocationSize=1)
 	private Integer id_escrit;
 	
 	@Column

@@ -7,6 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.jboss.ejb3.annotation.LocalBinding;
@@ -33,22 +34,22 @@ public class EscritService implements EscritServiceInterface{
 	private String strError = new String("");
 	private boolean resultat;
 	
+	public boolean getResultat() { return this.resultat;	}
+	public String getError() { return this.strError;	}
+	
 	@PostConstruct
 	public void init() {
-		LOGGER.info("Proxy a init: "+this.em);
+		LOGGER.info("Proxy a entityManager: "+this.em);
 	}
 	
 	@Override
 	public void addEscrit(Escrit e) {
+		
+		LOGGER.info("in addEscrit, estat entity manager: " + em.toString());
+		
 		try
 		{
-			LOGGER.info("in addEscrit, estat entity manager: " + em.toString());
-			
-			em.getTransaction().begin();
 			em.persist(e);
-			em.getTransaction().commit();
-			em.close();
-			
 			LOGGER.info("Inserit escrit");
 			this.resultat = true;
 		}
@@ -57,7 +58,6 @@ public class EscritService implements EscritServiceInterface{
 			this.resultat = false;
 			this.strError = ex.toString();
 		}
-		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -90,9 +90,71 @@ public class EscritService implements EscritServiceInterface{
 	}
 
 	@Override
-	public boolean getResultat() { return this.resultat;	}
+	public void updateEscrit(Escrit e_update) {
+		
+		try 
+		{
+			LOGGER.info("in updateEscrit, estat entity manager: " + em.toString());
+			
+			Escrit e = em.find(Escrit.class, e_update.getId() );
+			  
+			e.setNom(e_update.getNom());
+			e.setActiu(e_update.getActiu());
+			e.setUsuari(e_update.getUsuari());
+			e.setDatacreacio(e_update.getDatacreacio());
+			  
+			LOGGER.info("in updateEscrit, commit; ");
+			
+			this.resultat = true;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+		}		
+	}
 
 	@Override
-	public String getError() { return this.strError;	}
+	public Escrit getEscrit(Integer id_escrit) {
+		try
+		{
+			LOGGER.info("in getEscrit, estat entity manager: " + em.toString());
+			Escrit e = em.find(Escrit.class, id_escrit);
+			this.resultat = true;
+			return e;
+		}
+		
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+	}
 
+	@Override
+	public void removeEscrit(Integer id_escrit) {
+		
+		String queryString = new String("delete from Escrit where id_escrit = :id_escrit");
+		
+		try
+		{
+			LOGGER.info("in removeEscrit, estat entity manager: " + em.toString());
+			
+		    Query query = em.createQuery(queryString);
+		    query.setParameter("id_escrit", id_escrit);
+			query.executeUpdate();
+			
+			LOGGER.info("Removed escrit");
+			this.resultat = true;	
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+		}
+	}
 }

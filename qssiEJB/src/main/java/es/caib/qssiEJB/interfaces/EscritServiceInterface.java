@@ -16,7 +16,10 @@ import es.caib.qssiEJB.entity.Escrit;
 public interface EscritServiceInterface {
 	
 	public void addEscrit(Escrit e);
+	public void updateEscrit(Escrit e_update);
+	public Escrit getEscrit(Integer id_escrit);
 	public ArrayList<Escrit> getLlista_Escrits();
+	public void removeEscrit(Integer id_escrit);
 	public boolean getResultat();
 	public String getError();
 

@@ -40,8 +40,7 @@ public class TipusQueixaController {
 	private boolean actiu;
 	
 	private String message = new String("");
-	
-		
+			
 	// Getters & Setters
 	public void setMessage(String m) { this.message = m; }
 	public String getMessage() { return this.message; }
@@ -152,7 +151,7 @@ public class TipusQueixaController {
 		    QueixaServ = (QueixaServiceInterface) ic.lookup("es.caib.qssiEJB.service.QueixaService");
 		    LOGGER.info("EJB lookup" + QueixaServ + "-->queixaId: " + this.queixaId);
 		    	
-		    // Construim el centre
+		    // Construim la queixa
 		    Queixa q = new Queixa();
 		    q.setId(Integer.parseInt(this.queixaId));
 			q.setNom(this.queixaNom);
@@ -186,7 +185,7 @@ public class TipusQueixaController {
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 				
-			// Contruim el centre
+			// Contruim la queixa
 			Queixa q = new Queixa();
 			q.setNom(this.queixaNom);
 			q.setDatacreacio(new Date());
