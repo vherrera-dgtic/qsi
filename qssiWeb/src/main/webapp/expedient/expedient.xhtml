@@ -39,10 +39,10 @@
 				function visualitza_elements_contacte()
 				{
 				 	var myval;
-	             	if(document.forms['formulari']['formulari:metode-resposta'][0].checked == true ){
+	             	if(document.forms['formulari']['formulari:metoderesposta'][0].checked == true ){
 		                document.getElementById('div_adreca').style.display='none';
 		                //document.getElementById('div_electronic').style.display='';
-	             	}else if(document.forms['formulari']['formulari:metode-resposta'][1].checked == true ){
+	             	}else if(document.forms['formulari']['formulari:metoderesposta'][1].checked == true ){
 		                document.getElementById('div_adreca').style.display='';
 		                //document.getElementById('div_electronic').style.display='none';
 	             	}
@@ -126,7 +126,7 @@
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Motiu</div>
 						<div class='col-form'>
-						    <p:selectOneMenu id="motius">
+						    <p:selectOneMenu id="motius" value="#{ExpedientController.motiu}">
 								<f:selectItems value="#{ExpedientController.llista_Motius}" var="motiu" itemLabel="#{motiu.nom}" itemValue="#{motiu.id}"/>
         					</p:selectOneMenu>
 						</div>
@@ -134,7 +134,7 @@
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Tipus de queixa</div>
 						<div class='col-form'>
-							 <p:selectOneMenu>
+							 <p:selectOneMenu id="queixa" value="#{ExpedientController.queixa}">
 								<f:selectItems value="#{ExpedientController.llista_Queixes}" var="queixa" itemLabel="#{queixa.nom}" itemValue="#{queixa.id}"/>
             				 </p:selectOneMenu>
 						</div>
@@ -142,7 +142,7 @@
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Tipus d'entrada</div>
 						<div class='col-form'>
-							<p:selectOneMenu>
+							<p:selectOneMenu id="entrada" value="#{ExpedientController.entrada}">
 								<f:selectItems value="#{ExpedientController.llista_Entrades}" var="entrada" itemLabel="#{entrada.nom}" itemValue="#{entrada.id}"/>
             				 </p:selectOneMenu>
 						</div>
@@ -150,10 +150,10 @@
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Data d'entrada *</div>
 						<div class='col-form'>
-							<p:calendar id='data' value="#{ExpedientController.data}" locale="ca" pattern="dd/MM/yyyy" requiered="true" requieredMessage="La data és obligatòria"></p:calendar>
+							<p:calendar id='dataEntrada' value="#{ExpedientController.dataEntrada}" locale="ca" pattern="dd/MM/yyyy" requiered="true" requieredMessage="La data és obligatòria"></p:calendar>
 						</div>
 						<div class='col-form'>
-							<p:message id="m_data" for="data" showDetail="true"></p:message>
+							<p:message id="m_data" for="dataEntrada" showDetail="true"></p:message>
 						</div>
 						
 					</div>
@@ -165,7 +165,7 @@
         			<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Nom *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' maxlength='50' id="nom" required="true" requiredMessage="S'ha d'indicar el nom"></p:inputText>
+			    			<p:inputText size='30' id="nom" value="#{ExpedientController.nom}" maxlength='50' required="true" requiredMessage="S'ha d'indicar el nom"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -174,15 +174,15 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Llinatge *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' maxlength='50' id='llinatge' required="true" requiredMessage="S'ha d'indicar el llinatge"></p:inputText>
+			    			<p:inputText size='30' maxlength='50' id='llinatge1' value="#{ExpedientController.llinatge1}" required="true" requiredMessage="S'ha d'indicar el llinatge"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
-			    			<p:message id="m_llinatge" for="llinatge" showDetail="true"></p:message>
+			    			<p:message id="m_llinatge" for="llinatge1" showDetail="true"></p:message>
 			    		</div>
 			    	</div>
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Llinatge segon</div> 
-			    		<div class='col-form'><p:inputText size='30' maxlength='50'></p:inputText></div>
+			    		<div class='col-form'><p:inputText size='50' id='llinatge2' value="#{ExpedientController.llinatge2}" maxlength='50'></p:inputText></div>
 			    	</div>
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Tipus d'identificació *</div> 
@@ -190,15 +190,15 @@
 			    			<p:selectOneMenu id="identificacio" value="#{ExpedientController.identificacio}" style="width:125px">
             					<f:selectItems value="#{ExpedientController.llista_Identificacions}" var="identificacio" itemLabel="#{identificacio.nom}" itemValue="#{identificacio.id}"/>
         					</p:selectOneMenu>
-        					<p:inputText id="num_identificacio" required="true" requiredMessage="S'ha d'indicar la identificació"></p:inputText>
+        					<p:inputText id="numidentificacio" value="#{ExpedientController.numidentificacio}" required="true" requiredMessage="S'ha d'indicar la identificació"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
-			    			<p:message id="m_identificacio" for="num_identificacio" showDetail="true"></p:message>
+			    			<p:message id="m_identificacio" for="numidentificacio" showDetail="true"></p:message>
 			    		</div>
 			    	</div>
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Telèfon</div> 
-			    		<div class='col-form'><p:inputText size='15' maxlength='9'></p:inputText></div>
+			    		<div class='col-form'><p:inputText id="telefon" value="#{ExpedientController.telefon}" size='15' maxlength='9'></p:inputText></div>
 			    		<div class='col-form-etiqueta'>Llengua</div> 
 			    		<div class='col-form'>
 			    			<p:selectOneMenu id="idioma" value="#{ExpedientController.idioma}" style="width:125px">
@@ -209,7 +209,7 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Correu electrònic</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' maxlength='50' value="#{ExpedientController.correu}">
+			    			<p:inputText size='30' maxlength='50' id="correu" value="#{ExpedientController.correu}">
 				    			<f:validator validatorId="custom.emailValidator" />
 			    			</p:inputText>
 				    		
@@ -218,9 +218,9 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Mètode de resposta</div>
 			    		<div class='col-form'>
-			    			<p:selectOneRadio id="metode-resposta" onchange="visualitza_elements_contacte();" value="1" layout="grid" columns="1">
-            					<f:selectItem itemLabel="Desitja contestació per correu electrònic" itemValue="1" />
-            					<f:selectItem itemLabel="Desitja contestació per correu ordinari" itemValue="2" />
+			    			<p:selectOneRadio id="metoderesposta" onchange="visualitza_elements_contacte();" value="#{ExpedientController.metoderesposta}" layout="grid" columns="1">
+            					<f:selectItem itemLabel="Desitja contestació per correu electrònic" itemValue="mail" />
+            					<f:selectItem itemLabel="Desitja contestació per correu ordinari" itemValue="postal" />
         					</p:selectOneRadio>
 			    		</div>
 			    	</div>
@@ -229,15 +229,15 @@
 			    		<div class='col-form'>
 				    		<div class='row-form'>
 	        					<div class='col-form-etiqueta'>Carrer</div>
-	        					<div class='col-form'><p:inputText size='40' maxlength='60'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="direccio" value="#{ExpedientController.direccio}" size='40' maxlength='60'></p:inputText></div>
 	        				</div>
 	        				<div class='row-form'>
 	        					<div class='col-form-etiqueta'>Numero</div>
-	        					<div class='col-form'><p:inputText size='4' maxlength='3'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="numero" value="#{ExpedientController.numero}" size='4' maxlength='3'></p:inputText></div>
 	        					<div class='col-form-etiqueta'>Pis</div>
-	        					<div class='col-form'><p:inputText size='4' maxlength='3'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="pis" value="#{ExpedientController.pis}" size='4' maxlength='3'></p:inputText></div>
 	        					<div class='col-form-etiqueta'>CP</div>
-	        					<div class='col-form'><p:inputText size='4' maxlength='3'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="codipostal" value="#{ExpedientController.codipostal}" size='4' maxlength='3'></p:inputText></div>
 	        				</div>
 	        				<div class='row-form'>
 	        					<div class='col-form-etiqueta'>Provincia / Regió</div>
@@ -263,7 +263,7 @@
     			</p:outputPanel>
     			<p:outputPanel>
         			<h3>Contingut - Descripció</h3>
-        			<p:inputTextarea rows="10" cols="120" counter="display" maxlength="8000" counterTemplate="resten {0} caràcters." autoResize="false" />
+        			<p:inputTextarea id="textpeticio" value="#{ExpedientController.textpeticio}" rows="10" cols="120" counter="display" maxlength="8000" counterTemplate="resten {0} caràcters." autoResize="false" />
     			    <h:outputText id="display" />
     			</p:outputPanel>
     			<div style="height:25px"></div>

@@ -1,6 +1,5 @@
 package es.caib.qssiWeb.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -75,12 +74,26 @@ public class ExpedientController {
 	private Integer subcentre = 0;
 	private Integer escrit = 0;
 	private Integer materia = 0;
+	private Integer motiu = 0;
+	private Integer queixa = 0;
+	private Integer entrada = 0;
+	private String metoderesposta = new String("mail");
 	private Integer provincia = 0;
 	private Integer municipi = 0;
 	private Integer identificacio = 0;
 	private Integer idioma = 0;
+	private String textpeticio = new String("");
 	private String correu = new String("");
-	private String data = new String("01/01/2018");
+	private Date dataEntrada = new Date();
+	private String numidentificacio = new String("");
+	private String nom = new String("");
+	private String llinatge1 = new String("");
+	private String llinatge2 = new String("");
+	private String telefon = new String("");
+	private String direccio = new String("");
+	private String numero = new String("");
+	private String pis = new String("");
+	private String codipostal = new String("");
 	
 	private String messages = new String("");
 	
@@ -106,6 +119,18 @@ public class ExpedientController {
     public void setMateria(Integer materia) { this.materia = materia;  }
     public Integer getMateria() { return this.materia; }
     
+    public void setMotiu(Integer motiu) { this.motiu = motiu;  }
+    public Integer getMotiu() { return this.motiu; }
+    
+    public void setQueixa(Integer queixa) { this.queixa = queixa;  }
+    public Integer getQueixa() { return this.queixa; }
+    
+    public void setEntrada(Integer entrada) { this.entrada = entrada;  }
+    public Integer getEntrada() { return this.entrada; }
+    
+    public void setMetoderesposta(String mresp) { this.metoderesposta = mresp;  }
+    public String getMetoderesposta() { return this.metoderesposta; }
+    
     public void setProvincia(Integer provincia) { this.provincia = provincia; }
     public Integer getProvincia() { return this.provincia; }
     
@@ -118,11 +143,41 @@ public class ExpedientController {
     public void setIdioma(Integer idioma) { this.idioma = idioma; }
     public Integer getIdioma() { return this.idioma; }
     
+    public void setTextpeticio(String text) { this.textpeticio = text; }
+    public String getTextpeticio() { return this.textpeticio; }
+    
     public void setCorreu(String correu) { this.correu = correu; }
     public String getCorreu() { return this.correu; }
     
-    public void setData(String data) { this.data = data; }
-    public String getData() { return this.data; }
+    public void setDataEntrada(Date dataEntrada) { this.dataEntrada = dataEntrada; }
+    public Date getDataEntrada() { return this.dataEntrada; }
+    
+    public void setNumidentificacio(String ni) { this.numidentificacio = ni; }
+    public String getNumidentificacio() { return this.numidentificacio; }
+    
+    public void setNom(String n) { this.nom = n; }
+    public String getNom() { return this.nom; }
+    
+    public void setLlinatge1(String ll) { this.llinatge1 = ll; }
+    public String getLlinatge1() { return this.llinatge1; }
+    
+    public void setLlinatge2(String ll) { this.llinatge2 = ll; }
+    public String getLlinatge2() { return this.llinatge2; }
+    
+    public void setTelefon(String t) { this.telefon = t; }
+    public String getTelefon() { return this.telefon; }
+    
+    public void setNumero(String n) { this.numero = n; }
+    public String getNumero() { return this.numero; }
+    
+    public void setDireccio(String d) { this.direccio = d; }
+    public String getDireccio() { return this.direccio; }
+    
+    public void setPis(String p) { this.pis = p; }
+    public String getPis() { return this.pis; }
+    
+    public void setCodipostal(String cp) { this.codipostal = cp; }
+    public String getCodipostal() { return this.codipostal; }
     
     public void setMessages(String m) { this.messages = m; }
     public String getMessages() { return this.messages; }
@@ -134,9 +189,9 @@ public class ExpedientController {
 		
 		LOGGER.info("Proxy a ExpedientController " + CRIDADES);
 		
-		String pattern = "dd/MM/yyyy";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		this.data = simpleDateFormat.format(new Date());
+		//String pattern = "dd/MM/yyyy";
+		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		//this.data = simpleDateFormat.format(new Date());
 	}
 	
 	public boolean getAmbErrors() { return this.ambErrors; }
@@ -548,20 +603,21 @@ public class ExpedientController {
 			
 			// Contruim l'expedient a donar d'alta
 			Expedient exp = new Expedient();
-			Long id_static_created =20190001L; // TODO: obtenir el número seqüencialment
 			
-			exp.setId(id_static_created);
 			exp.setAssumpte(this.assumpte);
 			exp.setUnitatOrganica(this.unitatorganica);
-			
-			/*sc.setNom(this.nom);
-			sc.setDir3(this.dir3);
-			sc.setDatacreacio(new Date());
-			sc.setUsuari(origRequest.getRemoteUser()); 
-			sc.setActiu(this.actiu);
-			sc.setVisible_web(this.visible_web);*/
-			
-			
+			exp.setDataentrada(this.dataEntrada); // Data d'entrada -> l'establert per l'usuari
+			exp.setDatacreacio(new Date()); // Data creació -> avui
+			exp.setViaContestacio(this.metoderesposta);
+			exp.setTextPeticio(this.textpeticio);
+			exp.setEstat(0); // Estat inicial
+			exp.setNumidentificacio(this.numidentificacio);
+			exp.setNom(this.nom);
+			exp.setLlinatge1(this.llinatge1);
+			exp.setLlinatge2(this.llinatge2);
+			exp.setTelefon(this.telefon);
+			exp.setEmail(this.correu);
+					
 			Subcentre sc = new Subcentre();
 			sc.setId(this.subcentre);
 			exp.setSubcentre(sc);
@@ -574,6 +630,42 @@ public class ExpedientController {
 			m.setId(this.materia); 
 			exp.setMateria(m);
 		
+			Motiu mo = new Motiu();
+			mo.setId(this.motiu);
+			exp.setMotiu(mo);
+			
+			Queixa q = new Queixa();
+			q.setId(this.queixa);
+			exp.setQueixa(q);
+			
+			Entrada en = new Entrada();
+			en.setId(this.entrada);
+			exp.setEntrada(en);
+			
+			Idioma i = new Idioma();
+			i.setId(this.idioma);
+			exp.setIdioma(i);
+			
+			Identificacio id = new Identificacio();
+			id.setId(this.identificacio);
+			exp.setIdentificacio(id);
+			
+			// Si ens han eligit el mètode resposta per correu postal afegim la informació postal
+			
+			LOGGER.info("Això és un mètode de resposta: " + this.metoderesposta);
+			if (this.metoderesposta.equals("postal")) {
+				LOGGER.info("in postal: " + this.metoderesposta);
+				Municipi mu = new Municipi();
+				mu.setId(this.municipi);
+				exp.setMunicipi(mu);
+				
+				exp.setDireccio(this.direccio);
+				exp.setNumero(this.numero);
+				exp.setPis(this.pis);
+				exp.setCodipostal(this.codipostal);		
+			}
+		
+			
 			ExpedientServ.addExpedient(exp); // Cridem l'EJB
 				 
 			if (ExpedientServ.getResultat()==true)
@@ -591,7 +683,7 @@ public class ExpedientController {
 		} catch (Exception ex) {
 			
 			LOGGER.info("Error: " + ex.toString());
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant l'expedient", ex.toString()));
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant l'expedient", ex.toString()));
 		}
     }
 }

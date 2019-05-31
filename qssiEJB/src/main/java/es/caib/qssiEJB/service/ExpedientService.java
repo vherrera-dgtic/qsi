@@ -1,12 +1,16 @@
 package es.caib.qssiEJB.service;
 
+//import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 
 import org.apache.log4j.Logger;
 import org.jboss.ejb3.annotation.LocalBinding;
@@ -45,6 +49,19 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 		
 		try
 		{
+			// La idea és fer una select per construir la clau primària any + 00000 + núm.
+			// TODO: aquesta operació hauria d'esser atòmica
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(e.getDataentrada());
+			long any = calendar.get(Calendar.YEAR);
+			String queryString = new String("select count(*) from Expedient where date_part('year',data_entrada)= :any");
+			Query query = em.createQuery(queryString);
+			query.setParameter("any", any);
+			long comptador = (long) query.getSingleResult();
+			e.setId((any * 100000) + comptador + 1);
+			LOGGER.info("creada clau primària d'expedient: " + e.getId());
+			
+			// Afegim l'expedient
 			em.persist(e);
 			LOGGER.info("Inserit expedient");
 			this.resultat = true;
@@ -63,7 +80,7 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 		
 		ArrayList<Expedient> l = new ArrayList<Expedient>();
 		
-		String queryString = new String("select e from Expedient e");
+		String queryString = new String("select e from Expedient e order by id_expedient");
 		try
 		{
 						

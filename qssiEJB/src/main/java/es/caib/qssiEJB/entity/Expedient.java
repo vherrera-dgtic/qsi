@@ -39,7 +39,7 @@ public class Expedient {
 	private String via_contestacio;
 		
 	@Column
-	private String id_gestor;
+	private Integer id_gestor;
 	
 	@Column
 	private String usuari_assignat;
@@ -55,6 +55,36 @@ public class Expedient {
 	
 	@Column
 	private Integer id_estat;
+	
+	@Column
+	private String num_identificacio;
+	
+	@Column 
+	private String nom;
+	
+	@Column 
+	private String llinatge1;
+	
+	@Column 
+	private String llinatge2;
+	
+	@Column 
+	private String telefon;
+	
+	@Column 
+	private String email;
+	
+	@Column 
+	private String direccio;
+	
+	@Column 
+	private String numero;
+	
+	@Column 
+	private String pis;
+	
+	@Column 
+	private String codi_postal;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_escrit")
@@ -88,6 +118,9 @@ public class Expedient {
 	@JoinColumn(name = "id_municipi")
 	private Municipi municipi;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_identificacio")
+	private Identificacio identificacio;
 	
 	// Constructor
 	public Expedient() { }
@@ -114,11 +147,14 @@ public class Expedient {
 	public String getTextResposta() { return this.text_resposta; }
 	public void setTextRespota(String value) { this.text_resposta = value; }
 	
+	public Date getDataentrada() { return this.data_entrada; }
+	public void setDataentrada(Date data) { this.data_entrada = data; }
+	
 	public Date getDatacreacio() { return this.data_creacio; }
 	public void setDatacreacio(Date data) { this.data_creacio = data; } 
 	
-	public Date getDataResposta() { return this.data_resposta; }
-	public void setDataResposta(Date data) { this.data_resposta = data; } 
+	public Date getDataresposta() { return this.data_resposta; }
+	public void setDataresposta(Date data) { this.data_resposta = data; } 
 	
 	public Integer getEstat() { return this.id_estat; }
 	public void setEstat(Integer value) { this.id_estat = value; }
@@ -147,12 +183,48 @@ public class Expedient {
 	public Municipi getMunicipi() { return this.municipi; }
 	public void setMunicipi(Municipi m) { this.municipi = m; }
 	
+	public Identificacio getIdentificacio() { return this.identificacio; }
+	public void setIdentificacio(Identificacio i) { this.identificacio = i; }
+	
+	public String getNumidentificacio() { return this.num_identificacio; }
+	public void setNumidentificacio(String value) { this.num_identificacio = value; }
+	
+	public String getNom() { return this.nom; }
+	public void setNom(String n) { this.nom = n; }
+	
+	public String getLlinatge1() { return this.llinatge1; }
+	public void setLlinatge1(String l) { this.llinatge1 = l; }
+			
+	public String getLlinatge2() { return this.llinatge2; }
+	public void setLlinatge2(String l) { this.llinatge2 = l; }
+	
+	public String getTelefon() { return this.telefon; }
+	public void setTelefon(String t) { this.telefon = t; }
+	
+	public String getEmail() { return this.email; }
+	public void setEmail(String e) { this.email = e; }
+	
+	public String getDireccio() { return this.direccio; }
+	public void setDireccio(String d) { this.direccio = d; }
+	
+	public String getNumero() { return this.numero; }
+	public void setNumero(String n) { this.numero = n; }
+	
+	public String getPis() { return this.pis; }
+	public void setPis(String p) { this.pis = p; }
+	
+	public String getCodipostal() { return this.codi_postal; }
+	public void setCodipostal(String cp) { this.codi_postal = cp; }
+	
+	
+	// TODO: Tal volta aquesta funció no ha d'estar aquí
 	public Date getDatavenciment()
 	{
 		// convert date to calendar
 	    Calendar c = Calendar.getInstance();
 	    c.setTime(this.data_entrada);
 	    c.add(Calendar.DATE, 20); // TODO: La norma dia 15 dies hàbils. S'ha de crear una taula amb els festius i afinar l'algorisme, Toni Juanico
+	    
 	    return c.getTime();
 	}
 	
