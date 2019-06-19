@@ -24,7 +24,7 @@ import es.caib.qssiEJB.interfaces.QueixaServiceInterface;
  * data: 19/09/2018
  */
 
-@ManagedBean(name="TipusQueixaController")
+@ManagedBean
 @ViewScoped
 public class TipusQueixaController {
 
@@ -82,7 +82,7 @@ public class TipusQueixaController {
 		try
 		{
 			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("es.caib.qssiEJB.service.QueixaService");	
+			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");	
 			LOGGER.info("EJB lookup "+ QueixaServ);	
 			
 			this.llista_queixes = QueixaServ.getLLista_queixes(); // Cridem l'EJB
@@ -112,7 +112,7 @@ public class TipusQueixaController {
 		try
 		{
 			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("es.caib.qssiEJB.service.QueixaService");
+			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");
 			LOGGER.info("EJB lookup " + QueixaServ);
 				
 			Queixa q = new Queixa();
@@ -148,7 +148,7 @@ public class TipusQueixaController {
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		    ic = new InitialContext();
-		    QueixaServ = (QueixaServiceInterface) ic.lookup("es.caib.qssiEJB.service.QueixaService");
+		    QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");
 		    LOGGER.info("EJB lookup" + QueixaServ + "-->queixaId: " + this.queixaId);
 		    	
 		    // Construim la queixa
@@ -161,9 +161,14 @@ public class TipusQueixaController {
 							
 		    QueixaServ.updateQueixa(q);
 		    	
-		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus de queixa actualitzat correctament", "Tipus de queixa actualitzat correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
-			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_queixa/llistat_tipusqueixa.xhtml");
+		    
+		    // Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
+		    // Després d'actualitzar jsg-api.jar i jsf-imppl.jar (v. 2.1.2) al JBoss ubicats a ...\jboss-eap-5.2\jboss-as\server\default\deploy\jbossweb.sar\jsf-libs
+		    // hem aconseguit actualitzar a Mojarra 2.1.2, però tampoc funciona correctament
+		    // ja que el missatge es conserva indefinidament
+			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus de queixa actualitzat correctament", "Tipus de queixa actualitzat correctament"));
+			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_queixa/llistat_tipusqueixa.xhtml?faces-redirect=true");
 		} 
 		catch (Exception ex) {
 			LOGGER.info("Error: " + ex.toString());
@@ -180,7 +185,7 @@ public class TipusQueixaController {
 		try
 		{
 			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("es.caib.qssiEJB.service.QueixaService");	
+			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");	
 			LOGGER.info("EJB lookup "+ QueixaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -195,10 +200,10 @@ public class TipusQueixaController {
 			QueixaServ.addQueixa(q); // Cridem l'EJB
 					 
 			if (QueixaServ.getResultat()==true)
-			{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus queixa afegida correctament", "Tipus queixa afegida correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
-			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_queixa/llistat_tipusqueixa.xhtml");
+			{			
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus queixa afegida correctament", "Tipus queixa afegida correctament"));
+			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_queixa/llistat_tipusqueixa.xhtml?faces-redirect=true");
 			}
 			
 			else
@@ -225,7 +230,7 @@ public class TipusQueixaController {
 		try
 		{
 			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("es.caib.qssiEJB.service.QueixaService");
+			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");
 			LOGGER.info("EJB lookup " + QueixaServ);
 			
 			QueixaServ.removeQueixa(q.getId());

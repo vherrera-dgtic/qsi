@@ -23,8 +23,8 @@
 				<!-- Contigut-->
 				<p:panel id="principal" header="Llista de Matèries" footer="" style="margin-bottom:20px">
             	<p:dataTable id="taula" 
-            	             binding="#{MateriaController.taula_materies}"
-            	             value="#{MateriaController.llista_materies}" 
+            	             binding="#{materiaController.taula_materies}"
+            	             value="#{materiaController.llista_materies}" 
             	             var="element" 
             	             rows="10" 
             	             paginator="true"
@@ -48,7 +48,7 @@
 								</p:button>
 			    			</div>
 			    			<div style="float:right">
-			    				<p:commandButton icon="ui-icon-trash" title="Eliminar matèria" action="#{MateriaController.removeMateria}" update="growl,taula" >
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar matèria" action="#{materiaController.removeMateria}" update="growl,taula" >
 			    					<p:confirm header="Eliminar matèria" message="Estau segur que voleu eliminar la matèria #{element.nom}?" icon="ui-icon-alert" />
 			    				</p:commandButton>
 				    		</div> 

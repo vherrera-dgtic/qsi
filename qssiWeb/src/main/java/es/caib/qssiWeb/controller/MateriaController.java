@@ -24,7 +24,7 @@ import es.caib.qssiEJB.interfaces.MateriaServiceInterface;
  * data: 20/09/2018
  */
 
-@ManagedBean(name="MateriaController")
+@ManagedBean
 @ViewScoped
 public class MateriaController {
 	
@@ -81,7 +81,7 @@ public class MateriaController {
 		try
 		{
 			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("es.caib.qssiEJB.service.MateriaService");	
+			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");	
 			LOGGER.info("EJB lookup "+ MateriaServ);	
 			
 			this.llista_materies = MateriaServ.getLlista_Materies(); // Cridem l'EJB
@@ -111,7 +111,7 @@ public class MateriaController {
 		try
 		{
 			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("es.caib.qssiEJB.service.MateriaService");
+			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");
 			LOGGER.info("EJB lookup " + MateriaServ);
 				
 			Materia m = new Materia();
@@ -147,7 +147,7 @@ public class MateriaController {
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		    ic = new InitialContext();
-		    MateriaServ = (MateriaServiceInterface) ic.lookup("es.caib.qssiEJB.service.MateriaService");
+		    MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");
 		    LOGGER.info("EJB lookup" + MateriaServ + "--> materiaId: " + this.materiaId);
 		    	
 		    // Construim la matèria
@@ -160,8 +160,8 @@ public class MateriaController {
 							
 		    MateriaServ.updateMateria(m);
 		    	
+		    //FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Matèria actualitzada correctament", "Matèria actualitzada correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/materies/llistat_materia.xhtml");
 		} 
 		catch (Exception ex) {
@@ -179,7 +179,7 @@ public class MateriaController {
 		try
 		{
 			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("es.caib.qssiEJB.service.MateriaService");	
+			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");	
 			LOGGER.info("EJB lookup "+ MateriaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -195,8 +195,8 @@ public class MateriaController {
 					 
 			if (MateriaServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Matèria afegida correctament", "Matèria afegida correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/materies/llistat_materia.xhtml");
 			}
 			
@@ -224,7 +224,7 @@ public class MateriaController {
 		try
 		{
 			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("es.caib.qssiEJB.service.MateriaService");
+			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");
 			LOGGER.info("EJB lookup " + MateriaServ);
 			
 			MateriaServ.removeMateria(m.getId());

@@ -45,16 +45,9 @@ import org.apache.log4j.Logger;
  * data: 28/08/2018
  */
 
-@ManagedBean(name="ExpedientController")
+@ManagedBean
 @ViewScoped
 public class ExpedientController {
-	
-	// @EJB(name="es.caib.qssiEJB.service.MateriaService"), Toni Juanico, no sabem perquè el servidor JBoss 5.2 no injecta
-	// obtenim l'error:
-	//    SEVERE [application] JSF1029: The specified InjectionProvider implementation 'org.jboss.web.jsf.integration.injection.JBossInjectionProvider' does not implement the InjectionProvider interface.
-	// que creiem que és el que fa que no funciona l'anotació @EJB.
-	
-	//FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!",  this.message));
 	
 	// Private properties
 	private final static Logger LOGGER = Logger.getLogger(ExpedientController.class);
@@ -207,7 +200,7 @@ public class ExpedientController {
 		try
 		{
 			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("es.caib.qssiEJB.service.MateriaService");	
+			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");	
 			LOGGER.info("EJB lookup "+ MateriaServ);	
 			
 			llista_Materies = MateriaServ.getLlista_Materies(); // Cridem l'EJB
@@ -242,7 +235,7 @@ public class ExpedientController {
 			
 			// Obtenim llista de motius
 			LOGGER.info("Obtenim llista de motius");
-			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");
+			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");
 			llista_Motius = MotiuServ.getLlista_Motius(); // Cridem l'EJB
 			
 			if (!MotiuServ.getResultat())
@@ -274,7 +267,7 @@ public class ExpedientController {
 		LOGGER.info("Obtenim llista d'escrits");
 		try {
 			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.EscritService");
+			EscritServ = (EscritServiceInterface) this.ic.lookup("qssiEAR/EscritService/local");
 			
 			LOGGER.info("EJB lookup" + EscritServ);
 			
@@ -310,7 +303,7 @@ public class ExpedientController {
 		LOGGER.info("Obtenim llista de queixes");
 		try {
 			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.QueixaService");
+			QueixaServ = (QueixaServiceInterface) this.ic.lookup("qssiEAR/QueixaService/local");
 			
 			LOGGER.info("EJB lookup" + QueixaServ);
 			
@@ -346,7 +339,7 @@ public class ExpedientController {
 		LOGGER.info("Obtenim llista d'entrades");
 		try {
 			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.EntradaService");
+			EntradaServ = (EntradaServiceInterface) this.ic.lookup("qssiEAR/EntradaService/local");
 			
 			LOGGER.info("EJB lookup" + EntradaServ);
 			
@@ -381,7 +374,7 @@ public class ExpedientController {
 		LOGGER.info("Obtenim llista d'idiomes");
 		try {
 			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.IdiomaService");
+			IdiomaServ = (IdiomaServiceInterface) this.ic.lookup("qssiEAR/IdiomaService/local");
 			
 			LOGGER.info("EJB lookup" + IdiomaServ);
 			
@@ -415,7 +408,7 @@ public class ExpedientController {
 		LOGGER.info("Obtenim llista de provincies");
 		try {
 			ic = new InitialContext();
-			ProvinciaServ = (ProvinciaServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.ProvinciaService");
+			ProvinciaServ = (ProvinciaServiceInterface) this.ic.lookup("qssiEAR/ProvinciaService/local");
 			
 			LOGGER.info("EJB lookup" + ProvinciaServ);
 			
@@ -450,7 +443,7 @@ public class ExpedientController {
 		LOGGER.info("Obtenim llista de centres");
 		try {
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.CentreService");
+			CentreServ = (CentreServiceInterface) this.ic.lookup("qssiEAR/CentreService/local");
 			
 			LOGGER.info("EJB lookup" + CentreServ);
 			
@@ -484,7 +477,7 @@ public class ExpedientController {
 		LOGGER.info("Obtenim llista d'identificacions");
 		try {
 			ic = new InitialContext();
-			IdentificacioServ = (IdentificacioServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.IdentificacioService");
+			IdentificacioServ = (IdentificacioServiceInterface) this.ic.lookup("qssiEAR/IdentificacioService/local");
 			
 			LOGGER.info("EJB lookup" + IdentificacioServ);
 			
@@ -524,7 +517,7 @@ public class ExpedientController {
  		try
  		{
  			ic = new InitialContext();
- 			SubcentreServ = (SubcentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.SubcentreService");	
+ 			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");	
  			LOGGER.info("EJB lookup "+ SubcentreServ);	
  			
  			this.llista_subcentres = SubcentreServ.getLlista_SubcentresActiusWeb(this.centre); // Cridem l'EJB
@@ -562,7 +555,7 @@ public class ExpedientController {
  		try
  		{
  			ic = new InitialContext();
- 			MunicipiServ = (MunicipiServiceInterface) ic.lookup("es.caib.qssiEJB.service.MunicipiService");	
+ 			MunicipiServ = (MunicipiServiceInterface) ic.lookup("qssiEAR/MunicipiService/local");	
  			LOGGER.info("EJB lookup "+ MunicipiServ);	
  			
  			this.llista_municipis = MunicipiServ.getLlista_MunicipisActius(this.provincia); // Cridem l'EJB
@@ -596,7 +589,7 @@ public class ExpedientController {
 		try
 		{
 			ic = new InitialContext();
-			ExpedientServ = (ExpedientServiceInterface) ic.lookup("es.caib.qssiEJB.service.ExpedientService");	
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");	
 			LOGGER.info("EJB lookup "+ ExpedientServ);	
 			
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -670,8 +663,8 @@ public class ExpedientController {
 				 
 			if (ExpedientServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Expedient afegit correctament", "Expedient afegit correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/index.xhtml");
 			}
 			else

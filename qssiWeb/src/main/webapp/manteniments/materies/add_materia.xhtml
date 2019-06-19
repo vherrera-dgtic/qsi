@@ -20,7 +20,7 @@
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Nom *</div> 
 			    			<div class='col-form'>
-			    				<p:inputText id="nom" value="#{MateriaController.materiaNom}" required="true" requiredMessage="S'ha d'indicar el nom de la matèria" maxlength="255" style="width:450px"></p:inputText>
+			    				<p:inputText id="nom" value="#{materiaController.materiaNom}" required="true" requiredMessage="S'ha d'indicar el nom de la matèria" maxlength="255" style="width:450px"></p:inputText>
 			    			</div>
 			    			<div class='col-form'>
 				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -29,14 +29,14 @@
 			    		<div class='row-form'>
 							<div class='col-form-etiqueta'>Activa</div>
 			    			<div class='col-form'>
-			    				<p:inputSwitch id="activa" onLabel="Sí" offLabel="No" value="#{MateriaController.activa}" />
+			    				<p:inputSwitch id="activa" onLabel="Sí" offLabel="No" value="#{materiaController.activa}" />
 			    			</div>			    		
 			    		</div>
 			    	</div>
 				</p:outputPanel>
 				<div style="height:25px"></div>
     			<div class='boto-formulari'>
-   					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" action="#{MateriaController.addMateria}" update="growl"  validateClient="true"/>
+   					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" action="#{materiaController.addMateria}" update="growl"  validateClient="true"/>
    				</div>
 			</p:panel>
 		</h:form>

@@ -22,7 +22,7 @@
 			<h:form>
 			<!-- Contigut-->
 			<p:panel id="principal" header="Llista d'Idiomes" footer="" style="margin-bottom:20px">
-            	<p:dataTable id="taula" binding="#{IdiomaController.taula_idiomes}" value="#{IdiomaController.llista_idiomes}" var="element" emptyMessage="No s'han trobat registres.">
+            	<p:dataTable id="taula" binding="#{idiomaController.taula_idiomes}" value="#{idiomaController.llista_idiomes}" var="element" emptyMessage="No s'han trobat registres.">
     				<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     				<p:column headerText="Nom" width="35%"><h:outputText value="#{element.nom}" /></p:column>
 			    	<p:column headerText="Data creació" width="10%">
@@ -40,7 +40,7 @@
 								</p:button>
 			    			</div>
 			    			<div style="float:right">
-			    				<p:commandButton icon="ui-icon-trash" title="Eliminar idioma" action="#{IdiomaController.removeIdioma}" update="growl,taula" >
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar idioma" action="#{idiomaController.removeIdioma}" update="growl,taula" >
 			    					<p:confirm header="Eliminar idioma" message="Estau segur que voleu eliminar l'idioma #{element.nom}?" icon="ui-icon-alert" />
 			    				</p:commandButton>
 				    		</div> 

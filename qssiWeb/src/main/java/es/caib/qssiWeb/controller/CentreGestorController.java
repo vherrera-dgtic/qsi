@@ -25,7 +25,7 @@ import es.caib.qssiEJB.interfaces.CentreServiceInterface;
  * data: 19/09/2018
  */
 
-@ManagedBean(name="CentreGestorController")
+@ManagedBean
 @ViewScoped
 public class CentreGestorController {
 	
@@ -90,7 +90,7 @@ public class CentreGestorController {
 		try
 		{
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");
+			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");
 			LOGGER.info("EJB lookup " + CentreServ);
 			
 			Centre c = new Centre();
@@ -126,7 +126,7 @@ public class CentreGestorController {
 		try
 		{
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");	
+			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");	
 			LOGGER.info("EJB lookup "+ CentreServ);	
 			
 			this.llista_centres = CentreServ.getLlista_Centres(); // Cridem l'EJB
@@ -159,7 +159,7 @@ public class CentreGestorController {
 	    	HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	    	
 	    	ic = new InitialContext();
-	    	CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");
+	    	CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");
 	    	LOGGER.info("EJB lookup" + CentreServ);
 	    	
 	    	// Construim el centre
@@ -174,8 +174,8 @@ public class CentreGestorController {
 			
 	    	CentreServ.updateCentre(c);
 	    	
+	    	//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Centre actualitzat correctament", "Centre actualitzat correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_centregestor.xhtml");
 		} catch (Exception ex) {
 			LOGGER.info("Error: " + ex.toString());
@@ -192,7 +192,7 @@ public class CentreGestorController {
 		try
 		{
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");	
+			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");	
 			LOGGER.info("EJB lookup "+ CentreServ);	
 			
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -210,8 +210,8 @@ public class CentreGestorController {
 				 
 			if (CentreServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Centre afegit correctament", "Centre afegit correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_centregestor.xhtml");
 			}
 			else
@@ -237,7 +237,7 @@ public class CentreGestorController {
 		try
 		{
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");
+			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");
 			LOGGER.info("EJB lookup " + CentreServ);
 			
 			CentreServ.removeCentre(c.getId());

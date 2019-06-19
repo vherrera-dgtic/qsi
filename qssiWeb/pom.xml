@@ -23,52 +23,41 @@
   		<artifactId>primefaces</artifactId>
   		<version>${prime-faces.version}</version>
   	</dependency>
-  	<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 	<dependency>
     	<groupId>javax.servlet</groupId>
     	<artifactId>javax.servlet-api</artifactId>
     	<version>4.0.1</version>
     	<scope>provided</scope>
 	</dependency>
-  	<dependency>
-  		<groupId>com.sun.faces</groupId>
-  		<artifactId>jsf-api</artifactId>
-  		<version>${jsf.version}</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.sun.faces</groupId>
-  		<artifactId>jsf-impl</artifactId>
-  		<version>${jsf.version}</version>
-  	</dependency>
-  	<dependency>
+	<dependency>
   		<groupId>es.caib.qssi</groupId>
   		<artifactId>qssiEJB</artifactId>
   		<version>${modulo.version}</version>
   		<scope>provided</scope>
   	</dependency>
   	<dependency>
-			<groupId>org.jboss.javaee</groupId>
-			<artifactId>jboss-ejb-api</artifactId>
-			<version>3.0.0.GA</version>
-			<scope>provided</scope>
-	</dependency>
-	<dependency>
-			<groupId>org.jboss.ejb3</groupId>
-			<artifactId>jboss-ejb3-ext-api</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-	</dependency>
+  		<groupId>javax</groupId>
+  		<artifactId>javaee-api</artifactId>
+  		<version>6.0</version>
+  		<scope>provided</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.sun.faces</groupId>
+  		<artifactId>jsf-api</artifactId>
+  		<version>${jsf.version}</version>
+  		<scope>provided</scope> <!--  Això monta un pollo si no hi és, Toni Juanico -->
+  	</dependency>
+  	<dependency>
+  		<groupId>com.sun.faces</groupId>
+  		<artifactId>jsf-impl</artifactId>
+  		<version>${jsf.version}</version>
+  		<scope>provided</scope> <!--  Això monta un pollo si no hi és, Toni Juanico -->
+  	</dependency>
   	<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.13</version>
 			<scope>provided</scope>
-    </dependency>
-  	<dependency>
-    	<groupId>org.apache.logging.log4j</groupId>
-    	<artifactId>log4j-core</artifactId>
-        <version>2.11.1</version>
-        <scope>provided</scope>
     </dependency>
   </dependencies>
    <build>
@@ -83,8 +72,8 @@
   			<artifactId>maven-compiler-plugin</artifactId>
   			<version>2.3.2</version>
   			<configuration>
-  				<source>1.8</source>
-  				<target>1.8</target>
+  				<source>1.7</source>
+  				<target>1.7</target>
   			</configuration>
   		</plugin>
   	</plugins>

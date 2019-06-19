@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
-import org.jboss.ejb3.annotation.LocalBinding;
 
 import es.caib.qssiEJB.entity.Illa;
 import es.caib.qssiEJB.interfaces.IllaServiceInterface;
@@ -21,7 +20,6 @@ import es.caib.qssiEJB.interfaces.IllaServiceInterface;
  */
 
 @Stateless
-@LocalBinding(jndiBinding="es.caib.qssiEJB.service.IllaService")
 @RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN"}) // Si tothom -> sobren els altres rols
 public class IllaService implements IllaServiceInterface {
 

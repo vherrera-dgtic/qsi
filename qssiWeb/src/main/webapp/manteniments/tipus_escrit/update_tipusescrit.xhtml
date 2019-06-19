@@ -20,14 +20,14 @@
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Id</div> 
 			    			<div class='col-form'>
-			    				<span>#{TipusEscritController.escritId}</span>
-			    				<p:inputText id="escritId" value="#{TipusEscritController.escritId}" type="hidden" />
+			    				<span>#{tipusEscritController.escritId}</span>
+			    				<p:inputText id="escritId" value="#{tipusEscritController.escritId}" type="hidden" />
 			    			</div>
 				    	</div>
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Nom *</div> 
 			    			<div class='col-form'>
-			    				<p:inputText id="nom" value="#{TipusEscritController.escritNom}" required="true" requiredMessage="S'ha d'indicar el nom del tipus d'escrit" maxlength="255" style="width:450px"></p:inputText>
+			    				<p:inputText id="nom" value="#{tipusEscritController.escritNom}" required="true" requiredMessage="S'ha d'indicar el nom del tipus d'escrit" maxlength="255" style="width:450px"></p:inputText>
 			    			</div>
 			    			<div class='col-form'>
 				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -36,14 +36,14 @@
 			    		<div class='row-form'>
 							<div class='col-form-etiqueta'>Actiu</div>
 			    			<div class='col-form'>
-			    				<p:inputSwitch id="actiu" onLabel="Sí" offLabel="No" value="#{TipusEscritController.actiu}" />
+			    				<p:inputSwitch id="actiu" onLabel="Sí" offLabel="No" value="#{tipusEscritController.actiu}" />
 			    			</div>			    		
 			    		</div>
 			    	</div>
 				</p:outputPanel>
 				<div style="height:25px"></div>
     			<div class='boto-formulari'>
-   					<p:commandButton value="Actualitza" icon="ui-icon-check" ajax="false" action="#{TipusEscritController.updateTipusEscrit}" update="growl" validateClient="true"></p:commandButton>
+   					<p:commandButton value="Actualitza" icon="ui-icon-check" ajax="false" action="#{tipusEscritController.updateTipusEscrit}" update="growl" validateClient="true"></p:commandButton>
    				</div>
 			</p:panel>
 		</h:form>

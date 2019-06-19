@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.jboss.ejb3.annotation.LocalBinding;
 
 import es.caib.qssiEJB.entity.Centre;
 import es.caib.qssiEJB.entity.Subcentre;
@@ -23,7 +22,6 @@ import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
  */
 
 @Stateless
-@LocalBinding(jndiBinding="es.caib.qssiEJB.service.SubcentreService")
 //@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN"}) // Si tothom -> sobren els altres rols
 //Toni Juanico, 25/01/2019. Llevam els RolesAllowed per permetre accedir des del WebService (Helium)
 public class SubcentreService implements SubcentreServiceInterface {

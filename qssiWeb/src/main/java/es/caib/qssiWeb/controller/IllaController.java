@@ -20,7 +20,7 @@ import es.caib.qssiEJB.interfaces.IllaServiceInterface;
  * data: 20/09/2018
  */
 
-@ManagedBean(name="IllaController")
+@ManagedBean
 @ViewScoped
 public class IllaController {
 
@@ -52,7 +52,7 @@ public class IllaController {
 		try
 		{
 			ic = new InitialContext();
-			IllaServ = (IllaServiceInterface) ic.lookup("es.caib.qssiEJB.service.IllaService");	
+			IllaServ = (IllaServiceInterface) ic.lookup("qssiEAR/IllaService/local");	
 			LOGGER.info("EJB lookup "+ IllaServ);	
 			
 			this.llista_illes = IllaServ.getLlista_Illes(); // Cridem l'EJB

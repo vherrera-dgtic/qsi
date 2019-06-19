@@ -8,6 +8,14 @@
     <welcome-file>/index.xhtml</welcome-file>
   </welcome-file-list>
   <servlet>
+    	<servlet-name>Prova</servlet-name>
+    	<servlet-class>es.caib.qssiWeb.controller.ProvaEJB</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Prova</servlet-name>
+		<url-pattern>/prova</url-pattern>
+	</servlet-mapping>
+  <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
@@ -16,7 +24,7 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
-  <servlet>
+  <!-- servlet>
     <servlet-name>wsEstructuraOrganica</servlet-name>
     <servlet-class>es.caib.qssiWeb.ws.EstructuraOrganica</servlet-class>
   </servlet>
@@ -31,15 +39,7 @@
   <servlet-mapping>
     <servlet-name>wsDominiHeliumImpl</servlet-name>
     <url-pattern>/ws/DominiHeliumImpl</url-pattern>
-  </servlet-mapping>
-  <servlet>
-  	<servlet-name>getNota</servlet-name>
-  	<servlet-class>es.caib.qssiWeb.util.GetNota</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>getNota</servlet-name>
-  	<url-pattern>/getNota</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping-->
   <context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -53,12 +53,12 @@
     <param-value>.xhtml</param-value>
   </context-param>
   <context-param>
-    <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
-    <param-value>true</param-value>
+		<param-name>com.sun.faces.injectionProvider</param-name>
+		<param-value>org.jboss.web.jsf.integration.injection.JBossInjectionProvider</param-value>
   </context-param>
   <context-param>
-    <param-name>com.sun.faces.injectionProvider</param-name>
-    <param-value>org.jboss.web.jsf.integration.injection.JBossInjectionProvider</param-value>
+    <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
+    <param-value>true</param-value>
   </context-param>
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
@@ -92,7 +92,7 @@
   <security-role>
     <role-name>tothom</role-name>
   </security-role>
-  <servlet>
+  <!-- servlet>
     <display-name>Apache-Axis Servlet</display-name>
     <servlet-name>AxisServlet</servlet-name>
     <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
@@ -118,5 +118,5 @@
   <servlet-mapping>
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/servlet/AdminServlet</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping-->
 </web-app>

@@ -16,15 +16,15 @@
 			<p:panel id="principal" header="Llista de Municipis" footer="" style="margin-bottom:20px">
 			    <div style='margin-top:10px; margin-left:10px;'>
 					<div>
-						<p:selectOneMenu id="illa" value="#{MunicipiController.illa}">
-							<p:ajax listener="#{MunicipiController.onCentre_change}" update="municipi"/>
+						<p:selectOneMenu id="illa" value="#{municipiController.illa}">
+							<p:ajax listener="#{municipiController.onCentre_change}" update="municipi"/>
 							<f:selectItem itemLabel="Selecciona Illa" itemValue="" noSelectionOption="true" />
-            				<f:selectItems value="#{MunicipiController.llista_Illes}" var="illa" itemLabel="#{illa.nom}" itemValue="#{illa.id}"/>
+            				<f:selectItems value="#{municipiController.llista_Illes}" var="illa" itemLabel="#{illa.nom}" itemValue="#{illa.id}"/>
         				</p:selectOneMenu>
 				    </div>
 				</div>
 				<div style='margin-top: 15px;'>
-					<p:dataTable id="municipi" var="element" value="#{MunicipiController.llista_Municipis}" emptyMessage="No s'han trobat registres.">
+					<p:dataTable id="municipi" var="element" value="#{municipiController.llista_Municipis}" emptyMessage="No s'han trobat registres.">
     					<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     					<p:column headerText="Nom" width="35%"><h:outputText value="#{element.nom}" /></p:column>
 			    		<p:column headerText="Data creació" width="10%">

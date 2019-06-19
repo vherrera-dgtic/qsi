@@ -14,9 +14,9 @@
 	     <h:form>
 			<!-- Contigut-->
 			<p:panel id="principal" header="Llistat d'expedients" footer="" style="margin-bottom:20px">
-            	<h:outputText value="#{IndexController.missatge}"></h:outputText>
-            	<p:dataTable var="element" value="#{IndexController.llista_expedients}">
-    				<p:column headerText="Número" width="10%"><h:outputText value="#{element.id}" /></p:column>
+            	<h:outputText value="#{indexController.missatge}"></h:outputText>
+            	<p:dataTable var="element" value="#{indexController.llista_expedients}">
+    				<p:column headerText="Número" width="12%"><h:outputText value="#{element.id}" /></p:column>
     				<p:column headerText="Centre" width="20%"><h:outputText value="#{element.subcentre.centre.nom}" /></p:column>
 			    	<p:column headerText="Assumpte" width="35%"><h:outputText value="#{element.assumpte}" /></p:column>
 			    	<p:column headerText="Tipus" width="10%"><h:outputText value="#{element.escrit.nom}" /></p:column>

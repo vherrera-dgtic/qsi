@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
-import org.jboss.ejb3.annotation.LocalBinding;
 
 import es.caib.qssiEJB.entity.Provincia;
 import es.caib.qssiEJB.interfaces.ProvinciaServiceInterface;
@@ -21,7 +20,6 @@ import es.caib.qssiEJB.interfaces.ProvinciaServiceInterface;
  */
 
 @Stateless
-@LocalBinding(jndiBinding="es.caib.qssiEJB.service.ProvinciaService")
 //@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN"}) // Si tothom -> sobren els altres rols
 //Toni Juanico, 28/01/2019. Llevam els RolesAllowed per permetre accedir des del WebService (Helium)
 public class ProvinciaService implements ProvinciaServiceInterface {

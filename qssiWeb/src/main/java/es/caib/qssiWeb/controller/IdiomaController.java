@@ -24,7 +24,7 @@ import es.caib.qssiEJB.interfaces.IdiomaServiceInterface;
  * data: 20/09/2018
  */
 
-@ManagedBean(name="IdiomaController")
+@ManagedBean
 @ViewScoped
 public class IdiomaController {
 	
@@ -81,7 +81,7 @@ public class IdiomaController {
 		try
 		{
 			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("es.caib.qssiEJB.service.IdiomaService");	
+			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");	
 			LOGGER.info("EJB lookup "+ IdiomaServ);	
 			
 			this.llista_idiomes = IdiomaServ.getLlista_Idiomes(); // Cridem l'EJB
@@ -111,7 +111,7 @@ public class IdiomaController {
 		try
 		{
 			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("es.caib.qssiEJB.service.IdiomaService");
+			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");
 			LOGGER.info("EJB lookup " + IdiomaServ);
 				
 			Idioma i = new Idioma();
@@ -147,7 +147,7 @@ public class IdiomaController {
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		    ic = new InitialContext();
-		    IdiomaServ = (IdiomaServiceInterface) ic.lookup("es.caib.qssiEJB.service.IdiomaService");
+		    IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");
 		    LOGGER.info("EJB lookup" + IdiomaServ + "--> idiomaId: " + this.idiomaId);
 		    	
 		    // Construim l'idioma
@@ -159,9 +159,8 @@ public class IdiomaController {
 			i.setActiu(this.actiu);
 							
 		    IdiomaServ.updateIdioma(i);
-		    	
+		    //FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Idioma actualitzat correctament", "Idioma actualitzat correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/idiomes/llistat_idioma.xhtml");
 		} 
 		catch (Exception ex) {
@@ -179,7 +178,7 @@ public class IdiomaController {
 		try
 		{
 			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("es.caib.qssiEJB.service.IdiomaService");	
+			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");	
 			LOGGER.info("EJB lookup "+ IdiomaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -195,8 +194,8 @@ public class IdiomaController {
 					 
 			if (IdiomaServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Idioma afegit correctament", "Idioma afegit correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/idiomes/llistat_idioma.xhtml");
 			}
 			
@@ -222,7 +221,7 @@ public class IdiomaController {
 		try
 		{
 			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("es.caib.qssiEJB.service.IdiomaService");
+			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");
 			LOGGER.info("EJB lookup " + IdiomaServ);
 			
 			IdiomaServ.removeIdioma(i.getId());

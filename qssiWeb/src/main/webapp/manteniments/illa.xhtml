@@ -14,7 +14,7 @@
 	     <h:form>
 			<!-- Contigut-->
 			<p:panel id="principal" header="Llista d'illes" footer="" style="margin-bottom:20px">
-            	<p:dataTable var="element" value="#{IllaController.llista_illes}" emptyMessage="No s'han trobat registres.">
+            	<p:dataTable var="element" value="#{illaController.llista_illes}" emptyMessage="No s'han trobat registres.">
     				<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     				<p:column headerText="Nom" width="35%"><h:outputText value="#{element.nom}" /></p:column>
 			    	<p:column headerText="Data creació" width="10%">

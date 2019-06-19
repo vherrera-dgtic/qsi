@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name="QSI_EXPEDIENT")
 public class Expedient {
 	@Id
-	private Long id_expedient;
+	private Integer id_expedient;
 	
 	@Column
 	private String assumpte;
@@ -126,8 +126,8 @@ public class Expedient {
 	public Expedient() { }
 	
 	// Mètodes get - set
-	public Long getId() { return this.id_expedient;	}
-	public void setId(Long id) {	this.id_expedient = id;	}
+	public Integer getId() { return this.id_expedient;	}
+	public void setId(Integer id) {	this.id_expedient = id;	}
 	
 	public String getAssumpte() { return this.assumpte; }
 	public void setAssumpte(String value) { this.assumpte = value; }

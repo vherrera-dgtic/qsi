@@ -8,12 +8,6 @@
   <artifactId>qssiEJB</artifactId>
   <name>qssiEJB</name>
   <description>Mòdul EJB del projecte QSSI</description>
-  <repositories>
-		<repository>
-			<id>JBoss repository</id>
-			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
   <dependencies>
   	<dependency>
   		<groupId>javax</groupId>
@@ -27,18 +21,6 @@
 			<version>1.2.13</version>
 			<scope>provided</scope>
     </dependency>
-  	<dependency>
-    	<groupId>org.apache.logging.log4j</groupId>
-    	<artifactId>log4j-core</artifactId>
-        <version>2.11.1</version>
-        <scope>provided</scope>
-    </dependency>
-    <dependency>
-		<groupId>org.jboss.ejb3</groupId>
-		<artifactId>jboss-ejb3-ext-api</artifactId>
-		<version>1.0.0</version>
-		<scope>provided</scope>
-	</dependency>
   </dependencies>
   <build>
   	<plugins>

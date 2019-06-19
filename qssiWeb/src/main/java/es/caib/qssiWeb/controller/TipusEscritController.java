@@ -25,7 +25,7 @@ import es.caib.qssiEJB.interfaces.EscritServiceInterface;
  * data: 20/09/2018
  */
 
-@ManagedBean(name="TipusEscritController")
+@ManagedBean
 @ViewScoped
 public class TipusEscritController {
 	
@@ -82,7 +82,7 @@ public class TipusEscritController {
 		try
 		{
 			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("es.caib.qssiEJB.service.EscritService");	
+			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");	
 			LOGGER.info("EJB lookup "+ EscritServ);	
 			
 			this.llista_escrits = EscritServ.getLlista_Escrits(); // Cridem l'EJB
@@ -112,7 +112,7 @@ public class TipusEscritController {
 		try
 		{
 			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("es.caib.qssiEJB.service.EscritService");
+			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");
 			LOGGER.info("EJB lookup " + EscritServ);
 				
 			Escrit e = new Escrit();
@@ -148,7 +148,7 @@ public class TipusEscritController {
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		    ic = new InitialContext();
-		    EscritServ = (EscritServiceInterface) ic.lookup("es.caib.qssiEJB.service.EscritService");
+		    EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");
 		    LOGGER.info("EJB lookup" + EscritServ + "--> escritId: " + this.escritId);
 		    	
 		    // Construim l'escrit
@@ -161,8 +161,8 @@ public class TipusEscritController {
 							
 		    EscritServ.updateEscrit(e);
 		    	
+		    //FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus d'escrit actualitzat correctament", "Tipus d'escrit actualitzat correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_escrit/llistat_tipusescrit.xhtml");
 		} 
 		catch (Exception ex) {
@@ -180,7 +180,7 @@ public class TipusEscritController {
 		try
 		{
 			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("es.caib.qssiEJB.service.EscritService");	
+			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");	
 			LOGGER.info("EJB lookup "+ EscritServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -196,8 +196,8 @@ public class TipusEscritController {
 					 
 			if (EscritServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus escrit afegit correctament", "Tipus escrit afegit correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_escrit/llistat_tipusescrit.xhtml");
 			}
 			
@@ -225,7 +225,7 @@ public class TipusEscritController {
 		try
 		{
 			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("es.caib.qssiEJB.service.EscritService");
+			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");
 			LOGGER.info("EJB lookup " + EscritServ);
 			
 			EscritServ.removeEscrit(e.getId());

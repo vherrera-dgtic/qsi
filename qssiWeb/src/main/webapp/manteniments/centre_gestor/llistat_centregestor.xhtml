@@ -22,7 +22,7 @@
 	     <h:form>
 			<!-- Contigut-->
 			<p:panel id="principal" header="Llista de Centres Gestors" footer="" style="margin-bottom:20px">
-            	<p:dataTable id="taula" binding="#{CentreGestorController.taula_centres}" var="element" value="#{CentreGestorController.llista_centres}" emptyMessage="No s'han trobat registres.">
+            	<p:dataTable id="taula" binding="#{centreGestorController.taula_centres}" var="element" value="#{centreGestorController.llista_centres}" emptyMessage="No s'han trobat registres.">
     				<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     				<p:column headerText="Centre" width="35%"><h:outputText value="#{element.nom}" /></p:column>
 			    	<p:column headerText="Dir3" width="10%"><h:outputText value="#{element.dir3}" /></p:column>
@@ -43,7 +43,7 @@
 								
 			    			</div>
 			    			<div style="float:right">
-			    				<p:commandButton icon="ui-icon-trash" title="Eliminar centre" action="#{CentreGestorController.removeCentreGestor}" update="growl,taula" >
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar centre" action="#{centreGestorController.removeCentreGestor}" update="growl,taula" >
 			    					<p:confirm header="Eliminar centre" message="Estau segur que voleu eliminar el centre #{element.nom}?" icon="ui-icon-alert" />
 			    				</p:commandButton>
 				    		</div> 

@@ -24,7 +24,7 @@ import es.caib.qssiEJB.interfaces.EntradaServiceInterface;
  * data: 20/09/2018
  */
 
-@ManagedBean(name="TipusEntradaController")
+@ManagedBean
 @ViewScoped
 public class TipusEntradaController {
 	
@@ -82,7 +82,7 @@ public class TipusEntradaController {
 		try
 		{
 			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("es.caib.qssiEJB.service.EntradaService");	
+			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");	
 			LOGGER.info("EJB lookup "+ EntradaServ);	
 			
 			this.llista_entrades = EntradaServ.getLlista_Entrades(); // Cridem l'EJB
@@ -112,7 +112,7 @@ public class TipusEntradaController {
 		try
 		{
 			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("es.caib.qssiEJB.service.EntradaService");
+			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");
 			LOGGER.info("EJB lookup " + EntradaServ);
 				
 			Entrada e = new Entrada();
@@ -148,7 +148,7 @@ public class TipusEntradaController {
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		    ic = new InitialContext();
-		    EntradaServ = (EntradaServiceInterface) ic.lookup("es.caib.qssiEJB.service.EntradaService");
+		    EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");
 		    LOGGER.info("EJB lookup" + EntradaServ + "--> entradaId: " + this.entradaId);
 		    	
 		    // Construim el centre
@@ -161,8 +161,8 @@ public class TipusEntradaController {
 							
 		    EntradaServ.updateEntrada(e);
 		    	
+		    //FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus d'entrada actualitzada correctament", "Tipus d'entrada actualitzada correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_entrada/llistat_tipusentrada.xhtml");
 		} 
 		catch (Exception ex) {
@@ -180,7 +180,7 @@ public class TipusEntradaController {
 		try
 		{
 			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("es.caib.qssiEJB.service.EntradaService");	
+			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");	
 			LOGGER.info("EJB lookup "+ EntradaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -196,8 +196,8 @@ public class TipusEntradaController {
 					 
 			if (EntradaServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus d'entrada afegida correctament", "Tipus d'entrada afegida correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/tipus_entrada/llistat_tipusentrada.xhtml");
 			}
 			
@@ -225,7 +225,7 @@ public class TipusEntradaController {
 		try
 		{
 			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("es.caib.qssiEJB.service.EntradaService");
+			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");
 			LOGGER.info("EJB lookup " + EntradaServ);
 			
 			EntradaServ.removeEntrada(e.getId());

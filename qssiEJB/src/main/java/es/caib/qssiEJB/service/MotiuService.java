@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.jboss.ejb3.annotation.LocalBinding;
 
 import es.caib.qssiEJB.entity.Motiu;
 import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
@@ -21,7 +20,6 @@ import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
  */
 
 @Stateless
-@LocalBinding(jndiBinding="es.caib.qssiEJB.service.MotiuService")
 @RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN"}) // Si tothom -> sobren els altres rols
 public class MotiuService implements MotiuServiceInterface{
 

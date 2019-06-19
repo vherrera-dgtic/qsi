@@ -24,7 +24,7 @@ import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
  * data: 20/09/2018
  */
 
-@ManagedBean(name="MotiuController")
+@ManagedBean
 @ViewScoped
 public class MotiuController {
 	
@@ -81,7 +81,7 @@ public class MotiuController {
 		try
 		{
 			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");	
+			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");	
 			LOGGER.info("EJB lookup "+ MotiuServ);	
 			
 			this.llista_motius = MotiuServ.getLlista_Motius(); // Cridem l'EJB
@@ -111,7 +111,7 @@ public class MotiuController {
 		try
 		{
 			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");
+			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");
 			LOGGER.info("EJB lookup " + MotiuServ);
 				
 			Motiu m = new Motiu();
@@ -148,7 +148,7 @@ public class MotiuController {
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		    ic = new InitialContext();
-		    MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");
+		    MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");
 		    LOGGER.info("EJB lookup" + MotiuServ + "--> motiuId: " + this.motiuId);
 		    	
 		    // Construim el motiu
@@ -161,8 +161,8 @@ public class MotiuController {
 							
 		    MotiuServ.updateMotiu(m);
 		    	
+		    //FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Motiu actualitzat correctament", "Motiu actualitzat correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/motius/llistat_motiu.xhtml");
 		} 
 		catch (Exception ex) {
@@ -180,7 +180,7 @@ public class MotiuController {
 		try
 		{
 			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");	
+			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");	
 			LOGGER.info("EJB lookup "+ MotiuServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -196,8 +196,8 @@ public class MotiuController {
 					 
 			if (MotiuServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Motiu afegit correctament", "Motiu afegit correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/motius/llistat_motiu.xhtml");
 			}
 			
@@ -225,7 +225,7 @@ public class MotiuController {
 		try
 		{
 			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("es.caib.qssiEJB.service.MotiuService");
+			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");
 			LOGGER.info("EJB lookup " + MotiuServ);
 			
 			MotiuServ.removeMotiu(m.getId());

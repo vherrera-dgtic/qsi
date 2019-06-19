@@ -22,7 +22,7 @@ import es.caib.qssiEJB.interfaces.MunicipiServiceInterface;
  * data: 21/09/2018
  */
 
-@ManagedBean(name="MunicipiController")
+@ManagedBean
 @ViewScoped
 public class MunicipiController {
 
@@ -54,7 +54,7 @@ public class MunicipiController {
 		LOGGER.info("Obtenim llista d'illes");
 		try {
 			ic = new InitialContext();
-			IllaServ = (IllaServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.IllaService");
+			IllaServ = (IllaServiceInterface) this.ic.lookup("qssiEAR/IllaService/local");
 				
 			LOGGER.info("EJB lookup" + IllaServ);
 				
@@ -101,7 +101,7 @@ public class MunicipiController {
 	 		try
 	 		{
 	 			ic = new InitialContext();
-	 			MunicipiServ = (MunicipiServiceInterface) ic.lookup("es.caib.qssiEJB.service.MunicipiService");	
+	 			MunicipiServ = (MunicipiServiceInterface) ic.lookup("qssiEAR/MunicipiService/local");	
 	 			LOGGER.info("EJB lookup "+ MunicipiServ);	
 	 			
 	 			this.llista_municipis = MunicipiServ.getLlista_Municipis(this.illa); // Cridem l'EJB

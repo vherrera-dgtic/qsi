@@ -20,14 +20,14 @@
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Id</div> 
 			    			<div class='col-form'>
-			    				<span>#{IdiomaController.idiomaId}</span>
-			    				<p:inputText id="idiomaId" value="#{IdiomaController.idiomaId}" type="hidden" />
+			    				<span>#{idiomaController.idiomaId}</span>
+			    				<p:inputText id="idiomaId" value="#{idiomaController.idiomaId}" type="hidden" />
 			    			</div>
 				    	</div>
 			    		<div class='row-form'>
 			    			<div class='col-form-etiqueta'>Nom *</div> 
 			    			<div class='col-form'>
-			    				<p:inputText id="nom" value="#{IdiomaController.idiomaNom}" required="true" requiredMessage="S'ha d'indicar el nom de l'idioma" maxlength="255" style="width:450px"></p:inputText>
+			    				<p:inputText id="nom" value="#{idiomaController.idiomaNom}" required="true" requiredMessage="S'ha d'indicar el nom de l'idioma" maxlength="255" style="width:450px"></p:inputText>
 			    			</div>
 			    			<div class='col-form'>
 				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -36,14 +36,14 @@
 			    		<div class='row-form'>
 							<div class='col-form-etiqueta'>Actiu</div>
 			    			<div class='col-form'>
-			    				<p:inputSwitch id="actiu" onLabel="Sí" offLabel="No" value="#{IdiomaController.actiu}" />
+			    				<p:inputSwitch id="actiu" onLabel="Sí" offLabel="No" value="#{idiomaController.actiu}" />
 			    			</div>			    		
 			    		</div>
 			    	</div>
 				</p:outputPanel>
 				<div style="height:25px"></div>
     			<div class='boto-formulari'>
-   					<p:commandButton value="Actualitza" icon="ui-icon-check" ajax="false" action="#{IdiomaController.updateIdioma}" update="growl" validateClient="true"></p:commandButton>
+   					<p:commandButton value="Actualitza" icon="ui-icon-check" ajax="false" action="#{idiomaController.updateIdioma}" update="growl" validateClient="true"></p:commandButton>
    				</div>
 			</p:panel>
 		</h:form>

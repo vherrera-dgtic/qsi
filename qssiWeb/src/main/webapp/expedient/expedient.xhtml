@@ -78,7 +78,7 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Assumpte *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText id="assumpte" value="#{ExpedientController.assumpte}" required="true" requiredMessage="S'ha d'indicar l'assumpte" maxlength="255" size="60"></p:inputText>
+			    			<p:inputText id="assumpte" value="#{expedientController.assumpte}" required="true" requiredMessage="S'ha d'indicar l'assumpte" maxlength="255" size="60"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_assumpte" for="assumpte" showDetail="true"></p:message>
@@ -87,70 +87,70 @@
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Centre gestor *</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="centre" value="#{ExpedientController.centre}" required="true" requiredMessage="S'ha d'indicar un centre gestor" size="60">
-								<p:ajax listener="#{ExpedientController.onCentre_change}" update="subcentre"/>
+							<p:selectOneMenu id="centre" value="#{expedientController.centre}" required="true" requiredMessage="S'ha d'indicar un centre gestor" size="60">
+								<p:ajax listener="#{expedientController.onCentre_change}" update="subcentre"/>
 								<f:selectItem itemLabel="Selecciona Centre Gestor" itemValue="#{null}"  />
-            					<f:selectItems value="#{ExpedientController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
+            					<f:selectItems value="#{expedientController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
         					</p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Servei específic *</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="subcentre" value="#{ExpedientController.subcentre}" required="true" requiredMessage="S'ha d'indicar un servei" size="60">
+							<p:selectOneMenu id="subcentre" value="#{expedientController.subcentre}" required="true" requiredMessage="S'ha d'indicar un servei" size="60">
 								 <f:selectItem itemLabel="Selecciona servei" itemValue="#{null}"  />
-                                 <f:selectItems value="#{ExpedientController.llista_Subcentres}" var="subcentre" itemLabel="#{subcentre.nom}" itemValue="#{subcentre.id}" />
+                                 <f:selectItems value="#{expedientController.llista_Subcentres}" var="subcentre" itemLabel="#{subcentre.nom}" itemValue="#{subcentre.id}" />
 							</p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Unitat orgànica</div>
-						<div class='col-form'><p:inputText id="unitatorganica" value="#{ExpedientController.unitatorganica}"></p:inputText></div>
+						<div class='col-form'><p:inputText id="unitatorganica" value="#{expedientController.unitatorganica}"></p:inputText></div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Tipus d'escrit</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="escrit" value="#{ExpedientController.escrit}">
-            					<f:selectItems value="#{ExpedientController.llista_Escrits}" var="escrit" itemLabel="#{escrit.nom}" itemValue="#{escrit.id}"/>
+							<p:selectOneMenu id="escrit" value="#{expedientController.escrit}">
+            					<f:selectItems value="#{expedientController.llista_Escrits}" var="escrit" itemLabel="#{escrit.nom}" itemValue="#{escrit.id}"/>
         					</p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Matèria</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="materia" value="#{ExpedientController.materia}">
-								<f:selectItems value="#{ExpedientController.llista_Materies}" var="materia" itemLabel="#{materia.nom}" itemValue="#{materia.id}"/>
+							<p:selectOneMenu id="materia" value="#{expedientController.materia}">
+								<f:selectItems value="#{expedientController.llista_Materies}" var="materia" itemLabel="#{materia.nom}" itemValue="#{materia.id}"/>
         					</p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Motiu</div>
 						<div class='col-form'>
-						    <p:selectOneMenu id="motius" value="#{ExpedientController.motiu}">
-								<f:selectItems value="#{ExpedientController.llista_Motius}" var="motiu" itemLabel="#{motiu.nom}" itemValue="#{motiu.id}"/>
+						    <p:selectOneMenu id="motius" value="#{expedientController.motiu}">
+								<f:selectItems value="#{expedientController.llista_Motius}" var="motiu" itemLabel="#{motiu.nom}" itemValue="#{motiu.id}"/>
         					</p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Tipus de queixa</div>
 						<div class='col-form'>
-							 <p:selectOneMenu id="queixa" value="#{ExpedientController.queixa}">
-								<f:selectItems value="#{ExpedientController.llista_Queixes}" var="queixa" itemLabel="#{queixa.nom}" itemValue="#{queixa.id}"/>
+							 <p:selectOneMenu id="queixa" value="#{expedientController.queixa}">
+								<f:selectItems value="#{expedientController.llista_Queixes}" var="queixa" itemLabel="#{queixa.nom}" itemValue="#{queixa.id}"/>
             				 </p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Tipus d'entrada</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="entrada" value="#{ExpedientController.entrada}">
-								<f:selectItems value="#{ExpedientController.llista_Entrades}" var="entrada" itemLabel="#{entrada.nom}" itemValue="#{entrada.id}"/>
+							<p:selectOneMenu id="entrada" value="#{expedientController.entrada}">
+								<f:selectItems value="#{expedientController.llista_Entrades}" var="entrada" itemLabel="#{entrada.nom}" itemValue="#{entrada.id}"/>
             				 </p:selectOneMenu>
 						</div>
 					</div>
 					<div class='row-form'>
 						<div class='col-form-etiqueta'>Data d'entrada *</div>
 						<div class='col-form'>
-							<p:calendar id='dataEntrada' value="#{ExpedientController.dataEntrada}" locale="ca" pattern="dd/MM/yyyy" requiered="true" requieredMessage="La data és obligatòria"></p:calendar>
+							<p:calendar id='dataEntrada' value="#{expedientController.dataEntrada}" locale="ca" pattern="dd/MM/yyyy" requiered="true" requieredMessage="La data és obligatòria"></p:calendar>
 						</div>
 						<div class='col-form'>
 							<p:message id="m_data" for="dataEntrada" showDetail="true"></p:message>
@@ -165,7 +165,7 @@
         			<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Nom *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' id="nom" value="#{ExpedientController.nom}" maxlength='50' required="true" requiredMessage="S'ha d'indicar el nom"></p:inputText>
+			    			<p:inputText size='30' id="nom" value="#{expedientController.nom}" maxlength='50' required="true" requiredMessage="S'ha d'indicar el nom"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
@@ -174,7 +174,7 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Llinatge *</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' maxlength='50' id='llinatge1' value="#{ExpedientController.llinatge1}" required="true" requiredMessage="S'ha d'indicar el llinatge"></p:inputText>
+			    			<p:inputText size='30' maxlength='50' id='llinatge1' value="#{expedientController.llinatge1}" required="true" requiredMessage="S'ha d'indicar el llinatge"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_llinatge" for="llinatge1" showDetail="true"></p:message>
@@ -182,15 +182,15 @@
 			    	</div>
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Llinatge segon</div> 
-			    		<div class='col-form'><p:inputText size='50' id='llinatge2' value="#{ExpedientController.llinatge2}" maxlength='50'></p:inputText></div>
+			    		<div class='col-form'><p:inputText size='50' id='llinatge2' value="#{expedientController.llinatge2}" maxlength='50'></p:inputText></div>
 			    	</div>
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Tipus d'identificació *</div> 
 			    		<div class='col-form'>
-			    			<p:selectOneMenu id="identificacio" value="#{ExpedientController.identificacio}" style="width:125px">
-            					<f:selectItems value="#{ExpedientController.llista_Identificacions}" var="identificacio" itemLabel="#{identificacio.nom}" itemValue="#{identificacio.id}"/>
+			    			<p:selectOneMenu id="identificacio" value="#{expedientController.identificacio}" style="width:125px">
+            					<f:selectItems value="#{expedientController.llista_Identificacions}" var="identificacio" itemLabel="#{identificacio.nom}" itemValue="#{identificacio.id}"/>
         					</p:selectOneMenu>
-        					<p:inputText id="numidentificacio" value="#{ExpedientController.numidentificacio}" required="true" requiredMessage="S'ha d'indicar la identificació"></p:inputText>
+        					<p:inputText id="numidentificacio" value="#{expedientController.numidentificacio}" required="true" requiredMessage="S'ha d'indicar la identificació"></p:inputText>
 			    		</div>
 			    		<div class='col-form'>
 			    			<p:message id="m_identificacio" for="numidentificacio" showDetail="true"></p:message>
@@ -198,18 +198,18 @@
 			    	</div>
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Telèfon</div> 
-			    		<div class='col-form'><p:inputText id="telefon" value="#{ExpedientController.telefon}" size='15' maxlength='9'></p:inputText></div>
+			    		<div class='col-form'><p:inputText id="telefon" value="#{expedientController.telefon}" size='15' maxlength='9'></p:inputText></div>
 			    		<div class='col-form-etiqueta'>Llengua</div> 
 			    		<div class='col-form'>
-			    			<p:selectOneMenu id="idioma" value="#{ExpedientController.idioma}" style="width:125px">
-            					<f:selectItems value="#{ExpedientController.llista_Idiomes}" var="idioma" itemLabel="#{idioma.nom}" itemValue="#{idioma.id}"/>
+			    			<p:selectOneMenu id="idioma" value="#{expedientController.idioma}" style="width:125px">
+            					<f:selectItems value="#{expedientController.llista_Idiomes}" var="idioma" itemLabel="#{idioma.nom}" itemValue="#{idioma.id}"/>
         					</p:selectOneMenu>
 			    		</div>
 			    	</div>
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Correu electrònic</div> 
 			    		<div class='col-form'>
-			    			<p:inputText size='30' maxlength='50' id="correu" value="#{ExpedientController.correu}">
+			    			<p:inputText size='30' maxlength='50' id="correu" value="#{expedientController.correu}">
 				    			<f:validator validatorId="custom.emailValidator" />
 			    			</p:inputText>
 				    		
@@ -218,7 +218,7 @@
 			    	<div class='row-form'>
 			    		<div class='col-form-etiqueta'>Mètode de resposta</div>
 			    		<div class='col-form'>
-			    			<p:selectOneRadio id="metoderesposta" onchange="visualitza_elements_contacte();" value="#{ExpedientController.metoderesposta}" layout="grid" columns="1">
+			    			<p:selectOneRadio id="metoderesposta" onchange="visualitza_elements_contacte();" value="#{expedientController.metoderesposta}" layout="grid" columns="1">
             					<f:selectItem itemLabel="Desitja contestació per correu electrònic" itemValue="mail" />
             					<f:selectItem itemLabel="Desitja contestació per correu ordinari" itemValue="postal" />
         					</p:selectOneRadio>
@@ -229,32 +229,32 @@
 			    		<div class='col-form'>
 				    		<div class='row-form'>
 	        					<div class='col-form-etiqueta'>Carrer</div>
-	        					<div class='col-form'><p:inputText id="direccio" value="#{ExpedientController.direccio}" size='40' maxlength='60'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="direccio" value="#{expedientController.direccio}" size='40' maxlength='60'></p:inputText></div>
 	        				</div>
 	        				<div class='row-form'>
 	        					<div class='col-form-etiqueta'>Numero</div>
-	        					<div class='col-form'><p:inputText id="numero" value="#{ExpedientController.numero}" size='4' maxlength='3'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="numero" value="#{expedientController.numero}" size='4' maxlength='3'></p:inputText></div>
 	        					<div class='col-form-etiqueta'>Pis</div>
-	        					<div class='col-form'><p:inputText id="pis" value="#{ExpedientController.pis}" size='4' maxlength='3'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="pis" value="#{expedientController.pis}" size='4' maxlength='3'></p:inputText></div>
 	        					<div class='col-form-etiqueta'>CP</div>
-	        					<div class='col-form'><p:inputText id="codipostal" value="#{ExpedientController.codipostal}" size='4' maxlength='3'></p:inputText></div>
+	        					<div class='col-form'><p:inputText id="codipostal" value="#{expedientController.codipostal}" size='4' maxlength='3'></p:inputText></div>
 	        				</div>
 	        				<div class='row-form'>
 	        					<div class='col-form-etiqueta'>Provincia / Regió</div>
 		        					<div class='col-form'>
-  		        						<p:selectOneMenu id="provincia" value="#{ExpedientController.provincia}">
-  	        					            <p:ajax listener="#{ExpedientController.onProvincia_change}" update="municipi"/>
+  		        						<p:selectOneMenu id="provincia" value="#{expedientController.provincia}">
+  	        					            <p:ajax listener="#{expedientController.onProvincia_change}" update="municipi"/>
   	        					            <f:selectItem itemLabel="Selecciona una provincia o regió" itemValue="0" noSelectionOption="true" />
-		            						<f:selectItems value="#{ExpedientController.llista_Provincies}" var="provincia" itemLabel="#{provincia.nom}" itemValue="#{provincia.id}"/>
+		            						<f:selectItems value="#{expedientController.llista_Provincies}" var="provincia" itemLabel="#{provincia.nom}" itemValue="#{provincia.id}"/>
 		        						</p:selectOneMenu>
 		        					</div>
 		        			</div>
 		        			<div class='row-form'>
 		        				<div class='col-form-etiqueta'>Municipi</div>
 		        				<div class='col-form'>
-	        						<p:selectOneMenu id="municipi" value="#{ExpedientController.municipi}">
+	        						<p:selectOneMenu id="municipi" value="#{expedientController.municipi}">
 	        							<f:selectItem itemLabel="Selecciona un municipi" itemValue="0" noSelectionOption="true"/>
-	        							<f:selectItems value="#{ExpedientController.llista_Municipis}" var="municipi" itemLabel="#{municipi.nom}" itemValue="#{municipi.id}"/>
+	        							<f:selectItems value="#{expedientController.llista_Municipis}" var="municipi" itemLabel="#{municipi.nom}" itemValue="#{municipi.id}"/>
 	        						</p:selectOneMenu>
 		        				</div>
        						</div>
@@ -263,13 +263,13 @@
     			</p:outputPanel>
     			<p:outputPanel>
         			<h3>Contingut - Descripció</h3>
-        			<p:inputTextarea id="textpeticio" value="#{ExpedientController.textpeticio}" rows="10" cols="120" counter="display" maxlength="8000" counterTemplate="resten {0} caràcters." autoResize="false" />
+        			<p:inputTextarea id="textpeticio" value="#{expedientController.textpeticio}" rows="10" cols="120" counter="display" maxlength="8000" counterTemplate="resten {0} caràcters." autoResize="false" />
     			    <h:outputText id="display" />
     			</p:outputPanel>
     			<div style="height:25px"></div>
     			<p:outputPanel deferred="true">
 	    			<div class='boto-formulari'>
-    					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" actionListener="#{ExpedientController.addExpedient}" update="growl"  validateClient="true"/>
+    					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" actionListener="#{expedientController.addExpedient}" update="growl"  validateClient="true"/>
     				</div>
     			</p:outputPanel>
     		</p:panel>

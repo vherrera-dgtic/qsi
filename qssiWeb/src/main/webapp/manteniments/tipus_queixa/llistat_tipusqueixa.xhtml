@@ -22,7 +22,7 @@
 	     <h:form>
 			<!-- Contigut-->
 			<p:panel id="principal" header="Llista de Tipus de Queixes" footer="" style="margin-bottom:20px">
-            	<p:dataTable id="taula" binding="#{TipusQueixaController.taula_queixes}" var="element" value="#{TipusQueixaController.llista_queixes}" emptyMessage="No s'han trobat registres">
+            	<p:dataTable id="taula" binding="#{tipusQueixaController.taula_queixes}" var="element" value="#{tipusQueixaController.llista_queixes}" emptyMessage="No s'han trobat registres">
     				<p:column headerText="Identificador" width="10%"><h:outputText value="#{element.id}" /></p:column>
     				<p:column headerText="Tipus Queixa" width="35%"><h:outputText value="#{element.nom}" /></p:column>
 			    	<p:column headerText="Data creació" width="10%">
@@ -40,7 +40,7 @@
 								</p:button>
 			    			</div>
 			    			<div style="float:right">
-			    				<p:commandButton icon="ui-icon-trash" title="Eliminar tipus queixa" action="#{TipusQueixaController.removeTipusQueixa}" update="growl,taula" >
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar tipus queixa" action="#{tipusQueixaController.removeTipusQueixa}" update="growl,taula" >
 			    					<p:confirm header="Eliminar tipus queixa" message="Estau segur que voleu eliminar el tipus queixa #{element.nom}?" icon="ui-icon-alert" />
 			    				</p:commandButton>
 				    		</div> 

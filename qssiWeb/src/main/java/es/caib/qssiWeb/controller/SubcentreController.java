@@ -26,7 +26,7 @@ import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
  * data: 20/09/2018
  */
 
-@ManagedBean(name="SubcentreController")
+@ManagedBean
 @ViewScoped
 public class SubcentreController {
 
@@ -102,7 +102,7 @@ public class SubcentreController {
 		try
 		{
 			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.SubcentreService");
+			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");
 			LOGGER.info("EJB lookup " + SubcentreServ);
 				
 			Subcentre c = new Subcentre();
@@ -142,7 +142,7 @@ public class SubcentreController {
 	    	HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	    	
 	    	ic = new InitialContext();
-	    	SubcentreServ = (SubcentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.SubcentreService");
+	    	SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");
 	    	LOGGER.info("EJB lookup" + SubcentreServ);
 	    	
 	    	// Construim el centre
@@ -161,8 +161,8 @@ public class SubcentreController {
 			
 	    	SubcentreServ.updateSubcentre(sc);
 	    	
+	    	//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Subcentre actualitzat correctament", "Subcentre actualitzat correctament"));				
-			//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_subcentre.xhtml?centreId_param=" + this.centre);
 		} catch (Exception ex) {
 			LOGGER.info("Error: " + ex.toString());
@@ -179,7 +179,7 @@ public class SubcentreController {
 		try
 		{
 			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.SubcentreService");	
+			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");	
 			LOGGER.info("EJB lookup "+ SubcentreServ);	
 			
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -202,8 +202,8 @@ public class SubcentreController {
 				 
 			if (SubcentreServ.getResultat()==true)
 			{
+				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Subcentre afegit correctament", "Subcentre afegit correctament"));				
-				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true); -- Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/manteniments/centre_gestor/llistat_subcentre.xhtml?centreId_param=" + this.centre);
 			}
 			else
@@ -228,7 +228,7 @@ public class SubcentreController {
 		LOGGER.info("Obtenim llista de centres");
 		try {
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.CentreService");
+			CentreServ = (CentreServiceInterface) this.ic.lookup("qssiEAR/CentreService/local");
 				
 			LOGGER.info("EJB lookup" + CentreServ);
 				
@@ -263,7 +263,7 @@ public class SubcentreController {
 		try
 		{
 			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.SubcentreService");
+			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");
 			LOGGER.info("EJB lookup " + SubcentreServ);
 				
 			SubcentreServ.removeSubcentre(c.getId());
@@ -304,7 +304,7 @@ public class SubcentreController {
 		LOGGER.info("Obtenim llista de centres");
 		try {
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) this.ic.lookup("es.caib.qssiEJB.service.CentreService");
+			CentreServ = (CentreServiceInterface) this.ic.lookup("qssiEAR/CentreService/local");
 				
 			LOGGER.info("EJB lookup" + CentreServ);
 				
@@ -343,7 +343,7 @@ public class SubcentreController {
 		try
 		{
 			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.SubcentreService");	
+			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");	
 			LOGGER.info("EJB lookup "+ SubcentreServ);	
 	 			
 			this.llista_subcentres = SubcentreServ.getLlista_Subcentres(c); // Cridem l'EJB
