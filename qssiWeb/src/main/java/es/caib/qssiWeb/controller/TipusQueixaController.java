@@ -161,7 +161,6 @@ public class TipusQueixaController {
 							
 		    QueixaServ.updateQueixa(q);
 		    	
-		    
 		    // Ojo, això no acaba de funcionar per un Bug a Mojarra 1.2_13
 		    // Després d'actualitzar jsg-api.jar i jsf-imppl.jar (v. 2.1.2) al JBoss ubicats a ...\jboss-eap-5.2\jboss-as\server\default\deploy\jbossweb.sar\jsf-libs
 		    // hem aconseguit actualitzar a Mojarra 2.1.2, però tampoc funciona correctament

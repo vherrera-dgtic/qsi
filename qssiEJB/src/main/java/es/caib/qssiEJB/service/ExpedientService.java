@@ -48,12 +48,20 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 		try
 		{
 			// La idea és obtenir el següent valor de la seqüència qsi_expedient_seq_ANY
-			SequenciaExpedient se = em.find(SequenciaExpedient.class,any,javax.persistence.LockModeType.PESSIMISTIC_WRITE);
-			//SequenciaExpedient se = em.find(SequenciaExpedient.class,any);
-			//em.lock(se, LockModeType.PESSIMISTIC_WRITE);
+			// NOTA, Toni Juanico, 20/06/2019 amb la finalitat d'evitar repeticions en els
+			// números de seqüència la idea és fer un bloqueig, llegir el núm. incrementar-lo i actualitzar-lo
+			// això amb JPA 2.0 és pot fer mitjançant la següent sentència
+			//SequenciaExpedient se = em.find(SequenciaExpedient.class,any,LockModeType.PESSIMISTIC_WRITE);
+			// però amb JPA 1.0 no existeix i per tant hem de fer el següent: em.lock(se, LockModeType.WRITE);
+			// cosa que a priori pot arribar a donar problemes
+			
+			SequenciaExpedient se = em.find(SequenciaExpedient.class,any);
 			
 			if (se != null)
 			{
+				LOGGER.info("Execució find, " + se.getValor());
+				em.lock(se, LockModeType.WRITE);
+				LOGGER.info("Execució lock");
 				e.setId((any * 100000)+ se.getValor());
 				
 				LOGGER.info("obtinguda clau primària d'expedient amb transacció: " + e.getId());
@@ -63,9 +71,13 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 					LOGGER.info("dormim 60 segons havent obtingut la clau: " + e.getId());
 					Thread.sleep(60000);
 				}
-				
+						
+				// Mètode 2
 				se.nextval();
+				LOGGER.info("Incrementat valor");
 				em.persist(se);
+				LOGGER.info("Persist valor");
+				
 				return true;
 							
 			}
