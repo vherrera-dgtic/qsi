@@ -8,14 +8,12 @@ import javax.annotation.security.RolesAllowed;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
 import es.caib.qssiEJB.entity.Expedient;
-import es.caib.qssiEJB.entity.SequenciaExpedient;
 import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
 
 /**
@@ -43,25 +41,62 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 	
 	private boolean getPrimaryKey(Integer any, Expedient e) {
 		
-		String queryStringPK = new String("");
-		
+				
 		try
 		{
 			// La idea és obtenir el següent valor de la seqüència qsi_expedient_seq_ANY
 			// NOTA, Toni Juanico, 20/06/2019 amb la finalitat d'evitar repeticions en els
 			// números de seqüència la idea és fer un bloqueig, llegir el núm. incrementar-lo i actualitzar-lo
 			// això amb JPA 2.0 és pot fer mitjançant la següent sentència
-			//SequenciaExpedient se = em.find(SequenciaExpedient.class,any,LockModeType.PESSIMISTIC_WRITE);
-			// però amb JPA 1.0 no existeix i per tant hem de fer el següent: em.lock(se, LockModeType.WRITE);
-			// cosa que a priori pot arribar a donar problemes
+			// SequenciaExpedient se = em.find(SequenciaExpedient.class,any,LockModeType.PESSIMISTIC_WRITE);
+			// però amb JPA 1.0 no existeix aquesta signatura i per tant ho fem directament amb query's damunt la base de dades (createQueryString);
+			// Recordem que a JBoss 5.2 tenim JPA 1.0, JSP 2.1, EJB 3.0, etc.
+						
+			String strQuery = "select valor from QSI_SEQUENCIA_EXPEDIENT where id_sequencia =" + any +" for update";
 			
+			LOGGER.info("Obtenim clau primaria " + e.getEmail() + " query: " + strQuery );
+			
+			Query myQuery = em.createNativeQuery(strQuery);
+
+			Integer val = (Integer) myQuery.getSingleResult();
+			
+			LOGGER.info("Obtinguda: " + val);
+			
+			if (val != null) 
+			{
+				e.setId((any * 100000)+ val);
+				LOGGER.info("Calculada: " + e.getId());
+				
+				if (e.getEmail().equals("dorm@dorm.net"))
+				{
+					LOGGER.info("dormim 60 segons havent obtingut la clau: " + e.getId());
+					Thread.sleep(60000);
+				}
+				
+				val = val + 1;
+				strQuery = "update QSI_SEQUENCIA_EXPEDIENT set valor=" + val + " where id_sequencia=" + any;
+				LOGGER.info("Ara executem " + strQuery);
+				myQuery = em.createNativeQuery(strQuery);
+				myQuery.executeUpdate();
+				
+				return true;
+			}
+			else
+			{
+				// No existeix la seqüència per l'any donat
+				LOGGER.info("No existeix la seqüència per l'any donat");
+				return false;
+			}
+			
+			/*
 			SequenciaExpedient se = em.find(SequenciaExpedient.class,any);
-			
+					
 			if (se != null)
 			{
-				LOGGER.info("Execució find, " + se.getValor());
-				em.lock(se, LockModeType.WRITE);
-				LOGGER.info("Execució lock");
+				LOGGER.info("Execucio find valor " + se.getValor() + " i  correu " + e.getEmail());
+				em.lock(se, LockModeType.WRITE); // Bloqueig de l'any en qüestió
+				LOGGER.info("Execució lock en mode WRITE amb valor actualitzat " + se.getValor());
+				
 				e.setId((any * 100000)+ se.getValor());
 				
 				LOGGER.info("obtinguda clau primària d'expedient amb transacció: " + e.getId());
@@ -71,8 +106,7 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 					LOGGER.info("dormim 60 segons havent obtingut la clau: " + e.getId());
 					Thread.sleep(60000);
 				}
-						
-				// Mètode 2
+				
 				se.nextval();
 				LOGGER.info("Incrementat valor");
 				em.persist(se);
@@ -87,10 +121,11 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 				LOGGER.info("No existeix la seqüència per l'any donat");
 				return false;
 			}
+			*/
 		}
 		catch(Exception ex)
 		{
-			LOGGER.info("Error obtenint la seqüència: " + queryStringPK + " descripció de l'error: " + ex.toString());
+			LOGGER.info("Error obtenint la seqüència: " + ex.toString());
 			return false;
 		}
 	}
