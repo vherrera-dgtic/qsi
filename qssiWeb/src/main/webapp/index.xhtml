@@ -15,7 +15,7 @@
 			<!-- Contigut-->
 			<p:panel id="principal" header="Llistat d'expedients" footer="" style="margin-bottom:20px">
             	<h:outputText value="#{indexController.missatge}"></h:outputText>
-            	<p:dataTable var="element" value="#{indexController.llista_expedients}">
+            	<p:dataTable var="element" value="#{indexController.llista_expedients_assignats_usuari}">
     				<p:column headerText="Número" width="12%"><h:outputText value="#{element.id}" /></p:column>
     				<p:column headerText="Centre" width="20%"><h:outputText value="#{element.subcentre.centre.nom}" /></p:column>
 			    	<p:column headerText="Assumpte" width="35%"><h:outputText value="#{element.assumpte}" /></p:column>

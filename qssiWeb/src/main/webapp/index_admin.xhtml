@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+	  
+	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+	   <ui:define name="title">
+	      Queixes i suggeriments - CAIB
+	   </ui:define>
+	   <ui:define name="content">
+	     <h:form>
+			<!-- Contigut -->
+			<p:panel id="principal" header="Llistat d'expedients" footer="" style="margin-bottom:20px">
+            	<h:outputText value="#{indexController.missatge}"></h:outputText>
+            	<p:treeTable var="element" value="#{indexController.llista_expedients}">
+            		<p:column headerText="Centre" style="width:30%"><h:outputText value="#{element.subcentre.centre.nom}" /></p:column>
+    				<p:column headerText="Número" style="width:5%"><h:outputText value="#{element.id}" /></p:column>
+			    	<p:column headerText="Assumpte" style="width:30%"><h:outputText value="#{element.assumpte}" /></p:column>
+			    	<p:column headerText="Tipus" style="width:10%"><h:outputText value="#{element.escrit.nom}" /></p:column>
+			    	<p:column headerText="Entrada" style="width:10%">
+			    		<h:outputText value="#{element.dataentrada}" >
+			    			<f:convertDateTime pattern="dd/MM/yyyy" />
+			    		</h:outputText>
+			    	</p:column>
+			    	<p:column headerText="Venciment" style="width:10%">
+			    		<h:outputText value="#{element.datavenciment}" >
+			    			<f:convertDateTime pattern="dd/MM/yyyy" />
+			    		</h:outputText>
+			    	</p:column>
+			    	<p:column headerText="Accions" style="width:5%"></p:column>
+				</p:treeTable>
+    		</p:panel>
+		</h:form>
+		</ui:define>
+    </ui:composition>
+</html>

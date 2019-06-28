@@ -16,6 +16,7 @@ import es.caib.qssiEJB.entity.Expedient;
 public interface ExpedientServiceInterface {
 	public void addExpedient(Expedient e);
 	public ArrayList<Expedient> getLlista_Expedients();
+	public ArrayList<Expedient> getLlista_Expedients_assignats_usuari(String usuari);
 	public boolean getResultat();
 	public String getError();
 }

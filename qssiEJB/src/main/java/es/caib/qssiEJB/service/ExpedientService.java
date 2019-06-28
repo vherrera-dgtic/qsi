@@ -65,17 +65,10 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 			if (val != null) 
 			{
 				e.setId((any * 100000)+ val);
-				LOGGER.info("Calculada: " + e.getId());
-				
-				if (e.getEmail().equals("dorm@dorm.net"))
-				{
-					LOGGER.info("dormim 60 segons havent obtingut la clau: " + e.getId());
-					Thread.sleep(60000);
-				}
+				LOGGER.info("Calculada clau primaria expedient: " + e.getId());
 				
 				val = val + 1;
 				strQuery = "update QSI_SEQUENCIA_EXPEDIENT set valor=" + val + " where id_sequencia=" + any;
-				LOGGER.info("Ara executem " + strQuery);
 				myQuery = em.createNativeQuery(strQuery);
 				myQuery.executeUpdate();
 				
@@ -88,40 +81,6 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 				return false;
 			}
 			
-			/*
-			SequenciaExpedient se = em.find(SequenciaExpedient.class,any);
-					
-			if (se != null)
-			{
-				LOGGER.info("Execucio find valor " + se.getValor() + " i  correu " + e.getEmail());
-				em.lock(se, LockModeType.WRITE); // Bloqueig de l'any en qüestió
-				LOGGER.info("Execució lock en mode WRITE amb valor actualitzat " + se.getValor());
-				
-				e.setId((any * 100000)+ se.getValor());
-				
-				LOGGER.info("obtinguda clau primària d'expedient amb transacció: " + e.getId());
-				
-				if (e.getEmail().equals("dorm@dorm.net"))
-				{
-					LOGGER.info("dormim 60 segons havent obtingut la clau: " + e.getId());
-					Thread.sleep(60000);
-				}
-				
-				se.nextval();
-				LOGGER.info("Incrementat valor");
-				em.persist(se);
-				LOGGER.info("Persist valor");
-				
-				return true;
-							
-			}
-			else
-			{
-				// No existeix la seqüència per l'any donat
-				LOGGER.info("No existeix la seqüència per l'any donat");
-				return false;
-			}
-			*/
 		}
 		catch(Exception ex)
 		{
@@ -207,7 +166,7 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 		
 		ArrayList<Expedient> l = new ArrayList<Expedient>();
 		
-		String queryString = new String("select e from Expedient e order by id_expedient");
+		String queryString = new String("select e from Expedient e order by id_subcentre, id_expedient");
 		try
 		{
 						
@@ -230,6 +189,37 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 		return l;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<Expedient> getLlista_Expedients_assignats_usuari(String usuari) {
+		
+		ArrayList<Expedient> l = new ArrayList<Expedient>();
+		
+		String queryString = new String("select e from Expedient e where e.usuari_assignat = :u order by id_expedient");
+		try
+		{
+						
+			LOGGER.info("in getLlista_Expedients_assignats_usuari, estat entity manager: " + em.toString());
+			Query q = em.createQuery(queryString);
+			q.setParameter("u", usuari);
+			l = (ArrayList<Expedient>) q.getResultList();
+			
+			LOGGER.info("em operation done ");
+			this.resultat = true;
+			
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+			
+		}
+		
+		return l;
+	}
+	
+	// getLlista_Expedients_assignats_usuari
 	@Override
 	public boolean getResultat() {return this.resultat;	}
 
