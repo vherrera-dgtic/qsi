@@ -16,8 +16,8 @@
 			<p:panel id="principal" header="Llistat d'expedients" footer="" style="margin-bottom:20px">
             	<h:outputText value="#{indexController.missatge}"></h:outputText>
             	<p:treeTable var="element" value="#{indexController.llista_expedients}">
-            		<p:column headerText="Centre" style="width:30%"><h:outputText value="#{element.subcentre.centre.nom}" /></p:column>
-    				<p:column headerText="Número" style="width:5%"><h:outputText value="#{element.id}" /></p:column>
+            		<p:column headerText="Centre" style="width:25%"><h:outputText value="#{element.subcentre.centre.nom}" /></p:column>
+    				<p:column headerText="Número" style="width:10%"><h:outputText value="#{element.id}" /></p:column>
 			    	<p:column headerText="Assumpte" style="width:30%"><h:outputText value="#{element.assumpte}" /></p:column>
 			    	<p:column headerText="Tipus" style="width:10%"><h:outputText value="#{element.escrit.nom}" /></p:column>
 			    	<p:column headerText="Entrada" style="width:10%">

@@ -26,8 +26,8 @@ import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
 @RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN"}) // Si tothom -> sobren els altres rols
 public class ExpedientService implements ExpedientServiceInterface {
 
-private final static Logger LOGGER = Logger.getLogger(EscritService.class);
-	
+	private final static Logger LOGGER = Logger.getLogger(EscritService.class);
+
 	@PersistenceContext(unitName="qssiDB_PU")
 	EntityManager em;
 	
@@ -162,15 +162,55 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<Expedient> getLlista_Expedients() {
+	public ArrayList<Expedient> getLlista_Expedients(TipusCerca tc) {
 		
 		ArrayList<Expedient> l = new ArrayList<Expedient>();
 		
-		String queryString = new String("select e from Expedient e order by id_subcentre, id_expedient");
+		String queryString = new String();
+		String estats_cercats;
+		
+		switch (tc)
+		{
+			case PENDENTS_CENTRE:
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.NOU.getValue() + ", " + 
+						          ExpedientServiceInterface.EstatExpedient.EQUIP_FILTRATGE.getValue() + ", " + 
+						          ExpedientServiceInterface.EstatExpedient.RESPONSABLE_CONSELLERIA.getValue() + ", " +
+						          ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue();
+				
+				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by id_subcentre, id_expedient");
+				break;
+			case PENDENTS_ESTAT:
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.NOU.getValue() + ", " + 
+						          ExpedientServiceInterface.EstatExpedient.EQUIP_FILTRATGE.getValue() + ", " + 
+						          ExpedientServiceInterface.EstatExpedient.RESPONSABLE_CONSELLERIA.getValue() + ", " +
+						          ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue();
+				
+				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by id_estat");
+				break;
+			case REBUTJADES:
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.REBUTJADA.getValue() + " ";
+				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
+				break;
+				
+			case FINALITZADES:
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.RESPOSTA.getValue() + ", " + 
+			                     ExpedientServiceInterface.EstatExpedient.TANCADA.getValue();
+				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
+				break;
+			case SENSE_RESPOSTA:
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.TANCADA.getValue() + " ";
+				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
+				break;
+			case TOTS:
+				queryString = new String("select e from Expedient e order by id_subcentre, data_entrada");
+				break;
+		}
+		
 		try
 		{
 						
 			LOGGER.info("in getLlista_Expedients, estat entity manager: " + em.toString());
+			LOGGER.info("Query seleccionada: " + queryString);
 			
 			l = (ArrayList<Expedient>) em.createQuery(queryString).getResultList();
 			
@@ -219,11 +259,10 @@ private final static Logger LOGGER = Logger.getLogger(EscritService.class);
 		return l;
 	}
 	
-	// getLlista_Expedients_assignats_usuari
 	@Override
 	public boolean getResultat() {return this.resultat;	}
 
 	@Override
-	public String getError() { return this.strError;	}
+	public String getError() { return this.strError; }
 
 }
