@@ -56,7 +56,7 @@ public interface ExpedientServiceInterface {
 		{ 
 			switch (value)
 			{
-				case 0: return "Creat"; 
+				case 0: return "Nou"; 
 				case 1: return "Pendent equip filtratge";  
 				case 2: return "Assignat a responsable Conselleria";
 				case 3: return "Assignat a tramitador (pendent resposta)";

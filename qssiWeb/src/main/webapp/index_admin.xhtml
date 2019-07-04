@@ -7,30 +7,48 @@
 	  xmlns:p="http://primefaces.org/ui">
 	  
 	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
-	   <ui:define name="title">
-	      Queixes i suggeriments - CAIB
-	   </ui:define>
-	   <ui:define name="content">
+		<ui:define name="title">
+			Queixes i suggeriments - CAIB
+		</ui:define>
+		<ui:define name="content">
+		<p:growl id="growl" showDetail="true" />
+	    	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        		<p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        		<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+         </p:confirmDialog>	
 	     <h:form>
 			<!-- Contigut -->
 			<p:panel id="principal" header="Llistat d'expedients" footer="" style="margin-bottom:20px">
             	<h:outputText value="#{indexController.missatge}"></h:outputText>
-            	<p:treeTable var="element" value="#{indexController.llista_expedients}">
-            		<p:column headerText="Centre" style="width:25%"><h:outputText value="#{element.subcentre.centre.nom}" /></p:column>
-    				<p:column headerText="Número" style="width:10%"><h:outputText value="#{element.id}" /></p:column>
-			    	<p:column headerText="Assumpte" style="width:30%"><h:outputText value="#{element.assumpte}" /></p:column>
-			    	<p:column headerText="Tipus" style="width:10%"><h:outputText value="#{element.escrit.nom}" /></p:column>
+            	<p:treeTable id="taula" var="element" value="#{indexController.llista_expedients}">
+            		<p:column headerText="Centre" style="width:30%"><h:outputText value="#{element.centre.nom}" /></p:column>
+    				<p:column headerText="Número" style="width:8%"><h:outputText value="#{element.id}" rendered="#{element.id!='0'}" /></p:column>
+			    	<p:column headerText="Assumpte" style="width:35%"><h:outputText value="#{element.assumpte}" /></p:column>
 			    	<p:column headerText="Entrada" style="width:10%">
-			    		<h:outputText value="#{element.dataentrada}" >
+			    		<h:outputText value="#{element.dataentrada}" rendered="#{element.id!='0'}" >
 			    			<f:convertDateTime pattern="dd/MM/yyyy" />
 			    		</h:outputText>
 			    	</p:column>
 			    	<p:column headerText="Venciment" style="width:10%">
-			    		<h:outputText value="#{element.datavenciment}" >
+			    		<h:outputText value="#{element.datavenciment}" rendered="#{element.id!='0'}" >
 			    			<f:convertDateTime pattern="dd/MM/yyyy" />
 			    		</h:outputText>
 			    	</p:column>
-			    	<p:column headerText="Accions" style="width:5%"></p:column>
+			    	<p:column headerText="Accions" style="width:7%">
+			    		<div>
+			    		    <div style="float:left">
+				    			<p:button outcome="/expedient/update_expedient.xhtml" icon="ui-icon-pencil" rendered="#{element.id!='0'}">
+				    				<f:param name="expedientId_param" value="#{element.id}" />
+								</p:button>
+								
+			    			</div>
+			    			<div style="float:right">
+			    				<p:commandButton icon="ui-icon-trash" title="Eliminar expedient" action="#{expedientController.removeExpedient}" rendered="#{element.id!='0'}" update="growl,taula" >
+			    					<p:confirm header="Eliminar expedient" message="Estau segur que voleu eliminar l'expedient #{element.id}?" icon="ui-icon-alert" />
+			    				</p:commandButton>
+				    		</div> 
+			    		</div>
+			    	</p:column>
 				</p:treeTable>
     		</p:panel>
 		</h:form>

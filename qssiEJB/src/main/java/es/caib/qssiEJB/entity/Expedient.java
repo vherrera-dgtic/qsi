@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
+
 /**
  * Entitat de mapeig de la taula QSI_EXPEDIENT - Aquesta entitat és el core de l'aplicació
  * @author [u97091] Toni Juanico Soler
@@ -91,6 +93,10 @@ public class Expedient {
     private Escrit escrit;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_centre")
+    private Centre centre;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_subcentre")
     private Subcentre subcentre;
 	
@@ -157,10 +163,13 @@ public class Expedient {
 	public void setDataresposta(Date data) { this.data_resposta = data; } 
 	
 	public Integer getEstat() { return this.id_estat; }
-	public void setEstat(Integer value) { this.id_estat = value; }
+	public void setEstat(ExpedientServiceInterface.EstatExpedient value) { this.id_estat = value.getValue(); }
 	
 	public Escrit getEscrit() { return this.escrit; }
 	public void setEscrit(Escrit e) { this.escrit = e; }
+	
+	public Centre getCentre() { return this.centre; }
+	public void setCentre(Centre s) { this.centre = s; }
 	
 	public Subcentre getSubcentre() { return this.subcentre; }
 	public void setSubcentre(Subcentre s) { this.subcentre = s; }

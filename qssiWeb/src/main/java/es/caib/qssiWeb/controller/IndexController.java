@@ -17,7 +17,6 @@ import org.primefaces.model.TreeNode;
 
 import es.caib.qssiEJB.entity.Centre;
 import es.caib.qssiEJB.entity.Expedient;
-import es.caib.qssiEJB.entity.Subcentre;
 import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
 
 @ManagedBean
@@ -94,7 +93,7 @@ public class IndexController {
 		String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("f");
 		
 		// Obtenim llista de matèries
-		LOGGER.info("Obtenim llista d'expedients ");
+		LOGGER.info("Obtenim llista d'expedients amb paràmetre: " + param);
 		
 		try
 		{
@@ -143,13 +142,13 @@ public class IndexController {
 		String element_anterior = new String("");
 		ArrayList<DefaultTreeNode> nodes = new ArrayList<DefaultTreeNode>();
 		Expedient expedient_dummy = new Expedient();
+		expedient_dummy.setId(0);
 		expedient_dummy.setDataentrada(new Date());
 		expedient_dummy.setDatacreacio(new Date());
-		Subcentre subcentre_node = new Subcentre();
 		Centre centre_node = new Centre();
 		centre_node.setNom("Centre dummy");
-		subcentre_node.setCentre(centre_node);
-		expedient_dummy.setSubcentre(subcentre_node);
+		
+		expedient_dummy.setCentre(centre_node);
 		
 		Integer num_nodes = 0;
 		this.arbre_expedients = new DefaultTreeNode(expedient_dummy, null);
@@ -163,17 +162,14 @@ public class IndexController {
 			{
 				ExpedientServiceInterface.EstatExpedient estat_expedient = ExpedientServiceInterface.EstatExpedient.valueOf(e.getEstat());
 				element_actual = estat_expedient.getTag();
-				LOGGER.info("Estat actual: " + element_actual + "  Estat anterior: " + element_anterior);
 			}
 			else
 			{
-				element_actual = e.getSubcentre().getCentre().getNom();
-				LOGGER.info("Conselleria actual: " + element_actual + " Conselleria anterior: " + element_anterior);
+				element_actual = e.getCentre().getNom();
 			}
 			
 			if (element_actual.equals(element_anterior))
 			{
-				LOGGER.info("seguim igual");
 				TreeNode pare = nodes.get(nodes.size()-1);
 				TreeNode node_fulla = new DefaultTreeNode(element_actual, e,pare);
 				num_nodes = num_nodes + 1;
@@ -186,39 +182,35 @@ public class IndexController {
 				{
 					pare = nodes.get(nodes.size()-1);
 					expedient_dummy = (Expedient) pare.getData();
-					expedient_dummy.getSubcentre().getCentre().setNom(expedient_dummy.getSubcentre().getCentre().getNom() + "(" +num_nodes + ")");
+					expedient_dummy.getCentre().setNom("(" + num_nodes + ") " + expedient_dummy.getCentre().getNom());
 						
 				}
 				
-				LOGGER.info("construim nou node");
 				// Canvi d'element
 				expedient_dummy = new Expedient();
+				expedient_dummy.setId(0);
 				expedient_dummy.setDataentrada(new Date());
 				expedient_dummy.setDatacreacio(new Date()); 
 				
-				subcentre_node = new Subcentre();
 				centre_node = new Centre();
 				centre_node.setNom(element_actual);
-				subcentre_node.setCentre(centre_node);
-				expedient_dummy.setSubcentre(subcentre_node);
+				expedient_dummy.setCentre(centre_node);
 				
 				nodes.add(new DefaultTreeNode(expedient_dummy,this.arbre_expedients));
 				element_anterior = centre_node.getNom();
-				LOGGER.info("node construit " + centre_node.getNom());
-				
-				LOGGER.info("Afegim l'element al pare creat");
+								
 				pare = nodes.get(nodes.size()-1);
 				TreeNode node_fulla = new DefaultTreeNode(element_actual, e, pare);
 				num_nodes = 1;
 			}
 		}
-		// Afegim etiqueta
+		// Al finalitzar agefim l'etiqueta al darrer element
 		TreeNode pare;
 		if (nodes.size()>0)
 		{
 			pare = nodes.get(nodes.size()-1);
 			expedient_dummy = (Expedient) pare.getData();
-			expedient_dummy.getSubcentre().getCentre().setNom(expedient_dummy.getSubcentre().getCentre().getNom() + "(" +num_nodes + ")");
+			expedient_dummy.getCentre().setNom("(" + num_nodes + ") " + expedient_dummy.getCentre().getNom());
 		}
 	}
 }

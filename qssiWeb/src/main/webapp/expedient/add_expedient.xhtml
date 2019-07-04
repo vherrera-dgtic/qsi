@@ -95,10 +95,10 @@
 						</div>
 					</div>
 					<div class='row-form'>
-						<div class='col-form-etiqueta'>Servei específic *</div>
+						<div class='col-form-etiqueta'>Servei</div>
 						<div class='col-form'>
-							<p:selectOneMenu id="subcentre" value="#{expedientController.subcentre}" required="true" requiredMessage="S'ha d'indicar un servei" size="60">
-								 <f:selectItem itemLabel="Selecciona servei" itemValue="#{null}"  />
+							<p:selectOneMenu id="subcentre" value="#{expedientController.subcentre}" size="60">
+								 <f:selectItem itemLabel="Selecciona servei si el coneixeu" itemValue="#{null}"  />
                                  <f:selectItems value="#{expedientController.llista_Subcentres}" var="subcentre" itemLabel="#{subcentre.nom}" itemValue="#{subcentre.id}" />
 							</p:selectOneMenu>
 						</div>

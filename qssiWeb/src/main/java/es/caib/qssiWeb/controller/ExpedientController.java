@@ -603,18 +603,25 @@ public class ExpedientController {
 			exp.setDatacreacio(new Date()); // Data creació -> avui
 			exp.setViaContestacio(this.metoderesposta);
 			exp.setTextPeticio(this.textpeticio);
-			exp.setEstat(0); // Estat inicial
+			exp.setEstat(ExpedientServiceInterface.EstatExpedient.EQUIP_FILTRATGE); // Estat inicial -> Assignat a Equip de Filtratge, Toni Juanico, 04/07/2019
 			exp.setNumidentificacio(this.numidentificacio);
 			exp.setNom(this.nom);
 			exp.setLlinatge1(this.llinatge1);
 			exp.setLlinatge2(this.llinatge2);
 			exp.setTelefon(this.telefon);
 			exp.setEmail(this.correu);
-					
-			Subcentre sc = new Subcentre();
-			sc.setId(this.subcentre);
-			exp.setSubcentre(sc);
 			
+			Centre c = new Centre();
+			c.setId(this.centre);
+			exp.setCentre(c);
+			
+			if (this.subcentre != null && this.subcentre != 0)
+			{
+				Subcentre sc = new Subcentre();
+				sc.setId(this.subcentre);
+				exp.setSubcentre(sc);	
+			}
+					
 			Escrit e = new Escrit();
 			e.setId(this.escrit);
 			exp.setEscrit(e);
