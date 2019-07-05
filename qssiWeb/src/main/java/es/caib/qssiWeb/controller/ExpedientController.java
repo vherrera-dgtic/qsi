@@ -61,6 +61,7 @@ public class ExpedientController {
 	private ArrayList<Subcentre> llista_subcentres;
 	private ArrayList<Municipi> llista_municipis;
 	
+	private String expedientId = new String("");
 	private String assumpte;
 	private String unitatorganica;
 	private Integer centre = 0;
@@ -87,10 +88,16 @@ public class ExpedientController {
 	private String numero = new String("");
 	private String pis = new String("");
 	private String codipostal = new String("");
+	private Integer estat = 0;
 	
 	private String messages = new String("");
 	
+	private String actionSelected = new String("");
+	
 	// Getters & Setters
+	public void setExpedientId(String expedientId) { this.expedientId = expedientId; }
+	public String getExpedientId() { return this.expedientId; }
+	
 	public void setAssumpte(String a) { this.assumpte = a; }
     public String getAssumpte() { return this.assumpte; }
     
@@ -172,9 +179,15 @@ public class ExpedientController {
     public void setCodipostal(String cp) { this.codipostal = cp; }
     public String getCodipostal() { return this.codipostal; }
     
+    public void setEstat(Integer e) { this.estat = e; }
+    public Integer getEstat() { return this.estat; }
+    
     public void setMessages(String m) { this.messages = m; }
     public String getMessages() { return this.messages; }
-        	
+    
+    public void setActionSelected(String a) { this.actionSelected = a; }
+    public String getActionSelected() { return this.actionSelected; }
+    
 	// Methods
 	@PostConstruct
 	public void init() {
@@ -182,9 +195,13 @@ public class ExpedientController {
 		
 		LOGGER.info("Proxy a ExpedientController " + CRIDADES);
 		
-		//String pattern = "dd/MM/yyyy";
-		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		//this.data = simpleDateFormat.format(new Date());
+		String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("expedientId_param");
+				
+		if (param!=null) {
+			LOGGER.info("ExpedientController amb expedientId_param= "+param);
+			this.expedientId = param;
+			this.getExpedientInfo(this.expedientId);
+		}
 	}
 	
 	public boolean getAmbErrors() { return this.ambErrors; }
@@ -399,8 +416,7 @@ public class ExpedientController {
 		}
 		
 		return llista_Idiomes; 
-    }
-    
+    }  
     public ArrayList<Provincia> getLlista_Provincies() {
     	ProvinciaServiceInterface ProvinciaServ;
 		ArrayList<Provincia> llista_Provincies = null;
@@ -665,7 +681,6 @@ public class ExpedientController {
 				exp.setCodipostal(this.codipostal);		
 			}
 		
-			
 			ExpedientServ.addExpedient(exp); // Cridem l'EJB
 				 
 			if (ExpedientServ.getResultat()==true)
@@ -686,4 +701,73 @@ public class ExpedientController {
 			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error desant l'expedient", ex.toString()));
 		}
     }
+
+    private void getExpedientInfo(String expedientId) {
+    	
+    	ExpedientServiceInterface ExpedientServ;
+		LOGGER.info("getExpedientInfo: " + expedientId);
+			
+		try
+		{
+			ic = new InitialContext();
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			Expedient e = new Expedient();
+			e = ExpedientServ.getExpedient(Integer.parseInt(expedientId));
+				
+			if (ExpedientServ.getResultat())
+			{
+				this.expedientId = expedientId;
+				this.assumpte = e.getAssumpte();
+				this.unitatorganica = e.getUnitatOrganica();
+				this.metoderesposta = e.getViaContestacio();
+				this.textpeticio = e.getTextPeticio();
+				this.correu = e.getEmail();
+				this.dataEntrada = e.getDataentrada();
+				this.numidentificacio = e.getNumidentificacio();
+				this.nom = e.getNom();
+				this.llinatge1 = e.getLlinatge1();
+				this.llinatge2 = e.getLlinatge2();
+				this.telefon = e.getTelefon();
+				this.direccio = e.getDireccio();
+				this.numero = e.getNumero();
+				this.pis = e.getPis();
+				this.codipostal = e.getCodipostal();
+				this.estat = e.getEstat();
+				// TODO: Mapeig de tots els camps 
+			
+			}
+			else
+			{
+				LOGGER.info("error obtingut: "+ ExpedientServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error obtenint l'expedient",  ExpedientServ.getError()));
+			}
+				
+		}
+		catch(Exception ex)
+		{
+			LOGGER.info("error obtingut: "+ ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error obtenint l'expedient",  ex.toString()));
+		}	
+    }
+    
+    public ExpedientServiceInterface.AccioExpedient[] getAccionsDisponibles()
+    {
+    	ExpedientServiceInterface ExpedientServ;
+    	ExpedientServiceInterface.AccioExpedient[] resultat = null;
+		LOGGER.info("obtenirAccionsDisponibles: ");
+		
+		try
+		{
+			ic = new InitialContext();
+	    	
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			resultat = ExpedientServ.getAccionsDisponiblesExpedient(ExpedientServiceInterface.EstatExpedient.valueOf(this.estat));
+		}
+		catch(Exception ex)
+		{
+			LOGGER.info("error obtingut: "+ ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error obtenint accions disponibles",  ex.toString()));
+		}
+        return resultat;
+    } 
 }

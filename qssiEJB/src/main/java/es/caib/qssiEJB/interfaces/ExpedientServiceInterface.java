@@ -21,6 +21,7 @@ public interface ExpedientServiceInterface {
 	// Tipus de cerca
 	public static enum TipusCerca {PENDENTS_CENTRE, PENDENTS_ESTAT, REBUTJADES, FINALITZADES, SENSE_RESPOSTA, TOTS};
 	
+	
 	// Estats en que pot estar un expedient
 	public static enum EstatExpedient {
 		NOU(0), 
@@ -68,7 +69,47 @@ public interface ExpedientServiceInterface {
 		}
 	};
 	
+	// Accions que podem realitzar a un expedient segons el seu estat
+	public static enum AccioExpedient {
+		ASSIGNAR_CONSELLERIA(0), ASSIGNAR_TRAMITADOR(1), TRAMITAR_RESPOSTA(2), REBUTJAR(3);
+		
+		private int value;
+		private static Map<Object, Object> map = new HashMap<>();
+		
+		AccioExpedient(int value)
+		{
+			this.value = value;
+		}
+		
+		static {
+			for (AccioExpedient ae : AccioExpedient.values()) {
+				map.put(ae.value, ae);
+			}
+		}
+		
+		public static AccioExpedient valueOf(int accio)
+		{
+			return (AccioExpedient) map.get(accio);
+		}
+		
+		public int getValue() { return value; }
+		
+		public String getTag()  
+		{ 
+			switch (value)
+			{
+				case 0: return "Assignar a conselleria"; 
+				case 1: return "Assignar a unitat orgànica i tramitador";  
+				case 2: return "Tramitar resposta";
+				case 3: return "Rebutjar";
+				default: return "";
+			}
+		}
+	};
+	
 	public void addExpedient(Expedient e);
+	public Expedient getExpedient(Integer id_expedient);
+	public AccioExpedient[] getAccionsDisponiblesExpedient (EstatExpedient e);
 	public ArrayList<Expedient> getLlista_Expedients(TipusCerca tc);
 	public ArrayList<Expedient> getLlista_Expedients_assignats_usuari(String usuari);
 	public boolean getResultat();

@@ -10,9 +10,153 @@
 	   <ui:define name="content">
 		   <h:form id="formulari">
 			<!-- Contigut-->
-				<p:panel id="principal" header="Expedient QSSI" footer="" style="margin-bottom:20px">
-                	<p:messages id="messages" severity="error" showDetail="false" globalOnly="false"/>
-                	Hola món
+				<p:panel id="accions" header="Accions disponibles" footer="" style="margin-bottom:20px">
+                	<p:messages id="messages_accions" severity="error" showDetail="false" globalOnly="false"/>
+                	<h:selectOneRadio value="#{expedientController.actionSelected}">
+                		<f:selectItems value="#{expedientController.accionsDisponibles}" var="a" itemLabel="#{a.tag}" itemValue="#{a.value}" />
+            		</h:selectOneRadio>
+                </p:panel>
+                
+                <p:panel id="expedient" header="Expedient QSSI" footer="" style="margin-bottom:20px">
+                	<p:messages id="messages_expedient" severity="error" showDetail="false" globalOnly="false"/>
+                	<!--  Dades generals -->
+				    <p:outputPanel deferred="false" deferredMode="visible">
+				    	<h3>Dades generals</h3>
+				    	<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Assumpte</div> 
+				    		<div class='col-form'>
+				    			<h:outputText value = "#{expedientController.assumpte}" />
+				    		</div>
+				    	</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Centre gestor</div>
+							<div class='col-form'>TODO: Posar centre gestor</div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Servei</div>
+							<div class='col-form'>TODO: Posar servei</div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Unitat orgànica</div>
+							<div class='col-form'><h:outputText value = "#{expedientController.unitatorganica}" /></div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Tipus d'escrit</div>
+							<div class='col-form'>TODO: Posar tipus d'escrit</div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Matèria</div>
+							<div class='col-form'>TODO: Posar matèria</div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Motiu</div>
+							<div class='col-form'>TODO: Posar motiu</div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Tipus de queixa</div>
+							<div class='col-form'>TODO: Tipus de queixa</div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Tipus d'entrada</div>
+							<div class='col-form'>TODO: Tipus d'entrada</div>
+						</div>
+						<div class='row-form'>
+							<div class='col-form-etiqueta'>Data d'entrada</div>
+							<div class='col-form'>
+								<h:outputText value = "#{expedientController.dataEntrada}" />
+							</div>
+						</div>
+				    </p:outputPanel>
+				    <div style="height:25px"></div>
+	    			<!-- Identificació -->
+					<p:outputPanel>
+	        			<h3>Qui presenta la QSSI?</h3>
+	        			<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Nom</div> 
+				    		<div class='col-form'>
+				    			<h:outputText value = "#{expedientController.nom}" />
+				    		</div>
+				    	</div>
+				    	<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Llinatge</div> 
+				    		<div class='col-form'>
+				    			<h:outputText value = "#{expedientController.llinatge1}" />
+				    		</div>
+				    	</div>
+				    	<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Llinatge segon</div> 
+				    		<div class='col-form'>
+				    			<h:outputText value = "#{expedientController.llinatge2}" />
+				    		</div>
+				    	</div>
+				    	<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Tipus d'identificació</div> 
+				    		<div class='col-form'>
+				    			TODO: DNI o Passaport
+	        					<h:outputText value = "#{expedientController.numidentificacio}" />
+				    		</div>
+				    	</div>
+				    	<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Telèfon</div> 
+				    		<div class='col-form'>
+				    			<h:outputText value = "#{expedientController.telefon}" /></div>
+				    		<div class='col-form-etiqueta'>Llengua</div> 
+				    		<div class='col-form'>
+				    			TODO: Posar idioma
+				    		</div>
+				    	</div>
+				    	<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Correu electrònic</div> 
+				    		<div class='col-form'>
+				    			<h:outputText value = "#{expedientController.correu}" />
+				    		</div>
+				    	</div>
+				    	<div class='row-form'>
+				    		<div class='col-form-etiqueta'>Mètode de resposta</div>
+				    		<div class='col-form'>
+				    			TODO: Mètode de resposta
+				    		</div>
+				    	</div>
+				    	<div class='row-form' id='div_adreca' style="display:none">
+				    		<div class='col-form-etiqueta'>Adreça</div>
+				    		<div class='col-form'>
+					    		<div class='row-form'>
+		        					<div class='col-form-etiqueta'>Carrer</div>
+		        					<div class='col-form'>
+		        						<h:outputText value = "#{expedientController.direccio}" />
+		        					</div>
+		        				</div>
+		        				<div class='row-form'>
+		        					<div class='col-form-etiqueta'>Numero</div>
+		        					<div class='col-form'><h:outputText value = "#{expedientController.numero}" /></div>
+		        					<div class='col-form-etiqueta'>Pis</div>
+		        					<div class='col-form'><h:outputText value = "#{expedientController.pis}" /></div>
+		        					<div class='col-form-etiqueta'>CP</div>
+		        					<div class='col-form'><h:outputText value = "#{expedientController.codipostal}" /></div>
+		        				</div>
+		        				<div class='row-form'>
+		        					<div class='col-form-etiqueta'>Provincia / Regió</div>
+			        					<div class='col-form'>
+	  		        						TODO: Posar provincia / regió
+			        					</div>
+			        			</div>
+			        			<div class='row-form'>
+			        				<div class='col-form-etiqueta'>Municipi</div>
+			        				<div class='col-form'>
+		        						TODO: Posar municipi
+			        				</div>
+	       						</div>
+	       					</div>
+	       				</div>
+	    			</p:outputPanel>
+	    			<p:outputPanel>
+	        			<h3>Contingut - Descripció</h3>
+	        			<h:outputText value = "#{expedientController.textpeticio}" />
+	    			</p:outputPanel>
+	    			<div style="height:25px"></div>
+	    			<p:outputPanel deferred="true">
+		    			TODO: Posava un botó
+	    			</p:outputPanel>
                 </p:panel>
            </h:form>	
 	   </ui:define>

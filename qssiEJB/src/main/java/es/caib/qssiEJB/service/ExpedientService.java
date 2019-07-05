@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import es.caib.qssiEJB.entity.Expedient;
 import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
 
+
 /**
  * Servei (EJB) per a l'entitat Expedient
  * @author [u97091] Antoni Juanico soler
@@ -160,6 +161,23 @@ public class ExpedientService implements ExpedientServiceInterface {
 		}
 	}
 
+	@Override
+	public Expedient getExpedient(Integer id_expedient) {
+		try
+		{
+			LOGGER.info("in getExpedient, estat entity manager: " + em.toString());
+			Expedient e = em.find(Expedient.class, id_expedient);
+			this.resultat = true;
+			return e;
+		}
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString();
+			return null;
+		}
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Expedient> getLlista_Expedients(TipusCerca tc) {
@@ -258,6 +276,56 @@ public class ExpedientService implements ExpedientServiceInterface {
 		
 		return l;
 	}
+	
+	@Override
+	public AccioExpedient[] getAccionsDisponiblesExpedient (EstatExpedient e) {
+		AccioExpedient[] llista_accions = null;
+		
+		switch (e)
+		{
+		case NOU:
+			llista_accions = new AccioExpedient[1];
+			AccioExpedient accio = ExpedientServiceInterface.AccioExpedient.ASSIGNAR_CONSELLERIA;
+			llista_accions[0] = accio;
+			
+			break;
+		case EQUIP_FILTRATGE: 
+			llista_accions = new AccioExpedient[2];
+			AccioExpedient accio1 = ExpedientServiceInterface.AccioExpedient.ASSIGNAR_CONSELLERIA;
+			AccioExpedient accio2 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
+			llista_accions[0] = accio1;
+			llista_accions[1] = accio2;
+			
+			break;
+		case RESPONSABLE_CONSELLERIA:
+			llista_accions = new AccioExpedient[2];
+			AccioExpedient accio3 = ExpedientServiceInterface.AccioExpedient.ASSIGNAR_TRAMITADOR;
+			AccioExpedient accio4 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
+			llista_accions[0] = accio3;
+			llista_accions[1] = accio4;
+			break;
+		case ASSIGNAT_TRAMITADOR:
+			llista_accions = new AccioExpedient[2];
+			AccioExpedient accio5 = ExpedientServiceInterface.AccioExpedient.TRAMITAR_RESPOSTA;
+			AccioExpedient accio6 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
+			llista_accions[0] = accio5;
+			llista_accions[1] = accio6;
+			break;
+		case RESPOSTA:
+			llista_accions = null;
+			break;
+		case TANCADA:
+			llista_accions = null;
+			break;
+		case REBUTJADA:
+			break;
+			default:
+				llista_accions = null;
+		}
+		
+        return llista_accions;
+	}
+	
 	
 	@Override
 	public boolean getResultat() {return this.resultat;	}
