@@ -8,15 +8,43 @@
 	      Queixes i suggeriments - Expedient QSSI - CAIB
 	   </ui:define>
 	   <ui:define name="content">
+	   <script type="text/javascript">
+	  </script>
 		   <h:form id="formulari">
 			<!-- Contigut-->
 				<p:panel id="accions" header="Accions disponibles" footer="" style="margin-bottom:20px">
                 	<p:messages id="messages_accions" severity="error" showDetail="false" globalOnly="false"/>
-                	<h:selectOneRadio value="#{expedientController.actionSelected}">
+                	Estat de l'expedient: <h:outputText value = "#{expedientController.nomEstat}" />
+                	<p:selectOneRadio id="accio" layout="grid" onchange="PF('dlg'+this.value).show()" value="#{expedientController.actionSelected}" columns="1">
                 		<f:selectItems value="#{expedientController.accionsDisponibles}" var="a" itemLabel="#{a.tag}" itemValue="#{a.value}" />
-            		</h:selectOneRadio>
+            		</p:selectOneRadio>
                 </p:panel>
-                
+                <p:dialog header="Assignar a conselleria" widgetVar="dlg0" height="200" width="600" minHeight="150" minWidth="150" position="center center" modal="true">
+    				<div class='row-form'>
+						<div style="margin-top:5px; margin-left:5px">Centre gestor</div>
+						<div style="margin-top:5px; margin-left:5px">
+							<p:selectOneMenu id="centre" value="#{expedientController.centre}" required="true" size="60">
+            					<f:selectItems value="#{expedientController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
+        					</p:selectOneMenu>
+						</div>
+					</div>
+					<div style="margin-top:5px; margin-left:5px"><p:commandButton value="Desar" id="update_centre" action="#{expedientController.assignarCentre}" style="margin-right:20px;" ajax="false" /></div>
+				</p:dialog>
+				<p:dialog header="Rebutjar" widgetVar="dlg3" height="200" width="600" minHeight="60" position="top center" modal="true">
+    				<div>
+    					<h:outputText value="Estau segur que voleu rebutjar l'expedient?" /><br/>
+    					<h:outputText value="Heu d'indicar el motiu que serà remés també a l'usuari" />
+    				</div>
+    				<div>
+    					<p:inputTextarea rows="5" cols="60" counter="display" maxlength="300" counterTemplate="{0} caràcters restants." autoResize="false" />
+	    				<br />
+	    				<h:outputText id="display" />
+    				</div>
+    				<div style="align:center">
+    					<p:commandButton value="Rebutjar" id="rebutjar_expedient" action="#{expedientController.rebutjarExpedient}" style="margin-right:20px;" ajax="false" />
+	    				<p:commandButton value="Cancel·lar" id="cancel" action="PF('dlg3').close()" style="margin-right:20px;" ajax="false" />
+    				</div>
+				</p:dialog>
                 <p:panel id="expedient" header="Expedient QSSI" footer="" style="margin-bottom:20px">
                 	<p:messages id="messages_expedient" severity="error" showDetail="false" globalOnly="false"/>
                 	<!--  Dades generals -->

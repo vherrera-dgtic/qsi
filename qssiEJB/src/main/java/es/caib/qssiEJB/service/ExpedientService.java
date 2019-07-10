@@ -189,39 +189,39 @@ public class ExpedientService implements ExpedientServiceInterface {
 		
 		switch (tc)
 		{
-			case PENDENTS_CENTRE:
-				estats_cercats = ExpedientServiceInterface.EstatExpedient.NOU.getValue() + ", " + 
-						          ExpedientServiceInterface.EstatExpedient.EQUIP_FILTRATGE.getValue() + ", " + 
-						          ExpedientServiceInterface.EstatExpedient.RESPONSABLE_CONSELLERIA.getValue() + ", " +
-						          ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue();
+			case PENDENTS_ASSIGNAR_PER_CENTRE:
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.ASSIGNAT_EQUIP_FILTRATGE.getValue() + ", " + 
+						          ExpedientServiceInterface.EstatExpedient.ASSIGNAT_RESPONSABLE_CONSELLERIA.getValue();
 				
 				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by id_subcentre, id_expedient");
 				break;
-			case PENDENTS_ESTAT:
-				estats_cercats = ExpedientServiceInterface.EstatExpedient.NOU.getValue() + ", " + 
-						          ExpedientServiceInterface.EstatExpedient.EQUIP_FILTRATGE.getValue() + ", " + 
-						          ExpedientServiceInterface.EstatExpedient.RESPONSABLE_CONSELLERIA.getValue() + ", " +
-						          ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue();
+			case PENDENTS_ASSIGNAR_PER_ESTAT:
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.ASSIGNAT_EQUIP_FILTRATGE.getValue() + ", " + 
+						          ExpedientServiceInterface.EstatExpedient.ASSIGNAT_RESPONSABLE_CONSELLERIA.getValue();
 				
 				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by id_estat");
+				break;
+			case PENDENTS_RESPOSTA: // Ojo, aquest tipus de cerca l'hem de clarificar!!!!!, Toni Juanico, 09/07/2019
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue() + " ";
+				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
 				break;
 			case REBUTJADES:
 				estats_cercats = ExpedientServiceInterface.EstatExpedient.REBUTJADA.getValue() + " ";
 				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
 				break;
-				
 			case FINALITZADES:
-				estats_cercats = ExpedientServiceInterface.EstatExpedient.RESPOSTA.getValue() + ", " + 
-			                     ExpedientServiceInterface.EstatExpedient.TANCADA.getValue();
+				estats_cercats = ExpedientServiceInterface.EstatExpedient.FINALITZADA.getValue() + " ";
 				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
 				break;
-			case SENSE_RESPOSTA:
-				estats_cercats = ExpedientServiceInterface.EstatExpedient.TANCADA.getValue() + " ";
-				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
-				break;
-			case TOTS:
+			case TOTES_PER_CENTRE:
 				queryString = new String("select e from Expedient e order by id_subcentre, data_entrada");
 				break;
+			case TOTES_PER_ESTAT:
+				queryString = new String("select e from Expedient e order by id_estat");
+				break;
+			default:
+				queryString = null;
+				
 		}
 		
 		try
@@ -283,13 +283,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 		
 		switch (e)
 		{
-		case NOU:
-			llista_accions = new AccioExpedient[1];
-			AccioExpedient accio = ExpedientServiceInterface.AccioExpedient.ASSIGNAR_CONSELLERIA;
-			llista_accions[0] = accio;
-			
-			break;
-		case EQUIP_FILTRATGE: 
+		case ASSIGNAT_EQUIP_FILTRATGE: 
 			llista_accions = new AccioExpedient[2];
 			AccioExpedient accio1 = ExpedientServiceInterface.AccioExpedient.ASSIGNAR_CONSELLERIA;
 			AccioExpedient accio2 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
@@ -297,33 +291,59 @@ public class ExpedientService implements ExpedientServiceInterface {
 			llista_accions[1] = accio2;
 			
 			break;
-		case RESPONSABLE_CONSELLERIA:
-			llista_accions = new AccioExpedient[2];
+		case ASSIGNAT_RESPONSABLE_CONSELLERIA:
+			llista_accions = new AccioExpedient[3];
 			AccioExpedient accio3 = ExpedientServiceInterface.AccioExpedient.ASSIGNAR_TRAMITADOR;
-			AccioExpedient accio4 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
+			AccioExpedient accio4 = ExpedientServiceInterface.AccioExpedient.RETORNAR_EQUIP_FILTRATGE;
+			AccioExpedient accio5 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
+			
 			llista_accions[0] = accio3;
 			llista_accions[1] = accio4;
+			llista_accions[2] = accio5;
 			break;
 		case ASSIGNAT_TRAMITADOR:
-			llista_accions = new AccioExpedient[2];
-			AccioExpedient accio5 = ExpedientServiceInterface.AccioExpedient.TRAMITAR_RESPOSTA;
-			AccioExpedient accio6 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
-			llista_accions[0] = accio5;
-			llista_accions[1] = accio6;
+			llista_accions = new AccioExpedient[3];
+			AccioExpedient accio6 = ExpedientServiceInterface.AccioExpedient.TRAMITAR_RESPOSTA;
+			AccioExpedient accio7 = ExpedientServiceInterface.AccioExpedient.RETORNAR_RESPONSABLE_CONSELLERIA;
+			AccioExpedient accio8 = ExpedientServiceInterface.AccioExpedient.REBUTJAR;
+			
+			llista_accions[0] = accio6;
+			llista_accions[1] = accio7;
+			llista_accions[2] = accio8;
 			break;
-		case RESPOSTA:
-			llista_accions = null;
-			break;
-		case TANCADA:
+		case FINALITZADA:
 			llista_accions = null;
 			break;
 		case REBUTJADA:
+			llista_accions = null;
 			break;
-			default:
-				llista_accions = null;
+		default:
+			llista_accions = null;
 		}
 		
         return llista_accions;
+	}
+	
+	@Override
+	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre) {
+		
+		LOGGER.info("in assignarCentreExpedient, estat entity manager: " + em.toString());
+		String queryStringCreatePK = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_estat= :estat where id_expedient = :id_expedient");
+		try {
+			
+			Query queryCreatePK = em.createNativeQuery(queryStringCreatePK);
+			queryCreatePK.setParameter("id_expedient", id_expedient);
+			queryCreatePK.setParameter("id_centre", id_centre);
+			queryCreatePK.setParameter("estat", ExpedientServiceInterface.EstatExpedient.ASSIGNAT_RESPONSABLE_CONSELLERIA.getValue());
+			queryCreatePK.executeUpdate();
+			this.resultat = true;	
+		}
+		catch(Exception ex)
+		{
+			this.strError = ex.toString();
+			this.resultat = false;
+		}
+		
 	}
 	
 	

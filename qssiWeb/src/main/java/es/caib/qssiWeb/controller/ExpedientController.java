@@ -89,7 +89,8 @@ public class ExpedientController {
 	private String pis = new String("");
 	private String codipostal = new String("");
 	private Integer estat = 0;
-	
+	private String nom_estat = new String("");
+		
 	private String messages = new String("");
 	
 	private String actionSelected = new String("");
@@ -182,8 +183,13 @@ public class ExpedientController {
     public void setEstat(Integer e) { this.estat = e; }
     public Integer getEstat() { return this.estat; }
     
+    public void setNomEstat(String n) { this.nom_estat = n; }
+    public String getNomEstat() { return this.nom_estat; }
+    
     public void setMessages(String m) { this.messages = m; }
     public String getMessages() { return this.messages; }
+    
+    
     
     public void setActionSelected(String a) { this.actionSelected = a; }
     public String getActionSelected() { return this.actionSelected; }
@@ -619,7 +625,7 @@ public class ExpedientController {
 			exp.setDatacreacio(new Date()); // Data creació -> avui
 			exp.setViaContestacio(this.metoderesposta);
 			exp.setTextPeticio(this.textpeticio);
-			exp.setEstat(ExpedientServiceInterface.EstatExpedient.EQUIP_FILTRATGE); // Estat inicial -> Assignat a Equip de Filtratge, Toni Juanico, 04/07/2019
+			exp.setEstat(ExpedientServiceInterface.EstatExpedient.ASSIGNAT_EQUIP_FILTRATGE); // Estat inicial -> Assignat a Equip de Filtratge, Toni Juanico, 04/07/2019
 			exp.setNumidentificacio(this.numidentificacio);
 			exp.setNom(this.nom);
 			exp.setLlinatge1(this.llinatge1);
@@ -733,7 +739,8 @@ public class ExpedientController {
 				this.pis = e.getPis();
 				this.codipostal = e.getCodipostal();
 				this.estat = e.getEstat();
-				// TODO: Mapeig de tots els camps 
+				this.nom_estat = ExpedientServiceInterface.EstatExpedient.valueOf(this.estat).getTag();
+				
 			
 			}
 			else
@@ -770,4 +777,42 @@ public class ExpedientController {
 		}
         return resultat;
     } 
+    
+    // Funció per canviar l'estat d'un expedient. Assignat equip de filtratge --> Assignat Responsable Conselleria
+    public void assignarCentre() {
+    	
+    	ExpedientServiceInterface ExpedientServ;
+		LOGGER.info("assignarCentre, param: expedient: " + expedientId + "  centre: " + this.getCentre());
+			
+		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		
+		try
+		{
+			ic = new InitialContext();
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			ExpedientServ.assignarCentreExpedient(Integer.parseInt(expedientId),this.getCentre());
+				
+			if (ExpedientServ.getResultat())
+			{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Expedient actualitzat correctament", "Expedient actualitzat correctament"));				
+			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/index_admin.xhtml?f=estat");
+			}
+			else
+			{
+				LOGGER.info("Error obtingut: "+ ExpedientServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error actualitzant expedient",  ExpedientServ.getError()));
+			}
+		}
+		catch (Exception ex) {
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant l'expedient", ex.toString()));
+		}
+    	
+    }
+    
+    
+    public void rebutjarExpedient() {
+    	FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "TODO: expedient a cancel·lar", "cancel·lant..."));
+    }
+ 
 }

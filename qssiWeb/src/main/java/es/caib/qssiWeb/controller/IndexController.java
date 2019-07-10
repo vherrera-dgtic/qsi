@@ -103,13 +103,14 @@ public class IndexController {
 			
 			switch (param)
 			{
-				case "centre": 			tipuscerca = ExpedientServiceInterface.TipusCerca.PENDENTS_CENTRE; break;
-				case "situacio": 		tipuscerca = ExpedientServiceInterface.TipusCerca.PENDENTS_ESTAT; break;
+				case "centre": 			tipuscerca = ExpedientServiceInterface.TipusCerca.PENDENTS_ASSIGNAR_PER_CENTRE; break;
+				case "estat": 		tipuscerca = ExpedientServiceInterface.TipusCerca.PENDENTS_ASSIGNAR_PER_ESTAT; break;
 				case "rebutjades": 		tipuscerca = ExpedientServiceInterface.TipusCerca.REBUTJADES; break;
 				case "finalitzades": 	tipuscerca = ExpedientServiceInterface.TipusCerca.FINALITZADES; break;
-				case "sense_resposta": 	tipuscerca = ExpedientServiceInterface.TipusCerca.SENSE_RESPOSTA; break;
-				case "totes": 			tipuscerca  =ExpedientServiceInterface.TipusCerca.TOTS; break;
-				default: tipuscerca = ExpedientServiceInterface.TipusCerca.TOTS;
+				case "pendents_resposta": 	tipuscerca = ExpedientServiceInterface.TipusCerca.PENDENTS_RESPOSTA; break;
+				case "totes_centre": 			tipuscerca  = ExpedientServiceInterface.TipusCerca.TOTES_PER_CENTRE; break;
+				case "totes_estat": 			tipuscerca  = ExpedientServiceInterface.TipusCerca.TOTES_PER_ESTAT; break;
+				default: tipuscerca = ExpedientServiceInterface.TipusCerca.TOTES_PER_CENTRE;
 			}
 			
 			this.llista_expedients = ExpedientServ.getLlista_Expedients(tipuscerca);
@@ -158,7 +159,7 @@ public class IndexController {
 			
 			Expedient e = i.next();
 			
-			if (tc == ExpedientServiceInterface.TipusCerca.PENDENTS_ESTAT)
+			if (tc == ExpedientServiceInterface.TipusCerca.PENDENTS_ASSIGNAR_PER_ESTAT || tc == ExpedientServiceInterface.TipusCerca.TOTES_PER_ESTAT)
 			{
 				ExpedientServiceInterface.EstatExpedient estat_expedient = ExpedientServiceInterface.EstatExpedient.valueOf(e.getEstat());
 				element_actual = estat_expedient.getTag();
@@ -213,4 +214,5 @@ public class IndexController {
 			expedient_dummy.getCentre().setNom("(" + num_nodes + ") " + expedient_dummy.getCentre().getNom());
 		}
 	}
+	
 }

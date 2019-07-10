@@ -19,18 +19,15 @@ import es.caib.qssiEJB.entity.Expedient;
 public interface ExpedientServiceInterface {
 	
 	// Tipus de cerca
-	public static enum TipusCerca {PENDENTS_CENTRE, PENDENTS_ESTAT, REBUTJADES, FINALITZADES, SENSE_RESPOSTA, TOTS};
-	
+	public static enum TipusCerca {PENDENTS_ASSIGNAR_PER_CENTRE, PENDENTS_ASSIGNAR_PER_ESTAT, PENDENTS_RESPOSTA, REBUTJADES, FINALITZADES, TOTES_PER_CENTRE, TOTES_PER_ESTAT};
 	
 	// Estats en que pot estar un expedient
 	public static enum EstatExpedient {
-		NOU(0), 
-		EQUIP_FILTRATGE(1), 
-		RESPONSABLE_CONSELLERIA(2), 
+		ASSIGNAT_EQUIP_FILTRATGE(1), 
+		ASSIGNAT_RESPONSABLE_CONSELLERIA(2), 
 		ASSIGNAT_TRAMITADOR(3), 
-		RESPOSTA(4), 
-		TANCADA(5),
-		REBUTJADA(6);
+		FINALITZADA(4),
+		REBUTJADA(5);
 		
 		private int value;
 		private static Map<Object, Object> map = new HashMap<>();
@@ -57,13 +54,11 @@ public interface ExpedientServiceInterface {
 		{ 
 			switch (value)
 			{
-				case 0: return "Nou"; 
-				case 1: return "Pendent equip filtratge";  
+				case 1: return "Assignat equip filtratge";  
 				case 2: return "Assignat a responsable Conselleria";
-				case 3: return "Assignat a tramitador (pendent resposta)";
-				case 4: return "Resposta";
-				case 5: return "Tancat";
-				case 6: return "Rebutjada";
+				case 3: return "Assignat a tramitador";
+				case 4: return "Finalitzada";
+				case 5: return "Rebutjada";
 				default: return "";
 			}
 		}
@@ -71,7 +66,8 @@ public interface ExpedientServiceInterface {
 	
 	// Accions que podem realitzar a un expedient segons el seu estat
 	public static enum AccioExpedient {
-		ASSIGNAR_CONSELLERIA(0), ASSIGNAR_TRAMITADOR(1), TRAMITAR_RESPOSTA(2), REBUTJAR(3);
+		ASSIGNAR_CONSELLERIA(0), ASSIGNAR_TRAMITADOR(1), TRAMITAR_RESPOSTA(2), REBUTJAR(3), 
+		RETORNAR_EQUIP_FILTRATGE(4), RETORNAR_RESPONSABLE_CONSELLERIA(5);
 		
 		private int value;
 		private static Map<Object, Object> map = new HashMap<>();
@@ -102,6 +98,8 @@ public interface ExpedientServiceInterface {
 				case 1: return "Assignar a unitat orgànica i tramitador";  
 				case 2: return "Tramitar resposta";
 				case 3: return "Rebutjar";
+				case 4: return "Retornar a l'equip de filtratge";
+				case 5: return "Retornar a responsable conselleria";
 				default: return "";
 			}
 		}
@@ -112,6 +110,7 @@ public interface ExpedientServiceInterface {
 	public AccioExpedient[] getAccionsDisponiblesExpedient (EstatExpedient e);
 	public ArrayList<Expedient> getLlista_Expedients(TipusCerca tc);
 	public ArrayList<Expedient> getLlista_Expedients_assignats_usuari(String usuari);
+	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre);
 	public boolean getResultat();
 	public String getError();
 }
