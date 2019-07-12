@@ -12,7 +12,7 @@ import es.caib.qssiEJB.entity.Identificacio;
  * data: 14/09/2018
  */
 
-@Local
+@Local  
 public interface IdentificacioServiceInterface {
 	public void addIdentificacio(Identificacio i);
 	public ArrayList<Identificacio> getLlista_Identificacions();
