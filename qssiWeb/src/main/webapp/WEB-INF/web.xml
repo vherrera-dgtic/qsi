@@ -24,7 +24,7 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
-  <!-- servlet>
+  <servlet>
     <servlet-name>wsEstructuraOrganica</servlet-name>
     <servlet-class>es.caib.qssiWeb.ws.EstructuraOrganica</servlet-class>
   </servlet>
@@ -39,7 +39,7 @@
   <servlet-mapping>
     <servlet-name>wsDominiHeliumImpl</servlet-name>
     <url-pattern>/ws/DominiHeliumImpl</url-pattern>
-  </servlet-mapping-->
+  </servlet-mapping>
   <context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>

@@ -90,7 +90,23 @@ public class ExpedientController {
 	private String codipostal = new String("");
 	private Integer estat = 0;
 	private String nom_estat = new String("");
-		
+	private String nom_centre_gestor = new String("");
+	private String nom_subcentre = new String("");
+	private String nom_tipus_escrit = new String("");
+	private String nom_materia = new String("");
+	private String nom_motiu = new String("");
+	private String nom_tipus_queixa = new String("");
+	private String nom_tipus_entrada = new String("");
+	private String nom_tipus_identificacio = new String("");
+	private String nom_llengua = new String("");
+	private String nom_metoderesposta = new String("");
+	private String nom_provincia = new String("");
+	private String nom_municipi = new String("");
+	private String dir3_centre_gestor = new String("");
+	private String dir3_subcentre = new String("");
+	private String mostrarAP = new String("");
+	
+				
 	private String messages = new String("");
 	
 	private String actionSelected = new String("");
@@ -186,11 +202,54 @@ public class ExpedientController {
     public void setNomEstat(String n) { this.nom_estat = n; }
     public String getNomEstat() { return this.nom_estat; }
     
+    public void setNomCentreGestor(String n) { this.nom_centre_gestor = n; }
+    public String getNomCentreGestor() { return this.nom_centre_gestor; }
+    
+    public void setDir3CentreGestor(String n) { this.dir3_centre_gestor = n; }
+    public String getDir3CentreGestor() { return this.dir3_centre_gestor; }
+    
+    public void setNomsubcentre(String n) { this.nom_subcentre = n; }
+    public String getNomsubcentre() { return this.nom_subcentre; }
+    
+    public void setDir3subcentre(String n) { this.dir3_subcentre = n; }
+    public String getDir3subcentre() { return this.dir3_subcentre; }
+    
+    public void setNomtipusescrit(String n) { this.nom_tipus_escrit = n; }
+    public String getNomtipusescrit() { return this.nom_tipus_escrit; }
+    
+    public void setNommateria(String n) {this.nom_materia = n; }
+    public String getNommateria() { return this.nom_materia; }
+    
+    public void setNomtipusqueixa(String n) {this.nom_tipus_queixa = n; }
+    public String getNomtipusqueixa() { return this.nom_tipus_queixa; }
+    
+    public void setNommotiu(String n) {this.nom_motiu = n; }
+    public String getNommotiu() { return this.nom_motiu; }
+    
+    public void setNomtipusentrada(String n) {this.nom_tipus_entrada = n; }
+    public String getNomtipusentrada() { return this.nom_tipus_entrada; }
+    
+    public void setNomtipusidentificacio(String n) {this.nom_tipus_identificacio = n; }
+    public String getNomtipusidentificacio() { return this.nom_tipus_identificacio; }
+    
+    public void setNomllengua(String n) { this.nom_llengua = n; }
+    public String getNomllengua() { return this.nom_llengua; }
+    
+    public void setNommetoderesposta(String n) { this.nom_metoderesposta = n; }
+    public String getNommetoderesposta() { return this.nom_metoderesposta; }
+    
+    public void setNomprovincia(String n) { this.nom_provincia = n; }
+    public String getNomprovincia() { return this.nom_provincia; }
+    
+    public void setNommunicipi(String n) { this.nom_municipi = n; }
+    public String getNommunicipi() { return this.nom_municipi; }
+    
+    public void setMostrarAP(String v) { this.mostrarAP = v; }
+    public String getMostrarAP() { return this.mostrarAP; }
+    
     public void setMessages(String m) { this.messages = m; }
     public String getMessages() { return this.messages; }
-    
-    
-    
+        
     public void setActionSelected(String a) { this.actionSelected = a; }
     public String getActionSelected() { return this.actionSelected; }
     
@@ -739,9 +798,35 @@ public class ExpedientController {
 				this.pis = e.getPis();
 				this.codipostal = e.getCodipostal();
 				this.estat = e.getEstat();
-				this.nom_estat = ExpedientServiceInterface.EstatExpedient.valueOf(this.estat).getTag();
 				
-			
+				// Etiquetes
+				this.nom_estat = ExpedientServiceInterface.EstatExpedient.valueOf(this.estat).getTag();
+				this.nom_centre_gestor = e.getCentre().getNom();
+				
+				if (e.getSubcentre() != null)
+				{
+					this.nom_subcentre = e.getSubcentre().getNom();
+					this.dir3_subcentre = e.getSubcentre().getDir3();
+				}
+					
+				
+				this.nom_tipus_escrit = e.getEscrit().getNom();
+				this.nom_materia = e.getMateria().getNom();
+				this.nom_motiu = e.getMotiu().getNom();
+				this.nom_tipus_queixa = e.getQueixa().getNom();
+				this.nom_tipus_entrada = e.getEntrada().getNom();
+				this.nom_tipus_identificacio = e.getIdentificacio().getNom();
+				this.nom_llengua = e.getIdioma().getNom();
+				this.dir3_centre_gestor = e.getCentre().getDir3();
+				this.nom_metoderesposta = e.getViaContestacio();
+				
+				if (this.nom_metoderesposta.equals("postal")) {
+					this.mostrarAP = "";
+					this.nom_municipi= e.getMunicipi().getNom();
+					this.nom_provincia = e.getMunicipi().getProvincia().getNom();
+				}
+				else
+					this.mostrarAP = "display:none";
 			}
 			else
 			{

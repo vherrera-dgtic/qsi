@@ -100,7 +100,7 @@ public class DominiHeliumImpl implements DominiHelium {
 		try
 		{
 			ic = new InitialContext();
-			ProvinciaServ = (ProvinciaServiceInterface) ic.lookup("es.caib.qssiEJB.service.ProvinciaService");
+			ProvinciaServ = (ProvinciaServiceInterface) ic.lookup("qssiEAR/ProvinciaService/local");
 			LOGGER.info("EJB lookup " + ProvinciaServ);
 			
 			llista_provincies = ProvinciaServ.getLlista_Provincies(); // Cridem l'EJB
@@ -145,7 +145,8 @@ public class DominiHeliumImpl implements DominiHelium {
 		try
 		{
 			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.CentreService");	
+			
+			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");	
 			LOGGER.info("EJB lookup "+ CentreServ);	
 			
 			llista_centres = CentreServ.getLlista_CentresActiusWeb(); // Cridem l'EJB
@@ -193,7 +194,7 @@ public class DominiHeliumImpl implements DominiHelium {
 		try
 		{
 			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("es.caib.qssiEJB.service.SubcentreService");	
+			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");	
 			LOGGER.info("EJB lookup "+ SubcentreServ);	
 			
 			llista_unitatsOrganiques = SubcentreServ.getLlista_SubcentresActiusWebperDir3(dir3conselleria); // Cridem l'EJB

@@ -58,11 +58,15 @@
 				    	</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Centre gestor</div>
-							<div class='col-form'>TODO: Posar centre gestor</div>
+							<div class='col-form'>
+								<h:outputText value="#{expedientController.nomCentreGestor}"/>  (<h:outputText value="#{expedientController.dir3CentreGestor}"/>)
+							</div>
 						</div>
 						<div class='row-form'>
-							<div class='col-form-etiqueta'>Servei</div>
-							<div class='col-form'>TODO: Posar servei</div>
+							<div class='col-form-etiqueta'>Servei o unitat orgànica</div>
+							<div class='col-form'>
+								<h:outputText value="#{expedientController.nomsubcentre}" />  (<h:outputText value="#{expedientController.dir3subcentre}"/>)
+							</div>
 						</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Unitat orgànica</div>
@@ -70,28 +74,30 @@
 						</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Tipus d'escrit</div>
-							<div class='col-form'>TODO: Posar tipus d'escrit</div>
+							<div class='col-form'><h:outputText value="#{expedientController.nomtipusescrit}" /></div>
 						</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Matèria</div>
-							<div class='col-form'>TODO: Posar matèria</div>
+							<div class='col-form'><h:outputText value="#{expedientController.nommateria}" /></div>
 						</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Motiu</div>
-							<div class='col-form'>TODO: Posar motiu</div>
+							<div class='col-form'><h:outputText value="#{expedientController.nommotiu}" /></div>
 						</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Tipus de queixa</div>
-							<div class='col-form'>TODO: Tipus de queixa</div>
+							<div class='col-form'><h:outputText value="#{expedientController.nomtipusqueixa}" /></div>
 						</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Tipus d'entrada</div>
-							<div class='col-form'>TODO: Tipus d'entrada</div>
+							<div class='col-form'><h:outputText value="#{expedientController.nomtipusentrada}" /></div>
 						</div>
 						<div class='row-form'>
 							<div class='col-form-etiqueta'>Data d'entrada</div>
 							<div class='col-form'>
-								<h:outputText value = "#{expedientController.dataEntrada}" />
+								<h:outputText value = "#{expedientController.dataEntrada}" >
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
 							</div>
 						</div>
 				    </p:outputPanel>
@@ -118,63 +124,48 @@
 				    		</div>
 				    	</div>
 				    	<div class='row-form'>
-				    		<div class='col-form-etiqueta'>Tipus d'identificació</div> 
+				    		<div class='col-form-etiqueta'>Identificació</div> 
 				    		<div class='col-form'>
-				    			TODO: DNI o Passaport
-	        					<h:outputText value = "#{expedientController.numidentificacio}" />
+	        					<h:outputText value = "#{expedientController.numidentificacio}" />  (<h:outputText value = "#{expedientController.nomtipusidentificacio}" />)
 				    		</div>
 				    	</div>
 				    	<div class='row-form'>
 				    		<div class='col-form-etiqueta'>Telèfon</div> 
 				    		<div class='col-form'>
-				    			<h:outputText value = "#{expedientController.telefon}" /></div>
+				    			<h:outputText value = "#{expedientController.telefon}" />
+				    		</div>
+				    	</div>
+				    	<div class='row-form'>
 				    		<div class='col-form-etiqueta'>Llengua</div> 
 				    		<div class='col-form'>
-				    			TODO: Posar idioma
+				    			<h:outputText value="#{expedientController.nomllengua}" />
 				    		</div>
 				    	</div>
 				    	<div class='row-form'>
 				    		<div class='col-form-etiqueta'>Correu electrònic</div> 
 				    		<div class='col-form'>
-				    			<h:outputText value = "#{expedientController.correu}" />
+				    			<h:outputText value="#{expedientController.correu}" />
 				    		</div>
 				    	</div>
 				    	<div class='row-form'>
 				    		<div class='col-form-etiqueta'>Mètode de resposta</div>
-				    		<div class='col-form'>
-				    			TODO: Mètode de resposta
-				    		</div>
+				    		<div class='col-form'><h:outputText value="#{expedientController.nommetoderesposta}"/></div>
 				    	</div>
-				    	<div class='row-form' id='div_adreca' style="display:none">
-				    		<div class='col-form-etiqueta'>Adreça</div>
-				    		<div class='col-form'>
-					    		<div class='row-form'>
-		        					<div class='col-form-etiqueta'>Carrer</div>
-		        					<div class='col-form'>
-		        						<h:outputText value = "#{expedientController.direccio}" />
-		        					</div>
-		        				</div>
-		        				<div class='row-form'>
-		        					<div class='col-form-etiqueta'>Numero</div>
-		        					<div class='col-form'><h:outputText value = "#{expedientController.numero}" /></div>
-		        					<div class='col-form-etiqueta'>Pis</div>
-		        					<div class='col-form'><h:outputText value = "#{expedientController.pis}" /></div>
-		        					<div class='col-form-etiqueta'>CP</div>
-		        					<div class='col-form'><h:outputText value = "#{expedientController.codipostal}" /></div>
-		        				</div>
-		        				<div class='row-form'>
-		        					<div class='col-form-etiqueta'>Provincia / Regió</div>
-			        					<div class='col-form'>
-	  		        						TODO: Posar provincia / regió
-			        					</div>
-			        			</div>
-			        			<div class='row-form'>
-			        				<div class='col-form-etiqueta'>Municipi</div>
-			        				<div class='col-form'>
-		        						TODO: Posar municipi
-			        				</div>
-	       						</div>
+				    	<div id='div_adreca' style="#{expedientController.mostrarAP}">
+				    	    <div class='row-form'>
+				    	    	<div class='col-form-etiqueta'>Carrer</div>
+				    			<div class='col-form'>
+				    				<h:outputText value = "#{expedientController.direccio}" />, núm. <h:outputText value="#{expedientController.numero}" />, pis <h:outputText value="#{expedientController.pis}" />, CP <h:outputText value="#{expedientController.codipostal}" />
+				    			</div>
+				    	    </div>
+			        		<div class='row-form'>
+			        			<div class='col-form-etiqueta'>Municipi</div>
+			        			<div class='col-form'><h:outputText value="#{expedientController.nommunicipi}" /></div>
 	       					</div>
+	       					<div class='row-form'>
+								<div class='col-form-etiqueta'>Provincia / Regió</div>
+			        			<div class='col-form'><h:outputText value="#{expedientController.nomprovincia}" /></div>				    		
+				    		</div>
 	       				</div>
 	    			</p:outputPanel>
 	    			<p:outputPanel>
@@ -182,9 +173,6 @@
 	        			<h:outputText value = "#{expedientController.textpeticio}" />
 	    			</p:outputPanel>
 	    			<div style="height:25px"></div>
-	    			<p:outputPanel deferred="true">
-		    			TODO: Posava un botó
-	    			</p:outputPanel>
                 </p:panel>
            </h:form>	
 	   </ui:define>

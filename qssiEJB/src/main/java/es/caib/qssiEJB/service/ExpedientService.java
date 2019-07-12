@@ -193,7 +193,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 				estats_cercats = ExpedientServiceInterface.EstatExpedient.ASSIGNAT_EQUIP_FILTRATGE.getValue() + ", " + 
 						          ExpedientServiceInterface.EstatExpedient.ASSIGNAT_RESPONSABLE_CONSELLERIA.getValue();
 				
-				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by id_subcentre, id_expedient");
+				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by id_centre, id_subcentre, id_expedient");
 				break;
 			case PENDENTS_ASSIGNAR_PER_ESTAT:
 				estats_cercats = ExpedientServiceInterface.EstatExpedient.ASSIGNAT_EQUIP_FILTRATGE.getValue() + ", " + 
@@ -214,7 +214,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 				queryString = new String("select e from Expedient e where e.id_estat in (" + estats_cercats + ") order by data_entrada");
 				break;
 			case TOTES_PER_CENTRE:
-				queryString = new String("select e from Expedient e order by id_subcentre, data_entrada");
+				queryString = new String("select e from Expedient e order by id_centre, id_subcentre, data_entrada");
 				break;
 			case TOTES_PER_ESTAT:
 				queryString = new String("select e from Expedient e order by id_estat");
