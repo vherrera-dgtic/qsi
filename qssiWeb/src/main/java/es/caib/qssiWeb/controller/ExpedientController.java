@@ -59,6 +59,7 @@ public class ExpedientController {
 	private InitialContext ic;
 	
 	private ArrayList<Subcentre> llista_subcentres;
+	private ArrayList<Subcentre> llista_subcentres_1;
 	private ArrayList<Municipi> llista_municipis;
 	
 	private String expedientId = new String("");
@@ -66,6 +67,7 @@ public class ExpedientController {
 	private String unitatorganica;
 	private Integer centre = 0;
 	private Integer subcentre = 0;
+	private Integer subcentre_1 = 0;
 	private Integer escrit = 0;
 	private Integer materia = 0;
 	private Integer motiu = 0;
@@ -105,8 +107,8 @@ public class ExpedientController {
 	private String dir3_centre_gestor = new String("");
 	private String dir3_subcentre = new String("");
 	private String mostrarAP = new String("");
+	private String usuari_assignat = new String("");
 	
-				
 	private String messages = new String("");
 	
 	private String actionSelected = new String("");
@@ -119,6 +121,7 @@ public class ExpedientController {
     public String getAssumpte() { return this.assumpte; }
     
 	public ArrayList<Subcentre> getLlista_Subcentres() { return this.llista_subcentres; }
+	public ArrayList<Subcentre> getLlista_Subcentres_1() { return this.llista_subcentres_1; }
     public ArrayList<Municipi> getLlista_Municipis() { return this.llista_municipis; }
     
     public void setCentre(Integer centre) { this.centre = centre;  }
@@ -126,6 +129,9 @@ public class ExpedientController {
     
     public void setSubcentre(Integer subcentre) { this.subcentre = subcentre; }
     public Integer getSubcentre() { return this.subcentre; }
+    
+    public void setSubcentre_1(Integer subcentre) { this.subcentre_1 = subcentre; }
+    public Integer getSubcentre_1() { return this.subcentre_1; }
     
     public void setUnitatorganica(String uo) { this.unitatorganica = uo; }
     public String getUnitatorganica() { return this.unitatorganica; }
@@ -253,6 +259,9 @@ public class ExpedientController {
     public void setActionSelected(String a) { this.actionSelected = a; }
     public String getActionSelected() { return this.actionSelected; }
     
+    public void setUsuariassignat(String u) { this.usuari_assignat = u; }
+    public String getUsuariassignat() { return this.usuari_assignat; }
+        
 	// Methods
 	@PostConstruct
 	public void init() {
@@ -591,6 +600,7 @@ public class ExpedientController {
     	
     	LOGGER.info("Proxy a ExpedientController --> onCentre_change");
      	this.llista_subcentres = new ArrayList<Subcentre>();  
+     	this.llista_subcentres_1 = new ArrayList<Subcentre>();
      	SubcentreServiceInterface SubcentreServ;
  		  	
  		LOGGER.info("Obtenim llista de subcentres a partir del canvi de centre ");
@@ -602,7 +612,8 @@ public class ExpedientController {
  			LOGGER.info("EJB lookup "+ SubcentreServ);	
  			
  			this.llista_subcentres = SubcentreServ.getLlista_SubcentresActiusWeb(this.centre); // Cridem l'EJB
- 			
+ 			this.llista_subcentres_1 = SubcentreServ.getLlista_SubcentresActiusWeb(this.centre); // Cridem l'EJB
+ 			 			
  			LOGGER.info("Obtinguda llista de subcentres "+ SubcentreServ);	
  			
  			if (!SubcentreServ.getResultat())
@@ -810,6 +821,7 @@ public class ExpedientController {
 					this.nom_subcentre = e.getSubcentre().getNom();
 					this.dir3_subcentre = e.getSubcentre().getDir3();
 					this.subcentre = e.getSubcentre().getId();
+					this.subcentre_1 = e.getSubcentre().getId();
 				}
 					
 				
@@ -878,7 +890,7 @@ public class ExpedientController {
 		{
 			ic = new InitialContext();
 			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
-			ExpedientServ.assignarCentreExpedient(Integer.parseInt(expedientId),this.getCentre(), this.getSubcentre());
+			ExpedientServ.assignarCentreExpedient(Integer.parseInt(expedientId),this.getCentre(), this.getSubcentre_1());
 				
 			if (ExpedientServ.getResultat())
 			{
@@ -898,6 +910,39 @@ public class ExpedientController {
     	
     }
     
+    public void retornarequipfiltratge() {
+    	FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "TODO: S'ha d'implementar la funcionalitat", "TODO: S'ha d'implementar la funcionalitat"));
+    }
+    
+    public void assignarTramitador() {
+    	ExpedientServiceInterface ExpedientServ;
+		LOGGER.info("assignarTramitador, param: expedient: " + expedientId + "  centre: " + this.getCentre());
+			
+		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		
+		try
+		{
+			ic = new InitialContext();
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			ExpedientServ.assignarTramitador(Integer.parseInt(expedientId),this.getSubcentre(), this.getUnitatorganica(), this.getUsuariassignat());
+				
+			if (ExpedientServ.getResultat())
+			{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Expedient actualitzat correctament", "Expedient actualitzat correctament"));				
+			    FacesContext.getCurrentInstance().getExternalContext().redirect(origRequest.getContextPath()  + "/index_admin.xhtml?f=estat");
+			}
+			else
+			{
+				LOGGER.info("Error obtingut: "+ ExpedientServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Error actualitzant expedient",  ExpedientServ.getError()));
+			}
+		}
+		catch (Exception ex) {
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant l'expedient", ex.toString()));
+		}
+    	   	
+    }
     
     public void rebutjarExpedient() {
     	FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "TODO: expedient a cancel·lar", "cancel·lant..."));

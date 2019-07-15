@@ -356,7 +356,32 @@ public class ExpedientService implements ExpedientServiceInterface {
 		
 	}
 	
-	
+	@Override
+	public void assignarTramitador(Integer id_expedient, Integer id_subcentre,  String unitat_organica, String usuari) {
+		
+		LOGGER.info("in assignarTramitador, estat entity manager: " + em.toString());
+		String queryStringCreatePK;
+		
+		queryStringCreatePK = new String("UPDATE qsi_expedient set id_subcentre = :id_subcentre, unitat_organica = :unitat_organica, usuari_assignat = :usuari_assignat, id_estat= :estat where id_expedient = :id_expedient");
+		
+		try {
+			
+			Query queryCreatePK = em.createNativeQuery(queryStringCreatePK);
+			queryCreatePK.setParameter("id_expedient", id_expedient);
+			queryCreatePK.setParameter("id_subcentre", id_subcentre);
+			queryCreatePK.setParameter("unitat_organica", unitat_organica);
+			queryCreatePK.setParameter("usuari_assignat", usuari);
+			queryCreatePK.setParameter("estat", ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue());
+			
+			queryCreatePK.executeUpdate();
+			this.resultat = true;	
+		}
+		catch(Exception ex)
+		{
+			this.strError = ex.toString();
+			this.resultat = false;
+		}
+	}
 	@Override
 	public boolean getResultat() {return this.resultat;	}
 

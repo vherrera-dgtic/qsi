@@ -62,7 +62,8 @@ public class MunicipiService implements MunicipiServiceInterface {
 		
 		ArrayList<Municipi> lm = new ArrayList<Municipi>();
 		
-		String queryString = new String("select m from Municipi m where m.actiu=true and m.id_provincia = :id_provincia order by m.nom ");
+		String queryString = new String("select m from Municipi m where m.actiu=true and m.provincia.id_provincia = :id_provincia order by m.nom ");
+
 		try
 		{
 						
@@ -98,7 +99,7 @@ public class MunicipiService implements MunicipiServiceInterface {
 	public ArrayList<Municipi> getLlista_Municipis(Integer id_provincia) {
 		
 		ArrayList<Municipi> lm = new ArrayList<Municipi>();
-		String queryString = new String("select m from Municipi m where m.id_provincia = :id_provincia order by m.nom ");
+		String queryString = new String("select m from Municipi m where m.provincia.id_provincia = :id_provincia order by m.nom ");
 		try
 		{
 						

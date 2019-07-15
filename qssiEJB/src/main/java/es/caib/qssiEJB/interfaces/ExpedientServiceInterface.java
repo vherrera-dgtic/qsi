@@ -111,6 +111,7 @@ public interface ExpedientServiceInterface {
 	public ArrayList<Expedient> getLlista_Expedients(TipusCerca tc);
 	public ArrayList<Expedient> getLlista_Expedients_assignats_usuari(String usuari);
 	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre, Integer id_subcentre);
+	public void assignarTramitador(Integer id_expedient, Integer id_subcentre,  String unitat_organica, String usuari);
 	public boolean getResultat();
 	public String getError();
 }

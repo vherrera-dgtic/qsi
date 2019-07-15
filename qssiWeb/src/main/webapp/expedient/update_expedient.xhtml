@@ -24,7 +24,7 @@
 						<div class='col-form-etiqueta'>Centre gestor</div>
 						<div class='col-form'>
         					<p:selectOneMenu id="centre" value="#{expedientController.centre}" size="60">
-								<p:ajax listener="#{expedientController.onCentre_change}" update="subcentre"/>
+								<p:ajax listener="#{expedientController.onCentre_change}" update="subcentre,subcentre_1"/>
             					<f:selectItems value="#{expedientController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
         					</p:selectOneMenu>
 						</div>
@@ -38,7 +38,57 @@
 							</p:selectOneMenu>
 						</div>
 					</div>
-					<div style="margin-top:5px; margin-left:5px"><p:commandButton value="Desar" id="update_centre" action="#{expedientController.assignarCentre}" style="margin-right:20px;" ajax="false" /></div>
+					<div style="margin-top:5px; margin-left:5px">
+						<p:commandButton value="Desar" id="update_centre" action="#{expedientController.assignarCentre}" style="margin-right:20px;" ajax="false" />
+						<p:commandButton value="Cancel·lar" id="cancel_0" action="PF('dlg0').close()" style="margin-right:20px;" ajax="false" />
+					</div>
+				</p:dialog>
+				 <p:dialog header="Assignar tramitador" widgetVar="dlg1" height="200" width="800" minHeight="150" minWidth="150" position="center center" modal="true">
+    				<div class='row-form'>
+						<div class='col-form-etiqueta'>Centre gestor</div>
+						<div class='col-form'>
+        					<h:outputText value="#{expedientController.nomCentreGestor}"/>  (<h:outputText value="#{expedientController.dir3CentreGestor}"/>)
+						</div>
+					</div>
+					<div class='row-form'>
+						<div class='col-form-etiqueta'>Servei</div>
+						<div class='col-form'>
+							<p:selectOneMenu id="subcentre_1" value="#{expedientController.subcentre_1}" size="60">
+                                 <f:selectItems value="#{expedientController.llista_Subcentres_1}" var="subcentre_1" itemLabel="#{subcentre_1.nom}" itemValue="#{subcentre_1.id}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<div class='row-form'>
+						<div class='col-form-etiqueta'>Unitat orgànica</div>
+						<div class='col-form'>
+							<p:inputText id="unitat_organica_1" value="#{expedientController.unitatorganica}" size="60"></p:inputText>
+						</div>
+					</div>
+					<div class='row-form'>
+						<div class='col-form-etiqueta'>Usuari assignat (codi usuari)</div>
+						<div class='col-form'>
+							<p:inputText id="usuari_1" value="#{expedientController.usuariassignat}" size="60"></p:inputText>
+						</div>
+					</div>
+					<div style="margin-top:5px; margin-left:5px">
+						<p:commandButton value="Assignar" id="assignar_tramitador" action="#{expedientController.assignarTramitador}" style="margin-right:20px;" ajax="false" />
+						<p:commandButton value="Cancel·lar" id="cancel_1" action="PF('dlg1').close()" style="margin-right:20px;" ajax="false" />
+					</div>
+				</p:dialog>
+				<p:dialog header="Retornar a l'equip de filtratge" widgetVar="dlg4" height="200" width="600" minHeight="60" position="top center" modal="true">
+    				<div>
+    					<h:outputText value="Estau segur que voleu retornar l'expedient a l'equip de filtratge?" /><br/>
+    					<h:outputText value="Heu d'indicar el motiu" />
+    				</div>
+    				<div>
+    					<p:inputTextarea rows="5" cols="60" counter="display_4" maxlength="300" counterTemplate="{0} caràcters restants." autoResize="false" />
+	    				<br />
+	    				<h:outputText id="display_4" />
+    				</div>
+    				<div style="align:center">
+    					<p:commandButton value="Retornar" id="retornar_equip_filtratge" action="#{expedientController.retornarequipfiltratge}" ajax="false" />
+	    				<p:commandButton value="Cancel·lar" id="cancel_4" action="PF('dlg4').close()" style="margin-right:20px;" ajax="false" />
+    				</div>
 				</p:dialog>
 				<p:dialog header="Rebutjar" widgetVar="dlg3" height="200" width="600" minHeight="60" position="top center" modal="true">
     				<div>
@@ -46,13 +96,13 @@
     					<h:outputText value="Heu d'indicar el motiu que serà remés també a l'usuari" />
     				</div>
     				<div>
-    					<p:inputTextarea rows="5" cols="60" counter="display" maxlength="300" counterTemplate="{0} caràcters restants." autoResize="false" />
+    					<p:inputTextarea rows="5" cols="60" counter="display_3" maxlength="300" counterTemplate="{0} caràcters restants." autoResize="false" />
 	    				<br />
-	    				<h:outputText id="display" />
+	    				<h:outputText id="display_3" />
     				</div>
     				<div style="align:center">
-    					<p:commandButton value="Rebutjar" id="rebutjar_expedient" action="#{expedientController.rebutjarExpedient}" style="margin- />ht:20px;" ajax="false" />
-	    				<p:commandButton value="Cancel·lar" id="cancel" action="PF('dlg3').close()" style="margin-right:20px;" ajax="false" />
+    					<p:commandButton value="Rebutjar" id="rebutjar_expedient" action="#{expedientController.rebutjarExpedient}" ajax="false" />
+	    				<p:commandButton value="Cancel·lar" id="cancel_3" action="PF('dlg3').close()" style="margin-right:20px;" ajax="false" />
     				</div>
 				</p:dialog>
                 <p:panel id="expedient" header="Expedient QSSI" footer="" style="margin-bottom:20px">
