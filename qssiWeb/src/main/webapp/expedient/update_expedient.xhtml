@@ -19,13 +19,23 @@
                 		<f:selectItems value="#{expedientController.accionsDisponibles}" var="a" itemLabel="#{a.tag}" itemValue="#{a.value}" />
             		</p:selectOneRadio>
                 </p:panel>
-                <p:dialog header="Assignar a conselleria" widgetVar="dlg0" height="200" width="600" minHeight="150" minWidth="150" position="center center" modal="true">
+                <p:dialog header="Assignar a conselleria" widgetVar="dlg0" height="200" width="800" minHeight="150" minWidth="150" position="center center" modal="true">
     				<div class='row-form'>
-						<div style="margin-top:5px; margin-left:5px">Centre gestor</div>
-						<div style="margin-top:5px; margin-left:5px">
-							<p:selectOneMenu id="centre" value="#{expedientController.centre}" required="true" size="60">
+						<div class='col-form-etiqueta'>Centre gestor</div>
+						<div class='col-form'>
+        					<p:selectOneMenu id="centre" value="#{expedientController.centre}" size="60">
+								<p:ajax listener="#{expedientController.onCentre_change}" update="subcentre"/>
             					<f:selectItems value="#{expedientController.llista_Centres}" var="centre" itemLabel="#{centre.nom}" itemValue="#{centre.id}"/>
         					</p:selectOneMenu>
+						</div>
+					</div>
+					<div class='row-form'>
+						<div class='col-form-etiqueta'>Servei</div>
+						<div class='col-form'>
+							<p:selectOneMenu id="subcentre" value="#{expedientController.subcentre}" size="60">
+								 <f:selectItem itemLabel="Selecciona servei si el coneixeu" itemValue="#{null}"  />
+                                 <f:selectItems value="#{expedientController.llista_Subcentres}" var="subcentre" itemLabel="#{subcentre.nom}" itemValue="#{subcentre.id}" />
+							</p:selectOneMenu>
 						</div>
 					</div>
 					<div style="margin-top:5px; margin-left:5px"><p:commandButton value="Desar" id="update_centre" action="#{expedientController.assignarCentre}" style="margin-right:20px;" ajax="false" /></div>
@@ -41,7 +51,7 @@
 	    				<h:outputText id="display" />
     				</div>
     				<div style="align:center">
-    					<p:commandButton value="Rebutjar" id="rebutjar_expedient" action="#{expedientController.rebutjarExpedient}" style="margin-right:20px;" ajax="false" />
+    					<p:commandButton value="Rebutjar" id="rebutjar_expedient" action="#{expedientController.rebutjarExpedient}" style="margin- />ht:20px;" ajax="false" />
 	    				<p:commandButton value="Cancel·lar" id="cancel" action="PF('dlg3').close()" style="margin-right:20px;" ajax="false" />
     				</div>
 				</p:dialog>

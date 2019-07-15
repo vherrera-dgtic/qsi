@@ -110,7 +110,7 @@ public interface ExpedientServiceInterface {
 	public AccioExpedient[] getAccionsDisponiblesExpedient (EstatExpedient e);
 	public ArrayList<Expedient> getLlista_Expedients(TipusCerca tc);
 	public ArrayList<Expedient> getLlista_Expedients_assignats_usuari(String usuari);
-	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre);
+	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre, Integer id_subcentre);
 	public boolean getResultat();
 	public String getError();
 }

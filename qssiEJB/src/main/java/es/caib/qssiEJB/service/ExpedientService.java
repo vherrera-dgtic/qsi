@@ -325,16 +325,26 @@ public class ExpedientService implements ExpedientServiceInterface {
 	}
 	
 	@Override
-	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre) {
+	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre, Integer id_subcentre) {
 		
 		LOGGER.info("in assignarCentreExpedient, estat entity manager: " + em.toString());
-		String queryStringCreatePK = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_estat= :estat where id_expedient = :id_expedient");
+		String queryStringCreatePK;
+		
+		if (id_subcentre == 0)
+			queryStringCreatePK = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_subcentre = null, id_estat= :estat where id_expedient = :id_expedient");
+		else
+			queryStringCreatePK = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_subcentre = :id_subcentre, id_estat= :estat where id_expedient = :id_expedient");
+		
 		try {
 			
 			Query queryCreatePK = em.createNativeQuery(queryStringCreatePK);
 			queryCreatePK.setParameter("id_expedient", id_expedient);
 			queryCreatePK.setParameter("id_centre", id_centre);
 			queryCreatePK.setParameter("estat", ExpedientServiceInterface.EstatExpedient.ASSIGNAT_RESPONSABLE_CONSELLERIA.getValue());
+			
+			if (id_subcentre != 0)
+				queryCreatePK.setParameter("id_subcentre", id_subcentre);
+			
 			queryCreatePK.executeUpdate();
 			this.resultat = true;	
 		}

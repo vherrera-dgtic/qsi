@@ -798,7 +798,9 @@ public class ExpedientController {
 				this.pis = e.getPis();
 				this.codipostal = e.getCodipostal();
 				this.estat = e.getEstat();
-				
+				this.centre = e.getCentre().getId();
+				this.onCentre_change();
+								
 				// Etiquetes
 				this.nom_estat = ExpedientServiceInterface.EstatExpedient.valueOf(this.estat).getTag();
 				this.nom_centre_gestor = e.getCentre().getNom();
@@ -807,6 +809,7 @@ public class ExpedientController {
 				{
 					this.nom_subcentre = e.getSubcentre().getNom();
 					this.dir3_subcentre = e.getSubcentre().getDir3();
+					this.subcentre = e.getSubcentre().getId();
 				}
 					
 				
@@ -875,7 +878,7 @@ public class ExpedientController {
 		{
 			ic = new InitialContext();
 			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
-			ExpedientServ.assignarCentreExpedient(Integer.parseInt(expedientId),this.getCentre());
+			ExpedientServ.assignarCentreExpedient(Integer.parseInt(expedientId),this.getCentre(), this.getSubcentre());
 				
 			if (ExpedientServ.getResultat())
 			{
