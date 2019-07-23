@@ -2,6 +2,7 @@ package es.caib.qssiEJB.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -115,8 +116,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 		calendar.setTime(e.getDataentrada());
 		Integer any = calendar.get(Calendar.YEAR);
 		
-		boolean obtingudaPK;
-		obtingudaPK = getPrimaryKey(any,e);
+		boolean obtingudaPK = getPrimaryKey(any,e);
 		
 		if (obtingudaPK)
 		{
@@ -325,27 +325,43 @@ public class ExpedientService implements ExpedientServiceInterface {
 	}
 	
 	@Override
-	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre, Integer id_subcentre) {
+	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre) {
 		
 		LOGGER.info("in assignarCentreExpedient, estat entity manager: " + em.toString());
-		String queryStringCreatePK;
 		
-		if (id_subcentre == 0)
-			queryStringCreatePK = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_subcentre = null, id_estat= :estat where id_expedient = :id_expedient");
-		else
-			queryStringCreatePK = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_subcentre = :id_subcentre, id_estat= :estat where id_expedient = :id_expedient");
+		String queryString = new String("select id_centre FROM qsi_expedient where id_expedient = :id_expedient");
+		String updateQueryString;
+		
 		
 		try {
 			
-			Query queryCreatePK = em.createNativeQuery(queryStringCreatePK);
-			queryCreatePK.setParameter("id_expedient", id_expedient);
-			queryCreatePK.setParameter("id_centre", id_centre);
-			queryCreatePK.setParameter("estat", ExpedientServiceInterface.EstatExpedient.ASSIGNAT_RESPONSABLE_CONSELLERIA.getValue());
+			Query query = em.createNativeQuery(queryString);
+			query.setParameter("id_expedient", id_expedient);
+			Integer id_centre_anterior = (Integer) query.getSingleResult();
+			LOGGER.info("centre anterior: " + id_centre_anterior + ", centre nou: " + id_centre);
 			
-			if (id_subcentre != 0)
-				queryCreatePK.setParameter("id_subcentre", id_subcentre);
+			if (id_centre_anterior.equals(id_centre))
+			{
+				// La unitat de filtratge no ha canviat el centre seleccionat inicialment
+				// Només canviam l'estat de l'expedient	
+				LOGGER.info("kiki");
+				updateQueryString = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_estat = :estat where id_expedient = :id_expedient");
+			}
+			else
+			{
+				// La unitat de filtratge ha canviat el centre seleccionat inicialment
+				// Canviam el centre, posem el subcentre a null i canviam l'estat
+				LOGGER.info("bubu");
+				updateQueryString = new String("UPDATE qsi_expedient set id_centre = :id_centre, id_subcentre = null, id_estat= :estat where id_expedient = :id_expedient");
+			}
 			
-			queryCreatePK.executeUpdate();
+			Query updateQuery = em.createNativeQuery(updateQueryString);
+			updateQuery.setParameter("id_expedient", id_expedient);
+			updateQuery.setParameter("id_centre", id_centre);
+			updateQuery.setParameter("estat", ExpedientServiceInterface.EstatExpedient.ASSIGNAT_RESPONSABLE_CONSELLERIA.getValue());
+			
+			updateQuery.executeUpdate();	
+			
 			this.resultat = true;	
 		}
 		catch(Exception ex)
@@ -360,20 +376,20 @@ public class ExpedientService implements ExpedientServiceInterface {
 	public void assignarTramitador(Integer id_expedient, Integer id_subcentre,  String unitat_organica, String usuari) {
 		
 		LOGGER.info("in assignarTramitador, estat entity manager: " + em.toString());
-		String queryStringCreatePK;
+		String queryString;
 		
-		queryStringCreatePK = new String("UPDATE qsi_expedient set id_subcentre = :id_subcentre, unitat_organica = :unitat_organica, usuari_assignat = :usuari_assignat, id_estat= :estat where id_expedient = :id_expedient");
+		queryString = new String("UPDATE qsi_expedient set id_subcentre = :id_subcentre, unitat_organica = :unitat_organica, usuari_assignat = :usuari_assignat, id_estat= :estat where id_expedient = :id_expedient");
 		
 		try {
 			
-			Query queryCreatePK = em.createNativeQuery(queryStringCreatePK);
-			queryCreatePK.setParameter("id_expedient", id_expedient);
-			queryCreatePK.setParameter("id_subcentre", id_subcentre);
-			queryCreatePK.setParameter("unitat_organica", unitat_organica);
-			queryCreatePK.setParameter("usuari_assignat", usuari);
-			queryCreatePK.setParameter("estat", ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue());
+			Query query = em.createNativeQuery(queryString);
+			query.setParameter("id_expedient", id_expedient);
+			query.setParameter("id_subcentre", id_subcentre);
+			query.setParameter("unitat_organica", unitat_organica);
+			query.setParameter("usuari_assignat", usuari);
+			query.setParameter("estat", ExpedientServiceInterface.EstatExpedient.ASSIGNAT_TRAMITADOR.getValue());
 			
-			queryCreatePK.executeUpdate();
+			query.executeUpdate();
 			this.resultat = true;	
 		}
 		catch(Exception ex)
@@ -382,6 +398,32 @@ public class ExpedientService implements ExpedientServiceInterface {
 			this.resultat = false;
 		}
 	}
+	
+	@Override
+	public void desarRespostaExpedient(Integer id_expedient, String text_resposta)
+	{
+		LOGGER.info("in desarRespostaExpedient, estat entity manager: " + em.toString());
+		String queryString;
+		
+		queryString = new String("UPDATE qsi_expedient set text_resposta = :text_resposta, data_resposta = :data_resposta where id_expedient = :id_expedient");
+		
+		try {
+			Date data_resposta = new Date();
+			Query query = em.createNativeQuery(queryString);
+			query.setParameter("id_expedient", id_expedient);
+			query.setParameter("text_resposta", text_resposta);
+			query.setParameter("data_resposta", data_resposta);
+			
+			query.executeUpdate();
+			this.resultat = true;	
+		}
+		catch(Exception ex)
+		{
+			this.strError = ex.toString();
+			this.resultat = false;
+		}
+	}
+	
 	@Override
 	public boolean getResultat() {return this.resultat;	}
 

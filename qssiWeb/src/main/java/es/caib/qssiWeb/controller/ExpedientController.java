@@ -59,7 +59,6 @@ public class ExpedientController {
 	private InitialContext ic;
 	
 	private ArrayList<Subcentre> llista_subcentres;
-	private ArrayList<Subcentre> llista_subcentres_1;
 	private ArrayList<Municipi> llista_municipis;
 	
 	private String expedientId = new String("");
@@ -108,6 +107,7 @@ public class ExpedientController {
 	private String dir3_subcentre = new String("");
 	private String mostrarAP = new String("");
 	private String usuari_assignat = new String("");
+	private String text_resposta = new String("");
 	
 	private String messages = new String("");
 	
@@ -121,7 +121,6 @@ public class ExpedientController {
     public String getAssumpte() { return this.assumpte; }
     
 	public ArrayList<Subcentre> getLlista_Subcentres() { return this.llista_subcentres; }
-	public ArrayList<Subcentre> getLlista_Subcentres_1() { return this.llista_subcentres_1; }
     public ArrayList<Municipi> getLlista_Municipis() { return this.llista_municipis; }
     
     public void setCentre(Integer centre) { this.centre = centre;  }
@@ -129,9 +128,6 @@ public class ExpedientController {
     
     public void setSubcentre(Integer subcentre) { this.subcentre = subcentre; }
     public Integer getSubcentre() { return this.subcentre; }
-    
-    public void setSubcentre_1(Integer subcentre) { this.subcentre_1 = subcentre; }
-    public Integer getSubcentre_1() { return this.subcentre_1; }
     
     public void setUnitatorganica(String uo) { this.unitatorganica = uo; }
     public String getUnitatorganica() { return this.unitatorganica; }
@@ -252,6 +248,9 @@ public class ExpedientController {
     
     public void setMostrarAP(String v) { this.mostrarAP = v; }
     public String getMostrarAP() { return this.mostrarAP; }
+    
+    public void setTextresposta(String t) { this.text_resposta = t; }
+    public String getTextresposta() { return this.text_resposta; }
     
     public void setMessages(String m) { this.messages = m; }
     public String getMessages() { return this.messages; }
@@ -600,7 +599,6 @@ public class ExpedientController {
     	
     	LOGGER.info("Proxy a ExpedientController --> onCentre_change");
      	this.llista_subcentres = new ArrayList<Subcentre>();  
-     	this.llista_subcentres_1 = new ArrayList<Subcentre>();
      	SubcentreServiceInterface SubcentreServ;
  		  	
  		LOGGER.info("Obtenim llista de subcentres a partir del canvi de centre ");
@@ -612,8 +610,7 @@ public class ExpedientController {
  			LOGGER.info("EJB lookup "+ SubcentreServ);	
  			
  			this.llista_subcentres = SubcentreServ.getLlista_SubcentresActiusWeb(this.centre); // Cridem l'EJB
- 			this.llista_subcentres_1 = SubcentreServ.getLlista_SubcentresActiusWeb(this.centre); // Cridem l'EJB
- 			 			
+ 			 			 			
  			LOGGER.info("Obtinguda llista de subcentres "+ SubcentreServ);	
  			
  			if (!SubcentreServ.getResultat())
@@ -810,6 +807,7 @@ public class ExpedientController {
 				this.codipostal = e.getCodipostal();
 				this.estat = e.getEstat();
 				this.centre = e.getCentre().getId();
+				this.text_resposta = e.getTextResposta();
 				this.onCentre_change();
 								
 				// Etiquetes
@@ -821,7 +819,6 @@ public class ExpedientController {
 					this.nom_subcentre = e.getSubcentre().getNom();
 					this.dir3_subcentre = e.getSubcentre().getDir3();
 					this.subcentre = e.getSubcentre().getId();
-					this.subcentre_1 = e.getSubcentre().getId();
 				}
 					
 				
@@ -890,7 +887,7 @@ public class ExpedientController {
 		{
 			ic = new InitialContext();
 			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
-			ExpedientServ.assignarCentreExpedient(Integer.parseInt(expedientId),this.getCentre(), this.getSubcentre_1());
+			ExpedientServ.assignarCentreExpedient(Integer.parseInt(expedientId),this.getCentre());
 				
 			if (ExpedientServ.getResultat())
 			{
@@ -947,5 +944,33 @@ public class ExpedientController {
     public void rebutjarExpedient() {
     	FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "TODO: expedient a cancel·lar", "cancel·lant..."));
     }
- 
+    
+    public void desarRespostaExpedient() {
+    	ExpedientServiceInterface ExpedientServ;
+		LOGGER.info("desarRespostaExpedient, param: expedient: " + expedientId);
+		
+		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		
+		try
+		{
+			ic = new InitialContext();
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			ExpedientServ.desarRespostaExpedient(Integer.parseInt(expedientId),this.text_resposta);
+				
+			if (ExpedientServ.getResultat())
+			{
+				LOGGER.info("Resposta desada correctament");
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Resposta desada correctament", "Resposta desada correctament"));
+			}
+			else
+			{
+				LOGGER.info("Error obtingut: "+ ExpedientServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant expedient",  ExpedientServ.getError()));
+			}
+		}
+		catch(Exception ex) {
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant l'expedient", ex.toString()));			
+		}
+    }
 }

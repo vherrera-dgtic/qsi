@@ -30,7 +30,15 @@
 			    			<f:convertDateTime pattern="dd/MM/yyyy" />
 			    		</h:outputText>
 			    	</p:column>
-			    	<p:column headerText="Accions" width="5%"></p:column>
+			    	<p:column headerText="Accions" width="5%">
+			    		<div>
+			    		    <div style="float:left">
+				    			<p:button outcome="/expedient/resoldre_expedient.xhtml" icon="ui-icon-pencil" rendered="#{element.id!='0'}">
+				    				<f:param name="expedientId_param" value="#{element.id}" />
+								</p:button>
+			    			</div>
+			    		</div>
+			    	</p:column>
 				</p:dataTable>
     		</p:panel>
 		</h:form>
