@@ -8,6 +8,14 @@
   <artifactId>qssiEJB</artifactId>
   <name>qssiEJB</name>
   <description>Mòdul EJB del projecte QSSI</description>
+   <repositories>
+  	<repository>
+  		<id>mvn-repo</id>
+  		<name>Maven repository</name>
+  		<url>https://mvnrepository.com/artifact/com.itextpdf/itextpdf</url>
+  		<layout>default</layout>
+  	</repository>
+  </repositories>
   <dependencies>
   	<dependency>
   		<groupId>javax</groupId>
@@ -21,6 +29,11 @@
 			<version>1.2.13</version>
 			<scope>provided</scope>
     </dependency>
+    <dependency>
+    	<groupId>com.itextpdf</groupId>
+    	<artifactId>itextpdf</artifactId>
+    	<version>5.5.13.1</version>
+	</dependency>
   </dependencies>
   <build>
   	<plugins>

@@ -8,5 +8,8 @@
         <dependent-module archiveName="qssiEJB-0.0.1.jar" deploy-path="/" handle="module:/resource/qssiEJB/qssiEJB">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="itextpdf-5.5.13.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/com/itextpdf/itextpdf/5.5.13.1/itextpdf-5.5.13.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

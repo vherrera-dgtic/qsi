@@ -21,7 +21,7 @@
 	            		</div>
 						<div style="margin-top:5px; margin-left:5px">
 							<p:commandButton value="Desar" action="#{expedientController.desarRespostaExpedient}" update="growl" icon="ui-icon-disk" style="margin-right:20px;" />
-							<p:commandButton value="Enviar i tancar" onclick="alert('todo'); return false;" icon="ui-icon-arrow-1-e" style="margin-right:20px;" />
+							<p:commandButton value="Enviar i tancar" onclick="PF('dlg2').show(); return false;" update="growl" icon="ui-icon-arrow-1-e" style="margin-right:20px;" />
 							<p:commandButton value="Retornar" onclick="PF('dlg5').show(); return false;" icon="ui-icon-arrowrefresh-1-n" style="margin-right:20px;" />
 			    			<p:commandButton value="Rebutjar" onclick="PF('dlg3').show(); return false;" icon="ui-icon-closethick" style="margin-right:20px;" />
 						</div>
@@ -40,6 +40,16 @@
     				<div style="align:center">
     					<p:commandButton value="Retornar" id="retornar_responsable" ajax="false" />
 	    				<p:commandButton value="Cancel·lar" id="cancel_4" action="PF('dlg4').close()" style="margin-right:20px;" ajax="false" />
+    				</div>
+				</p:dialog>
+				<p:dialog header="Enviar i tancar" widgetVar="dlg2" height="200" width="600" minHeight="60" position="top center" modal="true">
+    				<div>
+    					<h:outputText value="Estau segur que voleu enviar i tancar l'expedient?" /><br/>
+    					<h:outputText value="Es generarà un pdf amb la resposta i s'enviarà" />
+    				</div>
+    				<div style="align:center">
+    					<p:commandButton value="Acceptar" action="#{expedientController.tancarExpedient}" ajax="false" />
+	    				<p:commandButton value="Cancel·lar" id="cancel_2" action="PF('dlg2').close()" style="margin-right:20px;" ajax="false" />
     				</div>
 				</p:dialog>
 				<p:dialog header="Rebutjar" widgetVar="dlg3" height="200" width="600" minHeight="60" position="top center" modal="true">

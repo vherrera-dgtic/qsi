@@ -1,5 +1,6 @@
 package es.caib.qssiEJB.service;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import es.caib.qssiEJB.entity.Expedient;
 import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
@@ -416,6 +421,40 @@ public class ExpedientService implements ExpedientServiceInterface {
 			
 			query.executeUpdate();
 			this.resultat = true;	
+		}
+		catch(Exception ex)
+		{
+			this.strError = ex.toString();
+			this.resultat = false;
+		}
+	}
+	
+	@Override
+	public void tancarExpedient(Integer id_expedient)
+	{
+		LOGGER.info("in tancarExpedient, estat entity manager: " + em.toString());
+		String queryString;
+		
+		// Obtenir dades expedient
+		
+		try {
+			// Generar pdf
+			FileOutputStream myStream = new FileOutputStream("a.pdf");
+			Document document = new Document();
+			LOGGER.info("1");
+			PdfWriter.getInstance(document, myStream);
+			LOGGER.info("2");
+			document.open();
+			LOGGER.info("3");
+			document.add(new Paragraph("Hello World!"));
+			LOGGER.info("4");
+			document.close();
+			
+			// Enviar a arxiu
+			
+			// Enviar a usuari
+			
+			this.resultat = true;
 		}
 		catch(Exception ex)
 		{

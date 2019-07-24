@@ -113,6 +113,7 @@ public interface ExpedientServiceInterface {
 	public void assignarCentreExpedient(Integer id_expedient, Integer id_centre);
 	public void assignarTramitador(Integer id_expedient, Integer id_subcentre,  String unitat_organica, String usuari);
 	public void desarRespostaExpedient(Integer id_expedient, String text_resposta);
+	public void tancarExpedient(Integer id_expedient);
 	public boolean getResultat();
 	public String getError();
 }

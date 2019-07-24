@@ -944,6 +944,35 @@ public class ExpedientController {
     public void rebutjarExpedient() {
     	FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "TODO: expedient a cancel·lar", "cancel·lant..."));
     }
+   
+    public void tancarExpedient() {
+    	ExpedientServiceInterface ExpedientServ;
+		LOGGER.info("tancarExpedient, param: expedient: " + expedientId);
+		
+		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		
+		try
+		{
+			ic = new InitialContext();
+			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			ExpedientServ.tancarExpedient(Integer.parseInt(expedientId));
+				
+			if (ExpedientServ.getResultat())
+			{
+				LOGGER.info("Expedient tancat correctament");
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Expedient tancat correctament", "Expedient tancat correctament"));
+			}
+			else
+			{
+				LOGGER.info("Error obtingut: "+ ExpedientServ.getError());
+				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error tancant expedient",  ExpedientServ.getError()));
+			}
+		}
+		catch(Exception ex) {
+			LOGGER.info("Error: " + ex.toString());
+			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error tancant l'expedient", ex.toString()));			
+		}	
+    }
     
     public void desarRespostaExpedient() {
     	ExpedientServiceInterface ExpedientServ;
