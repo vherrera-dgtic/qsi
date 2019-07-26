@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+	<head></head>
+	<body>
+		<img src='/qssiWeb/resources/images/logo_conselleria.png' alt='logo' border='0' height='260px' width='300px' />
+		<h1>Expedient QSSI - <h:outputText value="#{expedientController.expedientId}" /></h1>
+		<h2>Dades generals</h2><hr/>
+		<table>
+			<tr>
+				<td><b>Assumpte:</b></td>
+				<td><h:outputText value = "#{expedientController.assumpte}" /></td>
+			</tr>
+			<tr>
+				<td><b>Centre gestor:</b></td>
+				<td><h:outputText value="#{expedientController.nomCentreGestor}"/>  (<h:outputText value="#{expedientController.dir3CentreGestor}"/>)</td>
+			</tr>
+			<tr>
+				<td><b>Servei:</b></td>
+				<td><h:outputText value="#{expedientController.nomsubcentre}" />  (<h:outputText value="#{expedientController.dir3subcentre}"/>)</td>
+			</tr>
+		</table>
+		<h2>Contingut - Descripció</h2><hr/>
+		<table>
+			<tr>
+				<td><h:outputText value = "#{expedientController.textpeticio}" /></td>
+			</tr>
+		</table>
+		<h2>Resposta</h2><hr/>
+		<table>
+			<tr>
+				<td><h:outputText value="#{expedientController.textresposta}" escape="false"></h:outputText></td><!--  HTML embedded -->
+			</tr>
+		</table>
+	</body>
+</html>

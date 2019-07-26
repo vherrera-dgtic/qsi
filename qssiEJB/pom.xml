@@ -11,8 +11,14 @@
    <repositories>
   	<repository>
   		<id>mvn-repo</id>
-  		<name>Maven repository</name>
+  		<name>Maven repository iText</name>
   		<url>https://mvnrepository.com/artifact/com.itextpdf/itextpdf</url>
+  		<layout>default</layout>
+  	</repository>
+  	<repository>
+  		<id>mvn-repo2</id>
+  		<name>Maven repository iText Tool</name>
+  		<url>https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker</url>
   		<layout>default</layout>
   	</repository>
   </repositories>
@@ -32,6 +38,11 @@
     <dependency>
     	<groupId>com.itextpdf</groupId>
     	<artifactId>itextpdf</artifactId>
+    	<version>5.5.13.1</version>
+	</dependency>
+	<dependency>
+    	<groupId>com.itextpdf.tool</groupId>
+    	<artifactId>xmlworker</artifactId>
     	<version>5.5.13.1</version>
 	</dependency>
   </dependencies>

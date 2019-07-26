@@ -950,9 +950,10 @@ public class ExpedientController {
 		LOGGER.info("tancarExpedient, param: expedient: " + expedientId);
 		
 		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		
+				
 		try
 		{
+			
 			ic = new InitialContext();
 			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
 			ExpedientServ.tancarExpedient(Integer.parseInt(expedientId));

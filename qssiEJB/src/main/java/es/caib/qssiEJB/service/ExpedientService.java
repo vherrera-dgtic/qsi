@@ -1,6 +1,9 @@
 package es.caib.qssiEJB.service;
 
 import java.io.FileOutputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,8 +19,12 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import es.caib.qssiEJB.entity.Expedient;
 import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
@@ -433,28 +440,101 @@ public class ExpedientService implements ExpedientServiceInterface {
 	public void tancarExpedient(Integer id_expedient)
 	{
 		LOGGER.info("in tancarExpedient, estat entity manager: " + em.toString());
-		String queryString;
-		
-		// Obtenir dades expedient
-		
+				
 		try {
-			// Generar pdf
-			FileOutputStream myStream = new FileOutputStream("a.pdf");
-			Document document = new Document();
-			LOGGER.info("1");
-			PdfWriter.getInstance(document, myStream);
-			LOGGER.info("2");
-			document.open();
-			LOGGER.info("3");
-			document.add(new Paragraph("Hello World!"));
-			LOGGER.info("4");
-			document.close();
 			
-			// Enviar a arxiu
+			// Obtenir expedient
+			Expedient e = this.getExpedient(id_expedient); 
+			if (this.resultat)
+			{
+				// Generar pdf
+				LOGGER.info("dintre_0");
+				FileOutputStream myStream = new FileOutputStream("result.pdf");
+				Document document = new Document(PageSize.A4,25f, 25f, 25f, 25f);
+				PdfWriter myWriter = PdfWriter.getInstance(document, myStream);
+				
+				String HTMLResposta = new String("");
+				
+				HTMLResposta = HTMLResposta.concat("<html>");
+				HTMLResposta = HTMLResposta.concat("<head><style>");
+				HTMLResposta = HTMLResposta.concat("h1 {color:blue;}");
+				HTMLResposta = HTMLResposta.concat("body {font-size:12px;}");
+				HTMLResposta = HTMLResposta.concat("</style></head>");
+				HTMLResposta = HTMLResposta.concat("<body>");
+				HTMLResposta = HTMLResposta.concat("<h1>Expedient QSSI-" + e.getId() + "<br/></h1>");
+				HTMLResposta = HTMLResposta.concat("<table cellspacing='5' cellpadding='5' border='0'>");
+				HTMLResposta = HTMLResposta.concat("<tr>");
+				HTMLResposta = HTMLResposta.concat("<td style='width:57%;valign:top'>");
+				// Dades generals
+				HTMLResposta = HTMLResposta.concat("<h2>Dades generals<hr/></h2>");
+				HTMLResposta = HTMLResposta.concat("<b>Assumpte:</b> " + e.getAssumpte() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Centre gestor:</b> " + e.getCentre().getNom() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Servei:</b> " + e.getSubcentre().getNom() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Unitat orgànica:</b> " + e.getUnitatOrganica() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Tipus d'escrit:</b> " + e.getEscrit().getNom()+ "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Matèria:</b> " + e.getMateria().getNom() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Motiu:</b> " + e.getMotiu().getNom() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Tipus de queixa:</b> " + e.getQueixa().getNom() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Tipus d'entrada:</b> " + e.getEntrada().getNom() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Data d'entrada:</b> " + e.getDataentrada() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Data de resposta:</b> " + e.getDataresposta() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("</td>");
+				HTMLResposta = HTMLResposta.concat("<td style='width:6%'>&nbsp;&nbsp;</td>");
+				
+				// Dades personals
+				HTMLResposta = HTMLResposta.concat("<td style='width:37%;valign:top'>");
+				HTMLResposta = HTMLResposta.concat("<h2>Dades personals<hr/></h2>");
+				HTMLResposta = HTMLResposta.concat("<b>Llinatges:</b> " + e.getLlinatge1() + " " + e.getLlinatge2() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Identificació:</b> " + e.getNumidentificacio() + "&nbsp;(" +  e.getIdentificacio().getNom() + ")<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Telèfon:</b> " + e.getTelefon()+ "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Llengua:</b> " + e.getIdioma().getNom()+ "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Correu electrònic:</b> " + e.getEmail() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("<b>Mètodo de resposta:</b> " + e.getViaContestacio() + "<br/>");
+				
+				if (e.getViaContestacio().equals("postal") )
+				{
+					HTMLResposta = HTMLResposta.concat("<b>Carrer:</b>" + e.getDireccio() + ", núm. "+ e.getNumero() +", " + e.getPis()+ ", codi postal: " + e.getCodipostal() + "<br/>");	
+					HTMLResposta = HTMLResposta.concat("<b>Municipi:</b>" + e.getMunicipi().getNom() + "<br/>");
+					HTMLResposta = HTMLResposta.concat("<b>Provincia / Regió:</b>" + e.getMunicipi().getProvincia().getNom() + "<br/>");
+				}
+				HTMLResposta = HTMLResposta.concat("</td>");
+				
+				HTMLResposta = HTMLResposta.concat("</tr>");
+				HTMLResposta = HTMLResposta.concat("<tr><td colspan='3' style='height:15px'>&nbsp;&nbsp;</td></tr>");
+				
+				// Petició i resposta
+				HTMLResposta = HTMLResposta.concat("<tr><td colspan='3'>");
+				HTMLResposta = HTMLResposta.concat("<h2>Petició<hr/></h2>");
+				HTMLResposta = HTMLResposta.concat(e.getTextPeticio() + "<br/>");
+				HTMLResposta = HTMLResposta.concat("</td></tr>");
+				HTMLResposta = HTMLResposta.concat("<tr><td colspan='3' style='height:15px'>&nbsp;&nbsp;</td></tr>");
+				HTMLResposta = HTMLResposta.concat("<tr><td colspan='3'>");
+				HTMLResposta = HTMLResposta.concat("<h2>Resposta<hr/></h2>");
+				HTMLResposta = HTMLResposta.concat(e.getTextResposta()+ "<br/>");
+				HTMLResposta = HTMLResposta.concat("</td></tr>");
+				HTMLResposta = HTMLResposta.concat("</table>");
+				HTMLResposta = HTMLResposta.concat("</body>");
+				HTMLResposta = HTMLResposta.concat("</html>");
+				
+								
+				document.open();
+				
+				Image imghead = Image.getInstance("logo_conselleria.jpg");
+				imghead.scaleAbsolute(150,130);
+				document.add(imghead);
+				
+				Reader targetReader = new StringReader(HTMLResposta);
+				XMLWorkerHelper.getInstance().parseXHtml(myWriter, document, targetReader);
+				
+				document.close();
+				
+				// Enviar a arxiu
+				
+				// Enviar a usuari
+				
+				this.resultat = true;	
+			}
 			
-			// Enviar a usuari
-			
-			this.resultat = true;
 		}
 		catch(Exception ex)
 		{
