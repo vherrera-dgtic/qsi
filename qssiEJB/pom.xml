@@ -21,6 +21,11 @@
   		<url>https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker</url>
   		<layout>default</layout>
   	</repository>
+  	<repository>
+		<id>github-governib-maven-repo</id>
+		<name>GitHub GovernIB Maven Repository</name>
+		<url>http://GovernIB.github.io/maven/maven/</url>
+	</repository>
   </repositories>
   <dependencies>
   	<dependency>
@@ -44,6 +49,11 @@
     	<groupId>com.itextpdf.tool</groupId>
     	<artifactId>xmlworker</artifactId>
     	<version>5.5.13.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.fundaciobit.plugins</groupId>
+		<artifactId>plugin-arxiu-caib</artifactId>
+		<version>1.0.4</version>
 	</dependency>
   </dependencies>
   <build>

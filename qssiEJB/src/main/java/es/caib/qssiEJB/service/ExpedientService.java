@@ -1,12 +1,17 @@
 package es.caib.qssiEJB.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -21,14 +26,20 @@ import org.apache.log4j.Logger;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
+import es.caib.plugins.arxiu.api.ContingutArxiu;
+import es.caib.plugins.arxiu.api.DocumentEstat;
+import es.caib.plugins.arxiu.api.DocumentExtensio;
+import es.caib.plugins.arxiu.api.DocumentFormat;
+import es.caib.plugins.arxiu.api.ExpedientEstat;
+import es.caib.plugins.arxiu.api.ExpedientMetadades;
+import es.caib.plugins.arxiu.api.IArxiuPlugin;
+import es.caib.plugins.arxiu.caib.ArxiuPluginCaib;
 import es.caib.qssiEJB.entity.Expedient;
 import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
-
 
 /**
  * Servei (EJB) per a l'entitat Expedient
@@ -529,10 +540,10 @@ public class ExpedientService implements ExpedientServiceInterface {
 				document.close();
 				
 				// Enviar a arxiu
+				this.resultat = this.enviar_arxiu(e.getId(), e.getNumidentificacio());
 				
 				// Enviar a usuari
 				
-				this.resultat = true;	
 			}
 			
 		}
@@ -543,6 +554,122 @@ public class ExpedientService implements ExpedientServiceInterface {
 		}
 	}
 	
+		
+	private boolean enviar_arxiu(Integer expedient_id, String identificacio_interessat)
+	{
+		IArxiuPlugin arxiuPlugin;
+		List<String> organ;
+		List<String> interessat;
+		
+		String codi_sia = "208132"; // TODO: verificar codi SIA, Toni Juanico, 29/07/2019
+		String serie_documental = "S0001"; // TODO: verificar sèrie documental, Toni Juanico, 29/07/2019
+		String dir3 = "A04026980"; // TODO: dir3, verificar
+		
+		
+		Properties properties = new Properties();
+		
+		try {
+			LOGGER.info("Dins enviar_arxiu");
+			properties.load(ExpedientService.class.getClassLoader().getResourceAsStream("META-INF/arxiuCAIB.properties"));
+			LOGGER.info("Carregam propietats: " + properties.getProperty("plugin.arxiu.caib.usuari"));
+			arxiuPlugin = new ArxiuPluginCaib("",properties);
+			organ = new ArrayList<String>();
+			organ.add(dir3);
+			interessat = new ArrayList<String>();
+			interessat.add(identificacio_interessat);
+			
+			String expedientIdentificador = null;
+			es.caib.plugins.arxiu.api.Expedient expedientPerCrear = nouExpedient(dir3, expedient_id, codi_sia,serie_documental,organ, interessat);
+			LOGGER.info("Fins ara bé");
+			ContingutArxiu expedientCreat = arxiuPlugin.expedientCrear(expedientPerCrear);
+			LOGGER.info("expedient creat");
+			expedientIdentificador = expedientCreat.getIdentificador();
+			
+			LOGGER.info("Expedient creat: " + expedientIdentificador);
+			
+			// Hem de crear el document dins l'arxiu
+			final es.caib.plugins.arxiu.api.Document documentPerCrear = nouDocument(dir3, expedient_id, DocumentEstat.ESBORRANY,DocumentFormat.PDF,DocumentExtensio.PDF,
+																 "application/pdf","QSSI_" + expedient_id + ".pdf", organ);
+			ContingutArxiu documentCreat = arxiuPlugin.documentCrear(documentPerCrear,expedientCreat.getIdentificador());
+			
+			return true;
+			
+		} 
+		catch (IOException e) {
+			this.strError = e.getMessage();
+			return false;
+		}
+		catch (Exception ex) {
+			this.strError = ex.getMessage();
+			return false;
+		}
+		
+	}
+	
+	private es.caib.plugins.arxiu.api.Expedient nouExpedient(String dir3, Integer expedient_id, String codi_sia, String serie_documental, List<String> organ, List<String> interessat) {
+		String nomExp = "ES_" + dir3 + "_2019_EXP_BIS" + expedient_id;
+		final  es.caib.plugins.arxiu.api.Expedient expedient = new es.caib.plugins.arxiu.api.Expedient();
+		expedient.setNom(nomExp);
+		final ExpedientMetadades metadades = new ExpedientMetadades();
+		metadades.setOrgans(organ);
+		metadades.setDataObertura(new Date());
+		metadades.setClassificacio(codi_sia); // Toni Juanico, 29/07/2019, recorda codi SIA
+		metadades.setEstat(ExpedientEstat.OBERT);
+		metadades.setInteressats(interessat);
+		metadades.setSerieDocumental(serie_documental);
+		expedient.setMetadades(metadades);
+		return expedient;
+	}
+
+	private es.caib.plugins.arxiu.api.Document nouDocument(String dir3, Integer expedient_id, 
+			es.caib.plugins.arxiu.api.DocumentEstat estat,
+			es.caib.plugins.arxiu.api.DocumentFormat format,
+			es.caib.plugins.arxiu.api.DocumentExtensio extensio,
+			String tipusMime, String contingutResource, List<String> organ) throws IOException 
+	{
+		Calendar calOne = Calendar.getInstance();
+		int year = calOne.get(Calendar.YEAR);
+		String any = String.valueOf(year);
+		
+		es.caib.plugins.arxiu.api.Document document = new es.caib.plugins.arxiu.api.Document();
+		document.setNom("ES_" + dir3 + "_"+ any +"_QSSI_" + expedient_id);
+		es.caib.plugins.arxiu.api.DocumentMetadades documentMetadades = new es.caib.plugins.arxiu.api.DocumentMetadades();
+		documentMetadades.setOrigen(es.caib.plugins.arxiu.api.ContingutOrigen.CIUTADA);
+		documentMetadades.setOrgans(organ);
+		documentMetadades.setDataCaptura(new Date());
+		documentMetadades.setEstatElaboracio(es.caib.plugins.arxiu.api.DocumentEstatElaboracio.ORIGINAL);
+		documentMetadades.setTipusDocumental(es.caib.plugins.arxiu.api.DocumentTipus.ALTRES);
+		documentMetadades.setFormat(format);
+		documentMetadades.setExtensio(extensio);
+		document.setMetadades(documentMetadades);
+		document.setEstat(estat);
+		es.caib.plugins.arxiu.api.DocumentContingut contingut = new es.caib.plugins.arxiu.api.DocumentContingut();
+		contingut.setArxiuNom(contingutResource);
+		contingut.setTipusMime(tipusMime);
+		
+		//InputStream is = getClass().getResourceAsStream(contingutResource);
+		LOGGER.info("Anem al lio.1");
+		FileInputStream myStream = new FileInputStream("result.pdf");
+		LOGGER.info("Anem al lio.2");
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		LOGGER.info("Anem al lio.3");
+	    byte[] buf = new byte[1024];
+	    try {
+	    	for (int readNum; (readNum = myStream.read(buf)) != -1;) {
+	    		bos.write(buf, 0, readNum); //no doubt here is 0
+	            //Writes len bytes from the specified byte array starting at offset off to this byte array output stream.
+	            System.out.println("read " + readNum + " bytes,");
+	        }
+	    } catch (IOException ex) {
+	    	LOGGER.info("Error llegint pdf per posar a l'arxiu CAIB" + ex.toString());
+	    }
+	    byte[] bytes = bos.toByteArray();
+	    LOGGER.info("Anem al lio.1");
+		contingut.setContingut(bytes);
+		document.setContingut(contingut);
+		return document;
+	}
+
 	@Override
 	public boolean getResultat() {return this.resultat;	}
 

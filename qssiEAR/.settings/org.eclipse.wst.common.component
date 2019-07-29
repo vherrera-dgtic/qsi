@@ -14,5 +14,44 @@
         <dependent-module archiveName="xmlworker-5.5.13.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/com/itextpdf/tool/xmlworker/5.5.13.1/xmlworker-5.5.13.1.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="plugin-arxiu-caib-1.0.4.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/org/fundaciobit/plugins/plugin-arxiu-caib/1.0.4/plugin-arxiu-caib-1.0.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="arxiudigital-apirest-1.0.7.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/es/caib/arxiudigital/arxiudigital-apirest/1.0.7/arxiudigital-apirest-1.0.7.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jersey-client-1.19.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/com/sun/jersey/jersey-client/1.19/jersey-client-1.19.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jersey-core-1.19.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jsr311-api-1.1.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-databind-2.6.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.6.3/jackson-databind-2.6.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-annotations-2.6.0.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-core-2.6.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/core/jackson-core/2.6.3/jackson-core-2.6.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="log4j-1.2.17.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="plugins-api-1.0.0.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/org/fundaciobit/plugins/plugins-api/1.0.0/plugins-api-1.0.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="plugin-arxiu-api-1.0.4.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/org/fundaciobit/plugins/plugin-arxiu-api/1.0.4/plugin-arxiu-api-1.0.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-codec-1.10.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/commons-codec/commons-codec/1.10/commons-codec-1.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-io-2.5.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/var/M2_REPO/commons-io/commons-io/2.5/commons-io-2.5.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

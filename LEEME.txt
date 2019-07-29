@@ -8,6 +8,23 @@ C:\Program Files (x86)\Java\jre1.8.0_101\bin>
 
 -- 2. Afegim un de nou
 C:\Program Files (x86)\Java\jre1.8.0_101\bin>keytool -import -file c:\Desenvolupament\repo.maven.apache.org.crt -keystore c:\Desenvolupament\trust.jks
+C:\Program Files (x86)\Java\jre1.8.0_101\bin>keytool -import -file c:\Desenvolupament\primefaces.org.crt -keystore c:\Desenvolupament\trust.jks (¿?)
 
+-- 3. Afegim el certificat per interactuar amb l'arxiu CAIB
+C:\Program Files (x86)\Java\jre1.8.0_101\bin>keytool -import -file c:\Desenvolupament\afirmadescaibes.crt -keystore c:\Desenvolupament\trust.jks
 
+però obtenim l'error
 
+Introduzca la contraseña del almacén de claves: {aquí hem posat la de sempre, }
+error de herramienta de claves: java.lang.Exception: Certificado no importado, el alias <mykey> ya existe
+
+hint: keytool -delete -keystore myfile.jks -alias 'alias_from_keytool_-list
+
+per solucionar això hem executat la comana amb "ALIAS"
+C:\Program Files (x86)\Java\jre1.8.0_101\bin>keytool -import -file c:\Desenvolupament\afirmadescaibes.crt -alias afirmadescaibes -keystore c:\Desenvolupament\trust.jks
+
+nota: suposam que en executar la linia marcada com (¿?) pel magatzem primefaces.org.crt com que no tenia alias ja es va fer un alias <mykey>
+
+OJO, crec que hem d'afegir el certificat al magatzem per defecte de la JVM
+Per això hem hagut de demanar permisos d'administrador
+C:\Program Files (x86)\Java\jre1.8.0_101\bin>keytool -import -alias afirmadescaibes -file c:\Desenvolupament\afirmadescaibes.crt -keystore "%JAVA_HOME%\jre\lib\security\cacerts"
