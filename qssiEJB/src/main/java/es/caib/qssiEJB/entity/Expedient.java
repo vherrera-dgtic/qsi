@@ -88,6 +88,12 @@ public class Expedient {
 	@Column 
 	private String codi_postal;
 	
+	@Column
+	private String id_expedient_arxiu_caib;
+	 
+	@Column
+	private String id_document_arxiu_caib;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_escrit")
     private Escrit escrit;
@@ -225,6 +231,11 @@ public class Expedient {
 	public String getCodipostal() { return this.codi_postal; }
 	public void setCodipostal(String cp) { this.codi_postal = cp; }
 	
+	public String getIdExpedientArxiuCAIB() { return this.id_expedient_arxiu_caib; }
+	public void setIdExpedientArxiuCAIB(String id) { this.id_expedient_arxiu_caib =id; }
+	
+	public String getIdDocumentArxiuCAIB() { return this.id_document_arxiu_caib; }
+	public void setIdDocumentArxiuCAIB(String id) { this.id_document_arxiu_caib = id; }
 	
 	// TODO: Tal volta aquesta funció no ha d'estar aquí
 	public Date getDatavenciment()

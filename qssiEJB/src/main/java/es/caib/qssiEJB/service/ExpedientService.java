@@ -422,6 +422,30 @@ public class ExpedientService implements ExpedientServiceInterface {
 		}
 	}
 	
+	private boolean assignarDadesArxiuCAIB(Integer id_expedient, String id_expedient_arxiu_caib, String id_document_arxiu_caib) {
+		LOGGER.info("in assignarDadesArxiuCAIB, estat entity manager: " + em.toString());
+		String queryString;
+		
+		queryString = new String("UPDATE qsi_expedient set id_expedient_arxiu_caib = :id_expedient_arxiu_caib, id_document_arxiu_caib = :id_document_arxiu_caib where id_expedient = :id_expedient");
+		
+		try {
+			
+			Query query = em.createNativeQuery(queryString);
+			query.setParameter("id_expedient", id_expedient);
+			query.setParameter("id_expedient_arxiu_caib", id_expedient_arxiu_caib);
+			query.setParameter("id_document_arxiu_caib", id_document_arxiu_caib);
+			//query.setParameter("estat", ExpedientServiceInterface.EstatExpedient.FINALITZADA.getValue());
+			
+			query.executeUpdate();
+			return true;	
+		}
+		catch(Exception ex)
+		{
+			this.strError = ex.toString();
+			return false;
+		}
+	}
+	
 	@Override
 	public void desarRespostaExpedient(Integer id_expedient, String text_resposta)
 	{
@@ -527,7 +551,6 @@ public class ExpedientService implements ExpedientServiceInterface {
 				HTMLResposta = HTMLResposta.concat("</body>");
 				HTMLResposta = HTMLResposta.concat("</html>");
 				
-								
 				document.open();
 				
 				Image imghead = Image.getInstance("logo_conselleria.jpg");
@@ -540,7 +563,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 				document.close();
 				
 				// Enviar a arxiu
-				this.resultat = this.enviar_arxiu(e.getId(), e.getNumidentificacio());
+				this.resultat = this.enviar_arxiu(e.getId(), e.getNumidentificacio(), e.getIdDocumentArxiuCAIB(), e.getIdDocumentArxiuCAIB());
 				
 				// Enviar a usuari
 				
@@ -555,7 +578,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 	}
 	
 		
-	private boolean enviar_arxiu(Integer expedient_id, String identificacio_interessat)
+	private boolean enviar_arxiu(Integer expedient_id, String identificacio_interessat, String id_expedient_arxiu_caib, String id_document_arxiu_caib)
 	{
 		IArxiuPlugin arxiuPlugin;
 		List<String> organ;
@@ -567,6 +590,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 		
 		
 		Properties properties = new Properties();
+		boolean resultat_enviar_arxiu = false;
 		
 		try {
 			LOGGER.info("Dins enviar_arxiu");
@@ -578,27 +602,63 @@ public class ExpedientService implements ExpedientServiceInterface {
 			interessat = new ArrayList<String>();
 			interessat.add(identificacio_interessat);
 			
-			String expedientIdentificador = null;
-			es.caib.plugins.arxiu.api.Expedient expedientPerCrear = nouExpedient(dir3, expedient_id, codi_sia,serie_documental,organ, interessat);
-			LOGGER.info("Fins ara bé");
-			ContingutArxiu expedientCreat = arxiuPlugin.expedientCrear(expedientPerCrear);
-			LOGGER.info("expedient creat");
-			expedientIdentificador = expedientCreat.getIdentificador();
+			// Crear o recuperar expedient existent
+			if (id_expedient_arxiu_caib!=null)
+			{
+				if (id_document_arxiu_caib!=null)
+				{
+					// Modificar document
+					es.caib.plugins.arxiu.api.Document documentPerModificar = nouDocument(dir3, expedient_id,
+							                                                              DocumentEstat.ESBORRANY, 
+							                                                              DocumentFormat.PDF, 
+							                                                              DocumentExtensio.PDF,
+							                                                              "application/pdf",
+							                                                              "QSSI_" + expedient_id + ".pdf", organ);
+					documentPerModificar.setIdentificador(id_document_arxiu_caib);
+					ContingutArxiu documentModificat = arxiuPlugin.documentModificar(documentPerModificar);
+					LOGGER.info("Document modificat: " + documentModificat.getIdentificador());
+					resultat_enviar_arxiu = true;
+				}
+				else
+				{
+					// Crear document
+					es.caib.plugins.arxiu.api.Document documentPerCrear = nouDocument(dir3, expedient_id, 
+							                                                          DocumentEstat.ESBORRANY, 
+							                                                          DocumentFormat.PDF, 
+							                                                          DocumentExtensio.PDF,
+							                                                          "application/pdf",
+							                                                          "QSSI_" + expedient_id + ".pdf", organ);
+					ContingutArxiu documentCreat = arxiuPlugin.documentCrear(documentPerCrear,id_expedient_arxiu_caib);
+					LOGGER.info("Document creat: " + documentCreat.getIdentificador());
+					resultat_enviar_arxiu = true;
+				}
+			}
+			else
+			{
+				// Crear expedient
+				LOGGER.info("Crear expedient");
+				es.caib.plugins.arxiu.api.Expedient expedientPerCrear = nouExpedient(dir3, expedient_id, codi_sia,serie_documental,organ, interessat);
+				ContingutArxiu expedientCreat = arxiuPlugin.expedientCrear(expedientPerCrear);
+								
+				LOGGER.info("expedient creat amd identificador: " + expedientCreat.getIdentificador());
+				
+				// Crear document
+				LOGGER.info("Crear document");
+				es.caib.plugins.arxiu.api.Document documentPerCrear = nouDocument(dir3, expedient_id, 
+                        DocumentEstat.ESBORRANY, 
+                        DocumentFormat.PDF, 
+                        DocumentExtensio.PDF,
+                        "application/pdf",
+                        "QSSI_" + expedient_id + ".pdf", organ);
+				ContingutArxiu documentCreat = arxiuPlugin.documentCrear(documentPerCrear,expedientCreat.getIdentificador());
+				LOGGER.info("Document creat: " + documentCreat.getIdentificador());
+				
+				resultat_enviar_arxiu = this.assignarDadesArxiuCAIB(expedient_id, expedientCreat.getIdentificador(), documentCreat.getIdentificador());
+			}
 			
-			LOGGER.info("Expedient creat: " + expedientIdentificador);
-			
-			// Hem de crear el document dins l'arxiu
-			final es.caib.plugins.arxiu.api.Document documentPerCrear = nouDocument(dir3, expedient_id, DocumentEstat.ESBORRANY,DocumentFormat.PDF,DocumentExtensio.PDF,
-																 "application/pdf","QSSI_" + expedient_id + ".pdf", organ);
-			ContingutArxiu documentCreat = arxiuPlugin.documentCrear(documentPerCrear,expedientCreat.getIdentificador());
-			
-			return true;
+			return resultat_enviar_arxiu;
 			
 		} 
-		catch (IOException e) {
-			this.strError = e.getMessage();
-			return false;
-		}
 		catch (Exception ex) {
 			this.strError = ex.getMessage();
 			return false;
@@ -607,14 +667,14 @@ public class ExpedientService implements ExpedientServiceInterface {
 	}
 	
 	private es.caib.plugins.arxiu.api.Expedient nouExpedient(String dir3, Integer expedient_id, String codi_sia, String serie_documental, List<String> organ, List<String> interessat) {
-		String nomExp = "ES_" + dir3 + "_2019_EXP_BIS" + expedient_id;
+		String nomExp = "ES_" + dir3 + "_2019_EXP_QSSI_" + expedient_id;
 		final  es.caib.plugins.arxiu.api.Expedient expedient = new es.caib.plugins.arxiu.api.Expedient();
 		expedient.setNom(nomExp);
 		final ExpedientMetadades metadades = new ExpedientMetadades();
 		metadades.setOrgans(organ);
 		metadades.setDataObertura(new Date());
 		metadades.setClassificacio(codi_sia); // Toni Juanico, 29/07/2019, recorda codi SIA
-		metadades.setEstat(ExpedientEstat.OBERT);
+		metadades.setEstat(ExpedientEstat.OBERT); // Toni Juanico, 30/07/2019, recorda que la versió imprimible només la podràs fer en estat TANCAT!
 		metadades.setInteressats(interessat);
 		metadades.setSerieDocumental(serie_documental);
 		expedient.setMetadades(metadades);
@@ -647,24 +707,17 @@ public class ExpedientService implements ExpedientServiceInterface {
 		contingut.setArxiuNom(contingutResource);
 		contingut.setTipusMime(tipusMime);
 		
-		//InputStream is = getClass().getResourceAsStream(contingutResource);
-		LOGGER.info("Anem al lio.1");
 		FileInputStream myStream = new FileInputStream("result.pdf");
-		LOGGER.info("Anem al lio.2");
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		LOGGER.info("Anem al lio.3");
 	    byte[] buf = new byte[1024];
 	    try {
 	    	for (int readNum; (readNum = myStream.read(buf)) != -1;) {
 	    		bos.write(buf, 0, readNum); //no doubt here is 0
-	            //Writes len bytes from the specified byte array starting at offset off to this byte array output stream.
-	            System.out.println("read " + readNum + " bytes,");
 	        }
 	    } catch (IOException ex) {
 	    	LOGGER.info("Error llegint pdf per posar a l'arxiu CAIB" + ex.toString());
 	    }
 	    byte[] bytes = bos.toByteArray();
-	    LOGGER.info("Anem al lio.1");
 		contingut.setContingut(bytes);
 		document.setContingut(contingut);
 		return document;

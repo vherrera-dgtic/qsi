@@ -21,13 +21,14 @@
 	            		</div>
 						<div style="margin-top:5px; margin-left:5px">
 							<p:commandButton value="Desar" action="#{expedientController.desarRespostaExpedient}" update="growl" icon="ui-icon-disk" style="margin-right:20px;" />
-							<p:commandButton value="Enviar i tancar" onclick="PF('dlg2').show(); return false;" update="growl" icon="ui-icon-arrow-1-e" style="margin-right:20px;" />
+							<p:commandButton value="Previsualitzar" onclick="PF('dlg1').show();" icon="ui-icon-image" style="margin-right:20px;" />
+							<p:commandButton value="Tancar" onclick="PF('dlg2').show(); return false;" update="growl" icon="ui-icon-arrow-1-e" style="margin-right:20px;" />
 							<p:commandButton value="Retornar" onclick="PF('dlg5').show(); return false;" icon="ui-icon-arrowrefresh-1-n" style="margin-right:20px;" />
 			    			<p:commandButton value="Rebutjar" onclick="PF('dlg3').show(); return false;" icon="ui-icon-closethick" style="margin-right:20px;" />
 						</div>
 					</div>
                 </p:panel>
-			    <p:dialog header="Retornar al responsable de la Conselleria" widgetVar="dlg5" height="200" width="600" minHeight="60" position="top center" modal="true">
+			    <p:dialog header="Retornar al responsable de la Conselleria" widgetVar="dlg5" height="200" width="600" minHeight="60" position="top" modal="true">
     				<div>
     					<h:outputText value="Estau segur que voleu retornar l'expedient al responsable de la Conselleria?" /><br/>
     					<h:outputText value="Heu d'indicar el motiu" />
@@ -39,20 +40,28 @@
     				</div>
     				<div style="align:center">
     					<p:commandButton value="Retornar" id="retornar_responsable" ajax="false" />
-	    				<p:commandButton value="Cancel·lar" id="cancel_4" action="PF('dlg4').close()" style="margin-right:20px;" ajax="false" />
+	    				<p:commandButton value="Cancel·lar" onclick="PF('dlg5').hide()" />
     				</div>
 				</p:dialog>
-				<p:dialog header="Enviar i tancar" widgetVar="dlg2" height="100" width="500" minHeight="60" position="top center" modal="true">
+				<p:dialog header="Previsualitzar" widgetVar="dlg1" height="400" width="600" position="top" modal="true">
     				<div>
-    					<h:outputText value="Estau segur que voleu enviar i tancar l'expedient?" /><br/>
-    					<h:outputText value="Es generarà un pdf amb la resposta i s'enviarà" />
+    					<h:outputText value="Previsualització del document" /><br/>
+    				</div>
+    				<div style="align:center">
+	    				<p:commandButton value="Tancar" onclick="PF('dlg1').hide()" />
+    				</div>
+				</p:dialog>
+				<p:dialog header="Tancar" widgetVar="dlg2" height="100" width="500" minHeight="60" position="top" modal="true">
+    				<div>
+    					<h:outputText value="Estau segur que voleu tancar l'expedient amb la resposta actual?" /><br/>
+    					<h:outputText value="Es generarà el pdf definitiu amb la resposta." />
     				</div>
     				<div style="align:center">
     					<p:commandButton value="Acceptar" action="#{expedientController.tancarExpedient}" ajax="false" />
-	    				<p:commandButton value="Cancel·lar" id="cancel_2" action="PF('dlg2').close()" style="margin-right:20px;" ajax="false" />
+	    				<p:commandButton value="Cancel·lar" onclick="PF('dlg2').hide()" />
     				</div>
 				</p:dialog>
-				<p:dialog header="Rebutjar" widgetVar="dlg3" height="200" width="600" minHeight="60" position="top center" modal="true">
+				<p:dialog header="Rebutjar" widgetVar="dlg3" height="200" width="600" minHeight="60" position="top" modal="true">
     				<div>
     					<h:outputText value="Estau segur que voleu rebutjar l'expedient?" /><br/>
     					<h:outputText value="Heu d'indicar el motiu que serà remés també a l'usuari" />
@@ -64,7 +73,7 @@
     				</div>
     				<div style="align:center">
     					<p:commandButton value="Rebutjar" id="rebutjar_expedient" action="#{expedientController.rebutjarExpedient}" ajax="false" />
-	    				<p:commandButton value="Cancel·lar" id="cancel_3" action="PF('dlg3').close()" style="margin-right:20px;" ajax="false" />
+	    				<p:commandButton value="Cancel·lar" onclick="PF('dlg3').hide()" />
     				</div>
 				</p:dialog>
                 <p:panel id="expedient" header="Expedient QSSI-#{expedientController.expedientId}" footer="" style="margin-bottom:20px">

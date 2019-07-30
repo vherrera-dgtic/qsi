@@ -17,7 +17,6 @@ però obtenim l'error
 
 Introduzca la contraseña del almacén de claves: {aquí hem posat la de sempre, }
 error de herramienta de claves: java.lang.Exception: Certificado no importado, el alias <mykey> ya existe
-
 hint: keytool -delete -keystore myfile.jks -alias 'alias_from_keytool_-list
 
 per solucionar això hem executat la comana amb "ALIAS"
