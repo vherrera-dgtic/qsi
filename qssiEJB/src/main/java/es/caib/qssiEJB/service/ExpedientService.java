@@ -31,6 +31,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import es.caib.plugins.arxiu.api.ContingutArxiu;
+import es.caib.plugins.arxiu.api.DocumentContingut;
 import es.caib.plugins.arxiu.api.DocumentEstat;
 import es.caib.plugins.arxiu.api.DocumentExtensio;
 import es.caib.plugins.arxiu.api.DocumentFormat;
@@ -565,8 +566,6 @@ public class ExpedientService implements ExpedientServiceInterface {
 				// Enviar a arxiu
 				this.resultat = this.enviar_arxiu(e.getId(), e.getNumidentificacio(), e.getIdDocumentArxiuCAIB(), e.getIdDocumentArxiuCAIB());
 				
-				// Enviar a usuari
-				
 			}
 			
 		}
@@ -577,7 +576,36 @@ public class ExpedientService implements ExpedientServiceInterface {
 		}
 	}
 	
+	
+	private boolean generar_versio_imprimible(String id_expedient_arxiu_caib)
+	{
+		IArxiuPlugin arxiuPlugin;
+		Properties properties = new Properties();
 		
+		try {
+			LOGGER.info("Dins generar_versio_imprimible amb expedient: " + id_expedient_arxiu_caib);
+			properties.load(ExpedientService.class.getClassLoader().getResourceAsStream("META-INF/arxiuCAIB.properties"));
+			arxiuPlugin = new ArxiuPluginCaib("",properties);
+			LOGGER.info("Pasito 1");
+			DocumentContingut documentImprimible = arxiuPlugin.documentImprimible(id_expedient_arxiu_caib);
+			
+			LOGGER.info("Pasito 2");
+			FileOutputStream stream = new FileOutputStream("resposta_printable.pdf");
+			LOGGER.info("Pasito 3");
+			stream.write(documentImprimible.getContingut());
+			LOGGER.info("Pasito 4");
+			stream.close();
+			
+			return true;
+		}
+		catch (Exception ex)
+		{
+			this.strError = ex.toString();
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
 	private boolean enviar_arxiu(Integer expedient_id, String identificacio_interessat, String id_expedient_arxiu_caib, String id_document_arxiu_caib)
 	{
 		IArxiuPlugin arxiuPlugin;
@@ -632,6 +660,8 @@ public class ExpedientService implements ExpedientServiceInterface {
 					LOGGER.info("Document creat: " + documentCreat.getIdentificador());
 					resultat_enviar_arxiu = true;
 				}
+				if (resultat_enviar_arxiu)
+					resultat_enviar_arxiu = this.generar_versio_imprimible(id_expedient_arxiu_caib);
 			}
 			else
 			{
@@ -654,6 +684,9 @@ public class ExpedientService implements ExpedientServiceInterface {
 				LOGGER.info("Document creat: " + documentCreat.getIdentificador());
 				
 				resultat_enviar_arxiu = this.assignarDadesArxiuCAIB(expedient_id, expedientCreat.getIdentificador(), documentCreat.getIdentificador());
+				if (resultat_enviar_arxiu)
+					resultat_enviar_arxiu = this.generar_versio_imprimible(expedientCreat.getIdentificador());
+				
 			}
 			
 			return resultat_enviar_arxiu;

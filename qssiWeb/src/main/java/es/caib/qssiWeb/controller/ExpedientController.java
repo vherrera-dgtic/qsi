@@ -38,6 +38,8 @@ import es.caib.qssiEJB.interfaces.QueixaServiceInterface;
 import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  * Controlador de la vista Expedient
@@ -113,6 +115,8 @@ public class ExpedientController {
 	
 	private String actionSelected = new String("");
 	
+	private UploadedFile file;
+	 
 	// Getters & Setters
 	public void setExpedientId(String expedientId) { this.expedientId = expedientId; }
 	public String getExpedientId() { return this.expedientId; }
@@ -261,6 +265,14 @@ public class ExpedientController {
     public void setUsuariassignat(String u) { this.usuari_assignat = u; }
     public String getUsuariassignat() { return this.usuari_assignat; }
         
+    public UploadedFile getFile() {
+        return file;
+    }
+ 
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+	
 	// Methods
 	@PostConstruct
 	public void init() {
@@ -1003,4 +1015,17 @@ public class ExpedientController {
 			FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error actualitzant l'expedient", ex.toString()));			
 		}
     }
+    
+    public void upload() {
+        if(file != null) {
+            FacesMessage message = new FacesMessage("Succesful_upload", file.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage("growl", message);
+        }
+    }
+    
+    public void handleFileUpload(FileUploadEvent event) {
+        FacesMessage msg = new FacesMessage("Succesful_handleFileUpload", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage("growl", msg);
+    }
+    
 }
