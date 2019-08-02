@@ -7,9 +7,9 @@
   <name>QSSI</name>
   <description>Projecte maven QSSI</description>
   <properties> 
-     <jsf.version>2.1.2</jsf.version><!--  2.1.2 -->
+     <jsf.version>2.1.2</jsf.version>
      <modulo.version>0.0.1</modulo.version>
-     <prime-faces.version>6.2</prime-faces.version> <!--  Varem provar 6.2, ara provam 3.4.1 -->
+     <prime-faces.version>6.2</prime-faces.version>
   </properties>
   <modules>
   	<module>qssiWeb</module>

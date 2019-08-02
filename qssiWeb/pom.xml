@@ -54,11 +54,17 @@
   		<scope>provided</scope> <!--  Això monta un pollo si no hi és, Toni Juanico -->
   	</dependency>
   	<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.13</version>
-			<scope>provided</scope>
-    </dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.13</version>
+		<scope>provided</scope>
+	</dependency>
+   <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+	<dependency>
+    	<groupId>commons-fileupload</groupId>
+    	<artifactId>commons-fileupload</artifactId>
+    	<version>1.4</version>
+	</dependency>
   </dependencies>
    <build>
   	<plugins>

@@ -68,7 +68,6 @@ public class ExpedientController {
 	private String unitatorganica;
 	private Integer centre = 0;
 	private Integer subcentre = 0;
-	private Integer subcentre_1 = 0;
 	private Integer escrit = 0;
 	private Integer materia = 0;
 	private Integer motiu = 0;
@@ -1017,6 +1016,7 @@ public class ExpedientController {
     }
     
     public void upload() {
+    	LOGGER.info("upload");
         if(file != null) {
             FacesMessage message = new FacesMessage("Succesful_upload", file.getFileName() + " is uploaded.");
             FacesContext.getCurrentInstance().addMessage("growl", message);
@@ -1024,8 +1024,14 @@ public class ExpedientController {
     }
     
     public void handleFileUpload(FileUploadEvent event) {
-        FacesMessage msg = new FacesMessage("Succesful_handleFileUpload", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage("growl", msg);
+    	LOGGER.info("handleFileUpload");
+       
+        this.file = event.getFile();
+		// Print out the information of the file
+		System.out.println("Uploaded File Name Is :: "+file.getFileName()+" :: Uploaded File Size :: "+file.getSize());
+		
+		FacesMessage msg = new FacesMessage("Succesful_handleFileUpload", event.getFile().getFileName() + " is uploaded.");
+	    FacesContext.getCurrentInstance().addMessage("growl", msg);
     }
     
 }

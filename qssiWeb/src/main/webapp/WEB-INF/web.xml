@@ -60,6 +60,10 @@
     <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
     <param-value>true</param-value>
   </context-param>
+  <context-param>
+  	<param-name>primefaces.UPLOADER</param-name>
+  	<param-value>auto</param-value>
+  </context-param>
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>es.caib.qssiWeb.util.CharacterEncodingFilter</filter-class>
@@ -68,6 +72,16 @@
     <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>*.xhtml</url-pattern>
   </filter-mapping>
+  <filter>
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <filter-class>
+         org.primefaces.webapp.filter.FileUploadFilter
+      </filter-class>
+   </filter>
+   <filter-mapping>
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+   </filter-mapping>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>All</web-resource-name>
