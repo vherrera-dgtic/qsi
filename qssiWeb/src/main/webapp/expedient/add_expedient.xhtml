@@ -271,19 +271,25 @@
     			<div style="height:25px"></div>
     			<p:outputPanel>
     				<h3>Fitxers adjunts (opcional)</h3>
-    				<p>Opcionalment pot pujar fins a 3 arxius amb un pes de 2MB per fitxer. Tipus admesos: odt, doc, docx, gif, jpeg, png i pdf</p>
+    				<p>Opcionalment pot pujar fins a 3 arxius amb un pes de 2MB per fitxer. Tipus admesos: odt, docx, jpeg, jpg, png i pdf</p>
     				<p:fileUpload label="Seleccionar" uploadLabel="Pujar" cancelLabel="Cancel·lar" 
-    				              value="#{expedientController.file}"
+    				              auto="false"
     				              fileUploadListener="#{expedientController.handleFileUpload}" 
     				              mode="advanced" dragDropSupport="false" 
-    				              multiple="true" update="growl" 
+    				              multiple="false" update="growl,info_panel" 
     				              sizeLimit="2000000" fileLimit="3"
-    				              invalidFileMessage="Tipus del fitxer no vàlid. Tipus admesos: odt, doc, docx, gif, jpeg, png i pdf"
+    				              invalidFileMessage="Tipus del fitxer no vàlid. Tipus admesos: odt, docx, jpeg, jpg, png i pdf"
     				              invalidSizeMessage="La mida del fit xer no pot superar els 2MB."
     				              fileLimitMessage="Número màxim de fitxers per pujar 3." 
-    				              allowTypes="/(\.|\/)(odt|doc|docx|gif|jpe?g|png|pdf)$/" 
+    				              allowTypes="/(\.|\/)(odt|docx|jpeg|jpg|png|pdf)$/" 
     				              style="width:1024px"/>
     			</p:outputPanel>
+    			<p:panel id="info_panel" style="border:none;">
+		            <p:outputPanel>
+		                <h4>Arxius seleccionats:</h4>
+		                #{expedientController.filesNames}
+		            </p:outputPanel>
+	            </p:panel>
     			<p:outputPanel deferred="true">
 	    			<div class='boto-formulari'>
     					<p:commandButton value="Desa" icon="ui-icon-check" ajax="false" actionListener="#{expedientController.addExpedient}" update="growl"  validateClient="true"/>

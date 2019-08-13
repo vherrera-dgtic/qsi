@@ -2,6 +2,7 @@ package es.caib.qssiWeb.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -18,6 +19,9 @@ import es.caib.qssiEJB.entity.Municipi;
 import es.caib.qssiEJB.entity.Provincia;
 import es.caib.qssiEJB.entity.Queixa;
 import es.caib.qssiEJB.entity.Subcentre;
+import es.caib.plugins.arxiu.api.DocumentEstat;
+import es.caib.plugins.arxiu.api.DocumentExtensio;
+import es.caib.plugins.arxiu.api.DocumentFormat;
 import es.caib.qssiEJB.entity.Centre;
 import es.caib.qssiEJB.entity.Entrada;
 import es.caib.qssiEJB.entity.Escrit;
@@ -114,8 +118,8 @@ public class ExpedientController {
 	
 	private String actionSelected = new String("");
 	
-	private UploadedFile file;
-	 
+	private List<UploadedFile> llista_fitxers_adjunts = new ArrayList<UploadedFile>();
+		 
 	// Getters & Setters
 	public void setExpedientId(String expedientId) { this.expedientId = expedientId; }
 	public String getExpedientId() { return this.expedientId; }
@@ -264,13 +268,16 @@ public class ExpedientController {
     public void setUsuariassignat(String u) { this.usuari_assignat = u; }
     public String getUsuariassignat() { return this.usuari_assignat; }
         
-    public UploadedFile getFile() {
-        return file;
+    
+    public String getFilesNames() 
+    { 
+    	String resultat = new String("");
+    	for (UploadedFile e : this.llista_fitxers_adjunts) {
+			resultat = resultat + " " + e.getFileName();
+		}
+    	return resultat;
     }
- 
-    public void setFile(UploadedFile file) {
-        this.file = file;
-    }
+	
 	
 	// Methods
 	@PostConstruct
@@ -766,7 +773,29 @@ public class ExpedientController {
 			}
 		
 			ExpedientServ.addExpedient(exp); // Cridem l'EJB
-				 
+			
+			// Aquí hem de validar els fitxers pujats
+			for (UploadedFile file : this.llista_fitxers_adjunts) {
+				LOGGER.info("Enviar fitxer a Arxiu CAIB i desar identificació" + file.getFileName() + " - " + file.getSize());
+				
+				DocumentEstat estat_document = DocumentEstat.ESBORRANY;
+				DocumentFormat format_document = getDocumentFormat(file.getContentType());
+				DocumentExtensio extensio_document = getDocumentExtensio(file.getContentType());
+				String tipus_mime = file.getContentType();
+				String nom_document = file.getFileName();
+				boolean resultat_enviar_fitxer_ArxiuCAIB = ExpedientServ.enviar_fitxer_ArxiuCAIB(exp.getId(),exp.getNumidentificacio(),null,null,
+						                              											estat_document,
+						                              											format_document,
+						                              											extensio_document,
+						                              											tipus_mime,
+						                              											nom_document,
+						                              											file.getContents()); 
+				if (!resultat_enviar_fitxer_ArxiuCAIB)
+				{
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error afegint fitxer a ArxiuCAIB", "Error afegint fitxer a ArxiuCAIB"));				
+				}
+			}
+			
 			if (ExpedientServ.getResultat()==true)
 			{
 				//FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -786,6 +815,31 @@ public class ExpedientController {
 		}
     }
 
+    private DocumentFormat getDocumentFormat(String contentType)
+    {
+    	switch (contentType)
+    	{
+    	case "image/jpeg": return DocumentFormat.JPEG; 
+    	case "image/png": return DocumentFormat.PNG;
+    	case "application/vnd.oasis.opendocument.text": return DocumentFormat.OASIS12; // Per odt
+    	case "application/octet-stream" : return DocumentFormat.OASIS12; // Per docx
+    	case "application/pdf": return DocumentFormat.PDF;
+    	default: return DocumentFormat.PDF; // Ojo, hauriem de retornar error, Toni Juanico
+    	}
+    }
+    
+    private DocumentExtensio getDocumentExtensio(String contentType)
+    {
+    	switch (contentType)
+    	{
+    	case "image/jpeg": return DocumentExtensio.JPEG; 
+    	case "image/png": return DocumentExtensio.PNG;
+    	case "application/vnd.oasis.opendocument.text": return DocumentExtensio.ODT; // Per odt
+    	case "application/octet-stream" : return DocumentExtensio.DOCX; // Per docx
+    	case "application/pdf": return DocumentExtensio.PDF;
+    	default: return DocumentExtensio.PDF; // Ojo, hauriem de retornar error, Toni Juanico
+    	}
+    }
     private void getExpedientInfo(String expedientId) {
     	
     	ExpedientServiceInterface ExpedientServ;
@@ -960,8 +1014,6 @@ public class ExpedientController {
     	ExpedientServiceInterface ExpedientServ;
 		LOGGER.info("tancarExpedient, param: expedient: " + expedientId);
 		
-		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-				
 		try
 		{
 			
@@ -990,8 +1042,6 @@ public class ExpedientController {
     	ExpedientServiceInterface ExpedientServ;
 		LOGGER.info("desarRespostaExpedient, param: expedient: " + expedientId);
 		
-		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		
 		try
 		{
 			ic = new InitialContext();
@@ -1015,22 +1065,14 @@ public class ExpedientController {
 		}
     }
     
-    public void upload() {
-    	LOGGER.info("upload");
-        if(file != null) {
-            FacesMessage message = new FacesMessage("Succesful_upload", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage("growl", message);
-        }
-    }
-    
     public void handleFileUpload(FileUploadEvent event) {
     	LOGGER.info("handleFileUpload");
        
-        this.file = event.getFile();
+    	this.llista_fitxers_adjunts.add(event.getFile());
 		// Print out the information of the file
-		System.out.println("Uploaded File Name Is :: "+file.getFileName()+" :: Uploaded File Size :: "+file.getSize());
+		System.out.println("Uploaded File Name Is :: "+event.getFile().getFileName()+" :: Uploaded File Size :: "+event.getFile().getSize() + " :: Uploaded File Type :: " + event.getFile().getContentType());
 		
-		FacesMessage msg = new FacesMessage("Succesful_handleFileUpload", event.getFile().getFileName() + " is uploaded.");
+		FacesMessage msg = new FacesMessage("Adjuntat fitxer correctament: ", event.getFile().getFileName());
 	    FacesContext.getCurrentInstance().addMessage("growl", msg);
     }
     

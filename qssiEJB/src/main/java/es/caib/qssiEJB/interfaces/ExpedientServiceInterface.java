@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.ejb.Local;
 
+import es.caib.plugins.arxiu.api.DocumentEstat;
+import es.caib.plugins.arxiu.api.DocumentExtensio;
+import es.caib.plugins.arxiu.api.DocumentFormat;
 import es.caib.qssiEJB.entity.Expedient;
 
 /**
@@ -114,6 +117,17 @@ public interface ExpedientServiceInterface {
 	public void assignarTramitador(Integer id_expedient, Integer id_subcentre,  String unitat_organica, String usuari);
 	public void desarRespostaExpedient(Integer id_expedient, String text_resposta);
 	public void tancarExpedient(Integer id_expedient);
+	
+	public boolean enviar_fitxer_ArxiuCAIB(Integer expedient_id, 
+			                               String identificacio_interessat, 
+			                               String id_expedient_arxiu_caib, 
+			                               String id_document_arxiu_caib,
+			                               DocumentEstat estat_document,
+			                               DocumentFormat format_document, 
+			                               DocumentExtensio extensio_document,
+			                               String tipus_mime,
+			                               String nom_document, 
+			                               byte[] contingutBytes);
 	public boolean getResultat();
 	public String getError();
 }
