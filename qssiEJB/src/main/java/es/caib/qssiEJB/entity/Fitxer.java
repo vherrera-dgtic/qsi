@@ -24,6 +24,6 @@ public class Fitxer {
 	private String id_document_arxiu_caib;
 	
 	@Column
-	private String url_versio_imprimible_expedient_caib;
+	private String url_versio_imprimible_arxiu_caib;
 	
 }

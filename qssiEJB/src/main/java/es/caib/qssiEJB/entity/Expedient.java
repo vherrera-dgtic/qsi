@@ -90,12 +90,9 @@ public class Expedient {
 	
 	@Column
 	private String id_expedient_arxiu_caib;
-	 
-	@Column
-	private String id_document_arxiu_caib;
 	
 	@Column
-	private String url_versio_imprimible_expedient_caib;
+	private String url_versio_imprimible_expedient_arxiu_caib;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_escrit")
@@ -237,11 +234,8 @@ public class Expedient {
 	public String getIdExpedientArxiuCAIB() { return this.id_expedient_arxiu_caib; }
 	public void setIdExpedientArxiuCAIB(String id) { this.id_expedient_arxiu_caib =id; }
 	
-	public String getIdDocumentArxiuCAIB() { return this.id_document_arxiu_caib; }
-	public void setIdDocumentArxiuCAIB(String id) { this.id_document_arxiu_caib = id; }
-	
-	public String getUrlVersioImprimibleArxiuCAIB() { return this.url_versio_imprimible_expedient_caib; }
-	public void setUrlVersioImprimibleArxiuCAIB(String url) { this.url_versio_imprimible_expedient_caib = url; }
+	public String getUrlVersioImprimibleArxiuCAIB() { return this.url_versio_imprimible_expedient_arxiu_caib; }
+	public void setUrlVersioImprimibleArxiuCAIB(String url) { this.url_versio_imprimible_expedient_arxiu_caib = url; }
 	
 	// TODO: Tal volta aquesta funció no ha d'estar aquí
 	public Date getDatavenciment()

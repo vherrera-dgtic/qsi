@@ -579,7 +579,7 @@ public class ExpedientService implements ExpedientServiceInterface {
 				this.resultat = this.enviar_fitxer_ArxiuCAIB(e.getId(), 
 						                                     e.getNumidentificacio(), 
 						                                     e.getIdExpedientArxiuCAIB(),
-						                                     e.getIdDocumentArxiuCAIB(), 
+						                                     null, 
 						                                     DocumentEstat.DEFINITIU,
 						                                     DocumentFormat.PDF,
 						                                     DocumentExtensio.PDF,
