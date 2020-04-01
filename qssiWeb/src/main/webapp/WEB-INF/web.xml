@@ -40,26 +40,26 @@
     <servlet-name>wsDominiHeliumImpl</servlet-name>
     <url-pattern>/ws/DominiHeliumImpl</url-pattern>
   </servlet-mapping>
-  <context-param>
+  <!-- context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
-  </context-param>
-  <listener>
+  </context-param-->
+  <!-- listener>
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-  </listener>
-  <context-param>
+  </listener-->
+  <!-- context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
-  </context-param>
-  <context-param>
+  </context-param-->
+  <!-- context-param>
 		<param-name>com.sun.faces.injectionProvider</param-name>
 		<param-value>org.jboss.web.jsf.integration.injection.JBossInjectionProvider</param-value>
-  </context-param>
-  <context-param>
+  </context-param-->
+  <!-- context-param>
     <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
     <param-value>true</param-value>
-  </context-param>
+  </context-param-->
   <context-param>
   	<param-name>primefaces.UPLOADER</param-name>
   	<param-value>auto</param-value>
@@ -94,17 +94,19 @@
       <web-resource-name>Todos los recursos</web-resource-name>
       <description>Todos los recursos</description>
       <url-pattern>/*</url-pattern>
+      <http-method>POST</http-method>
+	  <http-method>GET</http-method>
     </web-resource-collection>
     <auth-constraint>
-      <role-name>tothom</role-name>
+      <role-name>PBASE_ADMIN</role-name>
     </auth-constraint>
   </security-constraint>
   <login-config>
-    <auth-method>BASIC</auth-method>
-    <realm-name>Govern de les Illes Balears</realm-name>
+    <auth-method>KEYCLOACK</auth-method>
+    <realm-name>Autenticacio</realm-name>
   </login-config>
   <security-role>
-    <role-name>tothom</role-name>
+    <role-name>PBASE_ADMIN</role-name>
   </security-role>
   <!-- servlet>
     <display-name>Apache-Axis Servlet</display-name>

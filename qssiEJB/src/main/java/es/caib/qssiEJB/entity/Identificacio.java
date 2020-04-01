@@ -29,7 +29,7 @@ public class Identificacio {
 	private String usuari;
 	
 	@Column
-	private Boolean activa;
+	private Integer activa;
 	
 	// Constructor
 	public Identificacio() { }
@@ -39,7 +39,8 @@ public class Identificacio {
 		this.nom = nom;
 		this.data_creacio = data_creacio;
 		this.usuari = usuari;
-		this.activa = activa;
+		
+		if (activa) this.activa=1; else this.activa=0;
 	}
 		
 	// Mètodes get - set
@@ -55,7 +56,7 @@ public class Identificacio {
 	public String getUsuari() { return this.usuari; }
 	public void setUsuari(String value) { this.usuari = value; }
 		
-	public Boolean getActiva() { return this.activa; }
-	public void setActiva(Boolean value) { this.activa = value; }
+	public Boolean getActiva() { return (this.activa==1); }
+	public void setActiva(Boolean value) { if (value) this.activa = 1; else this.activa=0;}
 	
 }

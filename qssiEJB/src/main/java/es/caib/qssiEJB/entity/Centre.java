@@ -38,10 +38,10 @@ public class Centre {
 	private String usuari;
 	
 	@Column
-	private Boolean actiu;
+	private Integer actiu; 
 	
 	@Column
-	private Boolean visible_web;
+	private Integer visible_web;
 	
 	// Constructor
 	public Centre() { }
@@ -52,8 +52,11 @@ public class Centre {
 		this.dir3 = dir3;
 		this.data_creacio = data_creacio;
 		this.usuari = usuari;
-		this.actiu = actiu;
-		this.visible_web = visible_web;
+		
+		if (actiu) this.actiu =1; else this.actiu = 0;
+		if (visible_web) this.visible_web=1; else this.visible_web=0;
+		
+		
 	}
 	
 	// Mètodes get - set
@@ -72,9 +75,9 @@ public class Centre {
 	public String getUsuari() { return this.usuari; }
 	public void setUsuari(String value) { this.usuari = value; }
 	
-	public Boolean getActiu() { return this.actiu; }
-	public void setActiu(Boolean value) { this.actiu = value; }
+	public Boolean getActiu() { return (this.actiu==1); }
+	public void setActiu(Boolean value) { if (value) this.actiu =1; else this.actiu = 0; }
 	
-	public Boolean getVisible_web() { return this.visible_web; }
-	public void setVisible_web(Boolean value) { this.visible_web = value; }
+	public Boolean getVisible_web() { return (this.actiu==1); }
+	public void setVisible_web(Boolean value) { if (value) this.visible_web = 1; else this.visible_web = 0;}
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -32,7 +33,10 @@ public class IndexController {
 	//@EJB
 	//ControladorInterface controllerBean;
 	
-	private InitialContext ic;
+	@EJB
+	ExpedientServiceInterface ExpedientServ;
+	
+	//private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(IndexController.class);
 			
 	private ArrayList<Expedient> llista_expedients;
@@ -43,7 +47,7 @@ public class IndexController {
 	@PostConstruct
 	public void init() {
 		LOGGER.info("Proxy a IndexController: ");
-		//LOGGER.info("Prova injecció EJB: " + ExpedientServ2);
+		LOGGER.info("Prova injecció EJB: " + ExpedientServ);
 		//LOGGER.info("Prova injecció EJB: " + controllerBean);
 	}
 	
@@ -54,7 +58,7 @@ public class IndexController {
 	// Obtenim els expedients assignats a l'usuari
 	public ArrayList<Expedient> getLlista_expedients_assignats_usuari()
 	{
-		ExpedientServiceInterface ExpedientServ;
+		//ExpedientServiceInterface ExpedientServ;
 		
 		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String usuari = origRequest.getRemoteUser(); 
@@ -63,8 +67,8 @@ public class IndexController {
 		
 		try
 		{
-			ic = new InitialContext();
-			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			//ic = new InitialContext();
+			//ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
 			LOGGER.info("EJB lookup2 "+ ExpedientServ);	
 			this.llista_expedients = ExpedientServ.getLlista_Expedients_assignats_usuari(usuari); // Cridem l'EJB
 			
@@ -87,7 +91,7 @@ public class IndexController {
 	// Obtenim tots els expedients
 	public TreeNode getLlista_expedients() 
 	{ 
-		ExpedientServiceInterface ExpedientServ;
+		//ExpedientServiceInterface ExpedientServ;
 		ExpedientServiceInterface.TipusCerca tipuscerca;
 		
 		String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("f");
@@ -97,8 +101,8 @@ public class IndexController {
 		
 		try
 		{
-			ic = new InitialContext();
-			ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
+			//ic = new InitialContext();
+			//ExpedientServ = (ExpedientServiceInterface) ic.lookup("qssiEAR/ExpedientService/local");
 			LOGGER.info("EJB lookup2 "+ ExpedientServ);
 			
 			switch (param)

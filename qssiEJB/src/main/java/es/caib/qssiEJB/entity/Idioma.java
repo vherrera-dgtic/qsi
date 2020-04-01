@@ -35,7 +35,7 @@ public class Idioma {
 	private String usuari;
 	
 	@Column
-	private Boolean actiu;
+	private Integer actiu;
 	
 	// Constructor
 	public Idioma() { }
@@ -45,7 +45,9 @@ public class Idioma {
 		this.nom = nom;
 		this.data_creacio = data_creacio;
 		this.usuari = usuari;
-		this.actiu = actiu;
+		
+		if (actiu) this.actiu =1;
+		else this.actiu = 0;
 	}
 	
 	// Mètodes get - set
@@ -61,6 +63,7 @@ public class Idioma {
 	public String getUsuari() { return this.usuari; }
 	public void setUsuari(String value) { this.usuari = value; }
 	
-	public Boolean getActiu() { return this.actiu; }
-	public void setActiu(Boolean value) { this.actiu = value; }
+	public Boolean getActiu() { return (this.actiu==1); }
+	public void setActiu(Boolean value) { if (value) this.actiu =1; else this.actiu = 0; }
+	
 }

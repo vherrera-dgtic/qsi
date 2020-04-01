@@ -32,7 +32,7 @@ public class Municipi {
 	private String usuari;
 	
 	@Column
-	private Boolean actiu;
+	private Integer actiu;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_provincia")
@@ -40,13 +40,13 @@ public class Municipi {
 	
 	// Constructor
 	public Municipi() { }
-	public Municipi(Integer id, String nom, Date data_creacio, String usuari, Boolean activa, Provincia p)
+	public Municipi(Integer id, String nom, Date data_creacio, String usuari, Boolean actiu, Provincia p)
 	{
 		this.id_municipi = id;
 		this.nom = nom;
 		this.data_creacio = data_creacio;
 		this.usuari = usuari;
-		this.actiu = activa;
+		if (actiu) this.actiu =1; else this.actiu = 0;
 		this.provincia = p;
 	}
 	
@@ -63,8 +63,8 @@ public class Municipi {
 	public String getUsuari() { return this.usuari; }
 	public void setUsuari(String value) { this.usuari = value; }
 	
-	public Boolean getActiu() { return this.actiu; }
-	public void setActiu(Boolean value) { this.actiu = value; }
+	public Boolean getActiu() { return (this.actiu==1); }
+	public void setActiu(Boolean value) { if (value) this.actiu =1; else this.actiu = 0; }
 	
 	public Provincia getProvincia() { return this.provincia; }
 	public void setProvincia(Provincia p) { this.provincia = p; }
