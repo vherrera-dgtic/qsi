@@ -99,6 +99,7 @@
     </web-resource-collection>
     <auth-constraint>
       <role-name>PBASE_ADMIN</role-name>
+      <role-name>JBOSSADMIN</role-name>
     </auth-constraint>
   </security-constraint>
   <login-config>
@@ -107,6 +108,9 @@
   </login-config>
   <security-role>
     <role-name>PBASE_ADMIN</role-name>
+  </security-role>
+  <security-role>
+    <role-name>JBOSSADMIN</role-name>
   </security-role>
   <!-- servlet>
     <display-name>Apache-Axis Servlet</display-name>

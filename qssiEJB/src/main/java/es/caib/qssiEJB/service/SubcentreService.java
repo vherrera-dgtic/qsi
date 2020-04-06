@@ -64,7 +64,7 @@ public class SubcentreService implements SubcentreServiceInterface {
 	public ArrayList<Subcentre> getLlista_SubcentresActiusWeb(Integer id_centre) {
 		ArrayList<Subcentre> lsc = new ArrayList<Subcentre>();
 		
-		String queryString = new String("select sc from Subcentre sc where sc.visible_web=true and sc.centre.id_centre = :id_centre");
+		String queryString = new String("select sc from Subcentre sc where sc.visible_web=1 and sc.centre.id_centre = :id_centre");
 		try
 		{
 						

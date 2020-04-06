@@ -20,7 +20,7 @@ import es.caib.qssiEJB.interfaces.IdentificacioServiceInterface;
  */
 
 @Stateless
-@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN"}) // Si tothom -> sobren els altres rols
+@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN","JBOSSADMIN"}) // Si tothom -> sobren els altres rols
 public class IdentificacioService implements IdentificacioServiceInterface {
 
 	private final static Logger LOGGER = Logger.getLogger(IdentificacioService.class);
@@ -64,7 +64,7 @@ public class IdentificacioService implements IdentificacioServiceInterface {
 
 		ArrayList<Identificacio> l = new ArrayList<Identificacio>();
 		
-		String queryString = new String("select i from Identificacio i where i.activa=true");
+		String queryString = new String("select i from Identificacio i where i.activa=1");
 		try
 		{
 						

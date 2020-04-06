@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,12 @@ import es.caib.qssiEJB.interfaces.QueixaServiceInterface;
 @ViewScoped
 public class TipusQueixaController {
 
+	// EJB's
+	@EJB
+	QueixaServiceInterface QueixaServ;
+		
 	// Private properties
-	private InitialContext ic;
+	
 	private final static Logger LOGGER = Logger.getLogger(TipusQueixaController.class);
 	
 	private DataTable taula_queixes;
@@ -75,14 +78,13 @@ public class TipusQueixaController {
 	
 	public ArrayList<Queixa> getLlista_queixes() 
 	{ 
-		QueixaServiceInterface QueixaServ;
-		
+				
 		LOGGER.info("Obtenim llista de tipus de queixes ");
 		
 		try
 		{
-			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");	
+			
+				
 			LOGGER.info("EJB lookup "+ QueixaServ);	
 			
 			this.llista_queixes = QueixaServ.getLLista_queixes(); // Cridem l'EJB
@@ -92,10 +94,6 @@ public class TipusQueixaController {
 				LOGGER.info("error obtingut: "+ QueixaServ.getError());
 				this.message = QueixaServ.getError();
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
 		} catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
@@ -106,13 +104,11 @@ public class TipusQueixaController {
 
 	public void getTipusQueixaInfo(String queixaId) {
 			
-		QueixaServiceInterface QueixaServ;
+		
 		LOGGER.info("getTipusQueixaInfo: " + queixaId);
 			
 		try
 		{
-			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");
 			LOGGER.info("EJB lookup " + QueixaServ);
 				
 			Queixa q = new Queixa();
@@ -140,15 +136,13 @@ public class TipusQueixaController {
 		
 	public void updateTipusQueixa() {
 			
-		QueixaServiceInterface QueixaServ;
-			
+					
 		LOGGER.info("updateTipusQueixa");
 			
 		try 
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		    ic = new InitialContext();
-		    QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");
+		    
 		    LOGGER.info("EJB lookup" + QueixaServ + "-->queixaId: " + this.queixaId);
 		    	
 		    // Construim la queixa
@@ -177,14 +171,12 @@ public class TipusQueixaController {
 		
 	public void addTipusQueixa()
 	{
-		QueixaServiceInterface QueixaServ;
-			
+					
 		LOGGER.info("addTipusQueixa ");
 			
 		try
 		{
-			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");	
+			
 			LOGGER.info("EJB lookup "+ QueixaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -222,14 +214,11 @@ public class TipusQueixaController {
 	public void removeTipusQueixa()
 	{
 		Queixa q = (Queixa) this.taula_queixes.getRowData();
-		QueixaServiceInterface QueixaServ;
-				
+						
 		LOGGER.info("Entram a remove amb paràmetre: " + q.getId());
 		
 		try
 		{
-			ic = new InitialContext();
-			QueixaServ = (QueixaServiceInterface) ic.lookup("qssiEAR/QueixaService/local");
 			LOGGER.info("EJB lookup " + QueixaServ);
 			
 			QueixaServ.removeQueixa(q.getId());
@@ -244,11 +233,6 @@ public class TipusQueixaController {
 			{
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Queixa eliminada correctament", "Queixa eliminada correctament"));
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant la queixa", this.message));
 		}
 		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());

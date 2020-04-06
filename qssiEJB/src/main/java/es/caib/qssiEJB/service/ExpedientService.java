@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,7 +49,7 @@ import es.caib.qssiEJB.interfaces.ExpedientServiceInterface;
  */
 
 @Stateless
-@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN", "PBASE_ADMIN"}) // Si tothom -> sobren els altres rols
+@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN", "PBASE_ADMIN","JBOSSADMIN"}) // Si tothom -> sobren els altres rols
 public class ExpedientService implements ExpedientServiceInterface {
 
 	private final static Logger LOGGER = Logger.getLogger(EscritService.class);
@@ -83,16 +84,17 @@ public class ExpedientService implements ExpedientServiceInterface {
 			
 			Query myQuery = em.createNativeQuery(strQuery);
 
-			Integer val = (Integer) myQuery.getSingleResult();
+			BigDecimal val = (BigDecimal) myQuery.getSingleResult(); // Ojo xapu, ho hem de corregir, Toni Juanico
 			
 			LOGGER.info("Obtinguda: " + val);
 			
 			if (val != null) 
 			{
-				e.setId((any * 100000)+ val);
+				e.setId((any * 100000)+ val.intValue());
 				LOGGER.info("Calculada clau primaria expedient: " + e.getId());
+								
+				val.add(BigDecimal.ONE); // Ojo xapu, ho hem de corregir, Toni Juanico
 				
-				val = val + 1;
 				strQuery = "update QSI_SEQUENCIA_EXPEDIENT set valor=" + val + " where id_sequencia=" + any;
 				myQuery = em.createNativeQuery(strQuery);
 				myQuery.executeUpdate();

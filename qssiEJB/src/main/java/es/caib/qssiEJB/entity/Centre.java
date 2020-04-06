@@ -78,6 +78,6 @@ public class Centre {
 	public Boolean getActiu() { return (this.actiu==1); }
 	public void setActiu(Boolean value) { if (value) this.actiu =1; else this.actiu = 0; }
 	
-	public Boolean getVisible_web() { return (this.actiu==1); }
+	public Boolean getVisible_web() { return (this.visible_web==1); }
 	public void setVisible_web(Boolean value) { if (value) this.visible_web = 1; else this.visible_web = 0;}
 }

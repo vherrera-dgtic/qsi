@@ -3,10 +3,9 @@ package es.caib.qssiWeb.controller;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 
@@ -26,10 +25,17 @@ import es.caib.qssiEJB.interfaces.MunicipiServiceInterface;
 @ViewScoped
 public class MunicipiController {
 
+	// EJB's
+	@EJB
+	IllaServiceInterface IllaServ;
+	
+	
+	@EJB
+	MunicipiServiceInterface MunicipiServ;
+	
+	// Private
 	private final static Logger LOGGER = Logger.getLogger(MunicipiController.class);
 	private  static Integer CRIDADES = 0;
-	
-	private InitialContext ic;
 	
 	private String message = new String("");
 	private boolean ambErrors = false;
@@ -47,15 +53,12 @@ public class MunicipiController {
 	public boolean getAmbErrors() { return this.ambErrors; }
 	public ArrayList<Illa> getLlista_Illes() { 
 			
-		IllaServiceInterface IllaServ;
+		
 		ArrayList<Illa> llista_Illes = null;
 			
 		// Obtenim la llista d'escrits
 		LOGGER.info("Obtenim llista d'illes");
 		try {
-			ic = new InitialContext();
-			IllaServ = (IllaServiceInterface) this.ic.lookup("qssiEAR/IllaService/local");
-				
 			LOGGER.info("EJB lookup" + IllaServ);
 				
 			llista_Illes = IllaServ.getLlista_Illes();
@@ -68,10 +71,6 @@ public class MunicipiController {
 			}
 				
 				
-		} catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.ambErrors = true;
-			this.message = this.message + " -- " + e.toString();
 		} catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.ambErrors = true;
@@ -93,15 +92,12 @@ public class MunicipiController {
 	    	
 	    	LOGGER.info("Proxy a MunicipiController --> onCentre_change");
 	     	this.llista_municipis = new ArrayList<Municipi>();  
-	     	MunicipiServiceInterface MunicipiServ;
-	 		  	
+	     		 		  	
 	     	// Obtenim llista de matèries
 	 		LOGGER.info("Obtenim llista de municipis a partir del canvi d'illa ");
 	 		
 	 		try
 	 		{
-	 			ic = new InitialContext();
-	 			MunicipiServ = (MunicipiServiceInterface) ic.lookup("qssiEAR/MunicipiService/local");	
 	 			LOGGER.info("EJB lookup "+ MunicipiServ);	
 	 			
 	 			this.llista_municipis = MunicipiServ.getLlista_Municipis(this.illa); // Cridem l'EJB
@@ -115,11 +111,7 @@ public class MunicipiController {
 	 				this.message = MunicipiServ.getError();
 	 			}
 	 		}
-	 		catch (NamingException e) {
-	 			LOGGER.info("Error___ "+e.toString());
-	 			this.ambErrors = true;
-	 			this.message = this.message + " -- " + e.toString();
-	 		} catch (Exception e) {
+	 		catch (Exception e) {
 	 			LOGGER.info("Error_+ " + e.toString());
 	 			this.ambErrors = true;
 	 			this.message = this.message + " -- " + e.toString();

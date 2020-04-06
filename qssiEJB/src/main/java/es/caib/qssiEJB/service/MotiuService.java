@@ -20,7 +20,7 @@ import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
  */
 
 @Stateless
-@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN"}) // Si tothom -> sobren els altres rols
+@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN","JBOSSADMIN"}) // Si tothom -> sobren els altres rols
 public class MotiuService implements MotiuServiceInterface{
 
 	private final static Logger LOGGER = Logger.getLogger(MotiuService.class);

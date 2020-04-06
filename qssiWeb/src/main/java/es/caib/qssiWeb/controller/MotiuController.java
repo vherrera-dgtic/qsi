@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,12 @@ import es.caib.qssiEJB.interfaces.MotiuServiceInterface;
 @ViewScoped
 public class MotiuController {
 	
+	// EJB's
+	@EJB
+	MotiuServiceInterface MotiuServ;
+	
+	
 	// Private properties
-	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(MotiuController.class);
 	
 	private DataTable taula_motius;
@@ -74,14 +77,10 @@ public class MotiuController {
 	
 	public ArrayList<Motiu> getLlista_motius() 
 	{ 
-		MotiuServiceInterface MotiuServ;
-		
 		LOGGER.info("Obtenim llista de motius ");
 		
 		try
 		{
-			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");	
 			LOGGER.info("EJB lookup "+ MotiuServ);	
 			
 			this.llista_motius = MotiuServ.getLlista_Motius(); // Cridem l'EJB
@@ -92,10 +91,7 @@ public class MotiuController {
 				this.message = MotiuServ.getError();
 			}
 		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-		} catch (Exception e) {
+		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
 		}
@@ -105,13 +101,10 @@ public class MotiuController {
 	
 	public void getMotiuInfo(String motiuId) {
 		
-		MotiuServiceInterface MotiuServ;
 		LOGGER.info("getMotiuInfo: " + motiuId);
 			
 		try
 		{
-			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");
 			LOGGER.info("EJB lookup " + MotiuServ);
 				
 			Motiu m = new Motiu();
@@ -140,15 +133,11 @@ public class MotiuController {
 
 	public void updateMotiu() {
 		
-		MotiuServiceInterface MotiuServ;
-			
 		LOGGER.info("updateMotiu");
 			
 		try 
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		    ic = new InitialContext();
-		    MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");
 		    LOGGER.info("EJB lookup" + MotiuServ + "--> motiuId: " + this.motiuId);
 		    	
 		    // Construim el motiu
@@ -173,14 +162,11 @@ public class MotiuController {
 
 	public void addMotiu()
 	{
-		MotiuServiceInterface MotiuServ;
-			
+					
 		LOGGER.info("addMotiu ");
 			
 		try
 		{
-			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");	
 			LOGGER.info("EJB lookup "+ MotiuServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -218,14 +204,11 @@ public class MotiuController {
 	public void removeMotiu()
 	{
 		Motiu m = (Motiu) this.taula_motius.getRowData();
-		MotiuServiceInterface MotiuServ;
-				
+						
 		LOGGER.info("Entram a remove amb paràmetre: " + m.getId());
 		
 		try
 		{
-			ic = new InitialContext();
-			MotiuServ = (MotiuServiceInterface) ic.lookup("qssiEAR/MotiuService/local");
 			LOGGER.info("EJB lookup " + MotiuServ);
 			
 			MotiuServ.removeMotiu(m.getId());
@@ -240,11 +223,6 @@ public class MotiuController {
 			{
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Motiu eliminat correctament", "Motiu eliminat correctament"));
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el motiu", this.message));
 		}
 		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());

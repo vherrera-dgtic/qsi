@@ -9,7 +9,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -36,7 +35,6 @@ public class IndexController {
 	@EJB
 	ExpedientServiceInterface ExpedientServ;
 	
-	//private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(IndexController.class);
 			
 	private ArrayList<Expedient> llista_expedients;

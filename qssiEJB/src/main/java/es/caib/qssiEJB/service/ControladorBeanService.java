@@ -12,7 +12,7 @@ import es.caib.qssiEJB.interfaces.ControladorInterface;
  */
 
 @Stateless
-@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN"}) // Si tothom -> sobren els altres rols
+@RolesAllowed({"tothom", "QSSI_USUARI", "QSSI_GESTOR", "QSSI_ADMIN", "PBASE_ADMIN", "JBOSSADMIN"}) // Si tothom -> sobren els altres rols
 public class ControladorBeanService implements ControladorInterface {
 	
 	@Override

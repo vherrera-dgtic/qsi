@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,11 @@ import es.caib.qssiEJB.interfaces.EntradaServiceInterface;
 @ViewScoped
 public class TipusEntradaController {
 	
+	// EJB'
+	@EJB
+	EntradaServiceInterface EntradaServ;
+	
 	// Private properties
-	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(TipusEntradaController.class);
 	
 	private DataTable taula_entrades;
@@ -75,14 +77,11 @@ public class TipusEntradaController {
 	
 	public ArrayList<Entrada> getLlista_entrades() 
 	{ 
-		EntradaServiceInterface EntradaServ;
-		
+				
 		LOGGER.info("Obtenim llista de tipus d'entrades ");
 		
 		try
 		{
-			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");	
 			LOGGER.info("EJB lookup "+ EntradaServ);	
 			
 			this.llista_entrades = EntradaServ.getLlista_Entrades(); // Cridem l'EJB
@@ -92,10 +91,6 @@ public class TipusEntradaController {
 				LOGGER.info("error obtingut: "+ EntradaServ.getError());
 				this.message = EntradaServ.getError();
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
 		} catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
@@ -106,13 +101,11 @@ public class TipusEntradaController {
 	
 	public void getTipusEntradaInfo(String entradaId) {
 		
-		EntradaServiceInterface EntradaServ;
 		LOGGER.info("getTipusEntradaInfo: " + entradaId);
-			
+
 		try
 		{
-			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");
+			
 			LOGGER.info("EJB lookup " + EntradaServ);
 				
 			Entrada e = new Entrada();
@@ -140,15 +133,12 @@ public class TipusEntradaController {
 	
 	public void updateTipusEntrada() {
 		
-		EntradaServiceInterface EntradaServ;
-			
 		LOGGER.info("updateTipusEntrada");
 			
 		try 
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		    ic = new InitialContext();
-		    EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");
+		    
 		    LOGGER.info("EJB lookup" + EntradaServ + "--> entradaId: " + this.entradaId);
 		    	
 		    // Construim el centre
@@ -173,14 +163,12 @@ public class TipusEntradaController {
 	
 	public void addTipusEntrada()
 	{
-		EntradaServiceInterface EntradaServ;
 			
 		LOGGER.info("addTipusEntrada ");
 			
 		try
 		{
-			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");	
+				
 			LOGGER.info("EJB lookup "+ EntradaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -218,14 +206,11 @@ public class TipusEntradaController {
 	public void removeTipusEntrada()
 	{
 		Entrada e = (Entrada) this.taula_entrades.getRowData();
-		EntradaServiceInterface EntradaServ;
-				
+						
 		LOGGER.info("Entram a remove amb paràmetre: " + e.getId());
 		
 		try
 		{
-			ic = new InitialContext();
-			EntradaServ = (EntradaServiceInterface) ic.lookup("qssiEAR/EntradaService/local");
 			LOGGER.info("EJB lookup " + EntradaServ);
 			
 			EntradaServ.removeEntrada(e.getId());
@@ -240,13 +225,7 @@ public class TipusEntradaController {
 			{
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus d'entrada eliminada correctament", "Tipus d'entrada eliminada correctament"));
 			}
-		}
-		catch (NamingException except) {
-			LOGGER.info("Error___ "+except.toString());
-			this.message = this.message + " -- " + except.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el tipus d'entrada", this.message));
-		}
-		catch (Exception except) {
+		} catch (Exception except) {
 			LOGGER.info("Error_+ " + except.toString());
 			this.message = this.message + " -- " + except.toString();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el tipus d'entrada", this.message));

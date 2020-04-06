@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -29,8 +28,11 @@ import es.caib.qssiEJB.interfaces.EscritServiceInterface;
 @ViewScoped
 public class TipusEscritController {
 	
+	// EJB's
+	@EJB
+	EscritServiceInterface EscritServ;
+	
 	// Private properties
-	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(TipusEscritController.class);
 	
 	private DataTable taula_escrits;
@@ -75,14 +77,11 @@ public class TipusEscritController {
 	
 	public ArrayList<Escrit> getLlista_escrits() 
 	{ 
-		EscritServiceInterface EscritServ;
-		
 		LOGGER.info("Obtenim llista d'escrits ");
 		
 		try
 		{
-			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");	
+			
 			LOGGER.info("EJB lookup "+ EscritServ);	
 			
 			this.llista_escrits = EscritServ.getLlista_Escrits(); // Cridem l'EJB
@@ -92,10 +91,6 @@ public class TipusEscritController {
 				LOGGER.info("error obtingut: "+ EscritServ.getError());
 				this.message = EscritServ.getError();
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
 		} catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
@@ -106,13 +101,11 @@ public class TipusEscritController {
 	
 	public void getTipusEscritInfo(String escritId) {
 		
-		EscritServiceInterface EscritServ;
+		
 		LOGGER.info("getTipusEscritInfo: " + escritId);
 			
 		try
 		{
-			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");
 			LOGGER.info("EJB lookup " + EscritServ);
 				
 			Escrit e = new Escrit();
@@ -139,16 +132,12 @@ public class TipusEscritController {
 	}
 		
 	public void updateTipusEscrit() {
-			
-		EscritServiceInterface EscritServ;
-			
+		
 		LOGGER.info("updateTipusEscrit");
 			
 		try 
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		    ic = new InitialContext();
-		    EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");
 		    LOGGER.info("EJB lookup" + EscritServ + "--> escritId: " + this.escritId);
 		    	
 		    // Construim l'escrit
@@ -173,14 +162,10 @@ public class TipusEscritController {
 		
 	public void addTipusEscrit()
 	{
-		EscritServiceInterface EscritServ;
-			
 		LOGGER.info("addTipusEscrit ");
 			
 		try
 		{
-			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");	
 			LOGGER.info("EJB lookup "+ EscritServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -218,14 +203,11 @@ public class TipusEscritController {
 	public void removeTipusEscrit()
 	{
 		Escrit e = (Escrit) this.taula_escrits.getRowData();
-		EscritServiceInterface EscritServ;
-				
+						
 		LOGGER.info("Entram a remove amb paràmetre: " + e.getId());
 		
 		try
 		{
-			ic = new InitialContext();
-			EscritServ = (EscritServiceInterface) ic.lookup("qssiEAR/EscritService/local");
 			LOGGER.info("EJB lookup " + EscritServ);
 			
 			EscritServ.removeEscrit(e.getId());
@@ -240,13 +222,7 @@ public class TipusEscritController {
 			{
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipus d'escrit eliminat correctament", "Tipus d'escrit eliminat correctament"));
 			}
-		}
-		catch (NamingException ex) {
-			LOGGER.info("Error___ "+ex.toString());
-			this.message = this.message + " -- " + ex.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el tipus d'escrit", this.message));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			LOGGER.info("Error_+ " + ex.toString());
 			this.message = this.message + " -- " + ex.toString();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el tipus d'escrit", this.message));

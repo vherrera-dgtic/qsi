@@ -61,7 +61,7 @@ public class CentreService implements CentreServiceInterface{
 	public ArrayList<Centre> getLlista_CentresActiusWeb() {
 		
 		ArrayList<Centre> l = new ArrayList<Centre>();
-		String queryString = new String("select e from Centre e where e.visible_web=true");
+		String queryString = new String("select e from Centre e where e.visible_web=1");
 		
 		try
 		{

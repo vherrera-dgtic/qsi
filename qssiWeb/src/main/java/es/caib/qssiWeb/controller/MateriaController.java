@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,11 @@ import es.caib.qssiEJB.interfaces.MateriaServiceInterface;
 @ViewScoped
 public class MateriaController {
 	
+	// EJB's
+	@EJB
+	MateriaServiceInterface MateriaServ;
+	
 	// Private properties
-	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(MateriaController.class);
 	
 	private DataTable taula_materies;
@@ -74,14 +76,11 @@ public class MateriaController {
 	
 	public ArrayList<Materia> getLlista_materies() 
 	{ 
-		MateriaServiceInterface MateriaServ;
-		
+
 		LOGGER.info("Obtenim llista de matèries ");
 		
 		try
 		{
-			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");	
 			LOGGER.info("EJB lookup "+ MateriaServ);	
 			
 			this.llista_materies = MateriaServ.getLlista_Materies(); // Cridem l'EJB
@@ -92,10 +91,7 @@ public class MateriaController {
 				this.message = MateriaServ.getError();
 			}
 		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-		} catch (Exception e) {
+		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
 		}
@@ -105,13 +101,10 @@ public class MateriaController {
 	
 	public void getMateriaInfo(String materiaId) {
 		
-		MateriaServiceInterface MateriaServ;
 		LOGGER.info("getMateriaInfo: " + materiaId);
 			
 		try
 		{
-			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");
 			LOGGER.info("EJB lookup " + MateriaServ);
 				
 			Materia m = new Materia();
@@ -139,15 +132,11 @@ public class MateriaController {
 	
 	public void updateMateria() {
 		
-		MateriaServiceInterface MateriaServ;
-			
 		LOGGER.info("updateMateria");
 			
 		try 
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		    ic = new InitialContext();
-		    MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");
 		    LOGGER.info("EJB lookup" + MateriaServ + "--> materiaId: " + this.materiaId);
 		    	
 		    // Construim la matèria
@@ -172,14 +161,11 @@ public class MateriaController {
 	
 	public void addMateria()
 	{
-		MateriaServiceInterface MateriaServ;
-			
+					
 		LOGGER.info("addMateria ");
 			
 		try
 		{
-			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");	
 			LOGGER.info("EJB lookup "+ MateriaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -217,14 +203,11 @@ public class MateriaController {
 	public void removeMateria()
 	{
 		Materia m = (Materia) this.taula_materies.getRowData();
-		MateriaServiceInterface MateriaServ;
-				
+						
 		LOGGER.info("Entram a remove amb paràmetre: " + m.getId());
 		
 		try
 		{
-			ic = new InitialContext();
-			MateriaServ = (MateriaServiceInterface) ic.lookup("qssiEAR/MateriaService/local");
 			LOGGER.info("EJB lookup " + MateriaServ);
 			
 			MateriaServ.removeMateria(m.getId());
@@ -239,11 +222,6 @@ public class MateriaController {
 			{
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Matèria eliminada correctament", "Matèria eliminada correctament"));
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant la matèria", this.message));
 		}
 		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());

@@ -3,10 +3,9 @@ package es.caib.qssiWeb.controller;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 
@@ -24,11 +23,14 @@ import es.caib.qssiEJB.interfaces.IllaServiceInterface;
 @ViewScoped
 public class IllaController {
 
+	// EJB's
+	@EJB
+	IllaServiceInterface IllaServ;
+	
 	private final static Logger LOGGER = Logger.getLogger(IllaController.class);
 	
 	private ArrayList<Illa> llista_illes;
-	private InitialContext ic;
-	
+		
 	private String message = new String("");
 	private boolean ambErrors = false;
 	
@@ -45,14 +47,10 @@ public class IllaController {
 	
 	public ArrayList<Illa> getLlista_illes() 
 	{ 
-		IllaServiceInterface IllaServ;
-		
 		LOGGER.info("Obtenim llista d'illes ");
 		
 		try
 		{
-			ic = new InitialContext();
-			IllaServ = (IllaServiceInterface) ic.lookup("qssiEAR/IllaService/local");	
 			LOGGER.info("EJB lookup "+ IllaServ);	
 			
 			this.llista_illes = IllaServ.getLlista_Illes(); // Cridem l'EJB
@@ -64,11 +62,7 @@ public class IllaController {
 				this.message = IllaServ.getError();
 			}
 		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.ambErrors = true;
-			this.message = this.message + " -- " + e.toString();
-		} catch (Exception e) {
+		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.ambErrors = true;
 			this.message = this.message + " -- " + e.toString();

@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.component.datatable.DataTable;
@@ -18,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import es.caib.qssiEJB.entity.Centre;
 import es.caib.qssiEJB.interfaces.CentreServiceInterface;
+
 
 /**
  * Controlador de la vista CentreGestor
@@ -29,8 +29,11 @@ import es.caib.qssiEJB.interfaces.CentreServiceInterface;
 @ViewScoped
 public class CentreGestorController {
 	
+		
+	@EJB
+	CentreServiceInterface CentreServ;
+	
 	// Private properties
-	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(CentreGestorController.class);
 	
 	private DataTable taula_centres;
@@ -66,6 +69,7 @@ public class CentreGestorController {
 	public boolean getVisibleweb() { return this.visible_web;}
 	public void setVisibleweb(boolean v) { this.visible_web = v; }
 	
+	
 	// Public methods
 	@PostConstruct
 	public void init() {
@@ -84,13 +88,11 @@ public class CentreGestorController {
 		
 	public void getCentreGestorInfo(String centreId) {
 		
-		CentreServiceInterface CentreServ;
 		LOGGER.info("getCentreGestorInfo: " + centreId);
 		
 		try
 		{
-			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");
+			
 			LOGGER.info("EJB lookup " + CentreServ);
 			
 			Centre c = new Centre();
@@ -119,14 +121,12 @@ public class CentreGestorController {
 
 	public ArrayList<Centre> getLlista_centres() 
 	{ 
-		CentreServiceInterface CentreServ;
-		
+				
 		LOGGER.info("Obtenim llista de centres gestors ");
 		
 		try
 		{
-			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");	
+	
 			LOGGER.info("EJB lookup "+ CentreServ);	
 			
 			this.llista_centres = CentreServ.getLlista_Centres(); // Cridem l'EJB
@@ -136,10 +136,7 @@ public class CentreGestorController {
 				LOGGER.info("error obtingut: "+ CentreServ.getError());
 				this.message = CentreServ.getError();
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
+		
 		} catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
@@ -150,16 +147,13 @@ public class CentreGestorController {
 	
 	public void updateCentreGestor()
 	{
-		CentreServiceInterface CentreServ;
-		
+				
 		LOGGER.info("updateCentreGestor");
 		
 	    try 
 	    {
 	    	HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	    	
-	    	ic = new InitialContext();
-	    	CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");
 	    	LOGGER.info("EJB lookup" + CentreServ);
 	    	
 	    	// Construim el centre
@@ -185,14 +179,12 @@ public class CentreGestorController {
 	
 	public void addCentreGestor()
 	{
-		CentreServiceInterface CentreServ;
 		
 		LOGGER.info("addCentreGestor ");
 		
 		try
 		{
-			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");	
+
 			LOGGER.info("EJB lookup "+ CentreServ);	
 			
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -230,14 +222,12 @@ public class CentreGestorController {
 	public void removeCentreGestor()
 	{
 		Centre c = (Centre) this.taula_centres.getRowData();
-		CentreServiceInterface CentreServ;
-		
+				
 		LOGGER.info("Entram a remove amb paràmetre: " + c.getId());
 		
 		try
 		{
-			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) ic.lookup("qssiEAR/CentreService/local");
+
 			LOGGER.info("EJB lookup " + CentreServ);
 			
 			CentreServ.removeCentre(c.getId());
@@ -252,11 +242,6 @@ public class CentreGestorController {
 			{
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Centre eliminat correctament", "Centre eliminat correctament"));
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el centre", this.message));
 		}
 		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());

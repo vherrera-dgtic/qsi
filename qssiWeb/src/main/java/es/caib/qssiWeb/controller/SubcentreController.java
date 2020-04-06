@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -30,8 +29,15 @@ import es.caib.qssiEJB.interfaces.SubcentreServiceInterface;
 @ViewScoped
 public class SubcentreController {
 
+	// EJB's
+	@EJB
+	SubcentreServiceInterface SubcentreServ;
+	
+	@EJB
+	CentreServiceInterface CentreServ;
+	
 	// Private properties
-	private InitialContext ic;
+	
 	private final static Logger LOGGER = Logger.getLogger(SubcentreController.class);
 	
 	private DataTable taula_subcentres;
@@ -96,13 +102,9 @@ public class SubcentreController {
 	
 	public void getSubcentreGestorInfo(String subcentreId) {
 		
-		SubcentreServiceInterface SubcentreServ;
 		LOGGER.info("getSubcentreGestorInfo: " + subcentreId);
-			
 		try
 		{
-			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");
 			LOGGER.info("EJB lookup " + SubcentreServ);
 				
 			Subcentre c = new Subcentre();
@@ -133,16 +135,12 @@ public class SubcentreController {
 	
 	public void updateSubcentreGestor()
 	{
-		SubcentreServiceInterface SubcentreServ;
-		
 		LOGGER.info("updateSubcentreGestor");
 		
 	    try 
 	    {
 	    	HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	    	
-	    	ic = new InitialContext();
-	    	SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");
 	    	LOGGER.info("EJB lookup" + SubcentreServ);
 	    	
 	    	// Construim el centre
@@ -172,14 +170,9 @@ public class SubcentreController {
 	
 	public void addSubcentreGestor()
 	{
-		SubcentreServiceInterface SubcentreServ;
-		
 		LOGGER.info("addSubcentreGestor ");
-		
 		try
 		{
-			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");	
 			LOGGER.info("EJB lookup "+ SubcentreServ);	
 			
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -221,15 +214,12 @@ public class SubcentreController {
 	
 	public ArrayList<Centre> getLlista_Centres() { 
 		
-		CentreServiceInterface CentreServ;
 		ArrayList<Centre> llista_Centres = null;
 			
 		// Obtenim la llista d'escrits
 		LOGGER.info("Obtenim llista de centres");
 		try {
-			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) this.ic.lookup("qssiEAR/CentreService/local");
-				
+							
 			LOGGER.info("EJB lookup" + CentreServ);
 				
 			llista_Centres = CentreServ.getLlista_CentresActiusWeb();
@@ -241,9 +231,6 @@ public class SubcentreController {
 			}
 				
 				
-		} catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
 		} catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
@@ -256,14 +243,11 @@ public class SubcentreController {
 	{
 			
 		Subcentre c = (Subcentre) this.taula_subcentres.getRowData();
-		SubcentreServiceInterface SubcentreServ;
-			
+					
 		LOGGER.info("Entram a remove amb paràmetre: " + c.getId());
 			
 		try
 		{
-			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");
 			LOGGER.info("EJB lookup " + SubcentreServ);
 				
 			SubcentreServ.removeSubcentre(c.getId());
@@ -278,10 +262,6 @@ public class SubcentreController {
 				refrescaLlista_Subcentres(this.centre);
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Subcentre eliminat correctament", "Subcentre eliminat correctament"));
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant el subcentre", e.toString()));
 		}
 		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
@@ -298,14 +278,10 @@ public class SubcentreController {
 	
 	private void refrescaLlista_centres() { 
 			
-		CentreServiceInterface CentreServ;
-		
 		// Obtenim la llista de centres
 		LOGGER.info("Obtenim llista de centres");
 		try {
-			ic = new InitialContext();
-			CentreServ = (CentreServiceInterface) this.ic.lookup("qssiEAR/CentreService/local");
-				
+							
 			LOGGER.info("EJB lookup" + CentreServ);
 				
 			this.llista_centres = CentreServ.getLlista_CentresActiusWeb();
@@ -324,9 +300,7 @@ public class SubcentreController {
 			}
 				
 				
-		} catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-		} catch (Exception e) {
+		}  catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 		}
 	}
@@ -334,16 +308,12 @@ public class SubcentreController {
 	private void refrescaLlista_Subcentres(Integer c)
 	{
 		  
-	   	SubcentreServiceInterface SubcentreServ;
-	 		  	
 	   	// Obtenim llista de subcentres
 	   	LOGGER.info("Obtenim la llista de subcentres: " + c);
 	   	this.llista_subcentres = new ArrayList<Subcentre>();
 	   	
 		try
 		{
-			ic = new InitialContext();
-			SubcentreServ = (SubcentreServiceInterface) ic.lookup("qssiEAR/SubcentreService/local");	
 			LOGGER.info("EJB lookup "+ SubcentreServ);	
 	 			
 			this.llista_subcentres = SubcentreServ.getLlista_Subcentres(c); // Cridem l'EJB
@@ -355,9 +325,7 @@ public class SubcentreController {
 				LOGGER.info("error obtingut: "+ SubcentreServ.getError());
 			}
 		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-		} catch (Exception e) {
+		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 		}
 	 			

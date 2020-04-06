@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,11 @@ import es.caib.qssiEJB.interfaces.IdiomaServiceInterface;
 @ViewScoped
 public class IdiomaController {
 	
+	// EJB's
+	@EJB
+	IdiomaServiceInterface IdiomaServ;
+	
 	// Private properties
-	private InitialContext ic;
 	private final static Logger LOGGER = Logger.getLogger(IdiomaController.class);
 	
 	private DataTable taula_idiomes;
@@ -74,14 +76,10 @@ public class IdiomaController {
 	
 	public ArrayList<Idioma> getLlista_idiomes() 
 	{ 
-		IdiomaServiceInterface IdiomaServ;
-		
 		LOGGER.info("Obtenim llista d'idiomes ");
 		
 		try
 		{
-			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");	
 			LOGGER.info("EJB lookup "+ IdiomaServ);	
 			
 			this.llista_idiomes = IdiomaServ.getLlista_Idiomes(); // Cridem l'EJB
@@ -92,10 +90,7 @@ public class IdiomaController {
 				this.message = IdiomaServ.getError();
 			}
 		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-		} catch (Exception e) {
+		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
 			this.message = this.message + " -- " + e.toString();
 		}
@@ -105,13 +100,10 @@ public class IdiomaController {
 	
 	public void getIdiomaInfo(String idiomaId) {
 		
-		IdiomaServiceInterface IdiomaServ;
 		LOGGER.info("getIdiomaInfo: " + idiomaId);
 			
 		try
 		{
-			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");
 			LOGGER.info("EJB lookup " + IdiomaServ);
 				
 			Idioma i = new Idioma();
@@ -139,15 +131,11 @@ public class IdiomaController {
 
 	public void updateIdioma() {
 		
-		IdiomaServiceInterface IdiomaServ;
-			
 		LOGGER.info("updateIdioma");
 			
 		try 
 		{
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		    ic = new InitialContext();
-		    IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");
 		    LOGGER.info("EJB lookup" + IdiomaServ + "--> idiomaId: " + this.idiomaId);
 		    	
 		    // Construim l'idioma
@@ -171,14 +159,10 @@ public class IdiomaController {
 
 	public void addIdioma()
 	{
-		IdiomaServiceInterface IdiomaServ;
-			
 		LOGGER.info("addIdioma ");
 			
 		try
 		{
-			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");	
 			LOGGER.info("EJB lookup "+ IdiomaServ);	
 				
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -214,14 +198,11 @@ public class IdiomaController {
 	public void removeIdioma()
 	{
 		Idioma i = (Idioma) this.taula_idiomes.getRowData();
-		IdiomaServiceInterface IdiomaServ;
-				
+						
 		LOGGER.info("Entram a remove amb paràmetre: " + i.getId());
 		
 		try
 		{
-			ic = new InitialContext();
-			IdiomaServ = (IdiomaServiceInterface) ic.lookup("qssiEAR/IdiomaService/local");
 			LOGGER.info("EJB lookup " + IdiomaServ);
 			
 			IdiomaServ.removeIdioma(i.getId());
@@ -236,11 +217,6 @@ public class IdiomaController {
 			{
 				FacesContext.getCurrentInstance().addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Idioma eliminat correctament", "Idioma eliminat correctament"));
 			}
-		}
-		catch (NamingException e) {
-			LOGGER.info("Error___ "+e.toString());
-			this.message = this.message + " -- " + e.toString();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error eliminant l'idioma", this.message));
 		}
 		catch (Exception e) {
 			LOGGER.info("Error_+ " + e.toString());
