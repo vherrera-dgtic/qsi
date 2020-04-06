@@ -34,5 +34,15 @@ commit;
 
 select qsi_sequencia.nextval from dual;
 
+insert into qsi_identificacio(id_identificacio, nom, usuari, activa) values (qsi_sequencia.nextval,'DNI','u97091',1);
+insert into qsi_identificacio(id_identificacio, nom, usuari, activa) values (qsi_sequencia.nextval,'NIF','u97091',1);
+insert into qsi_identificacio(id_identificacio, nom, usuari, activa) values (qsi_sequencia.nextval,'Passport','u97091',1);
+
+commit;
+
+select * from qsi_sequencia_Expedient;
+select * from qsi_expedient;
+
+
 
 
